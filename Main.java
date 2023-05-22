@@ -1,10 +1,28 @@
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
-         Sql s = new Sql();
-         s.Select_test();
-         //s.Insert_test("akbar", "akbari");
-         //s.Select_test();
-         ////s.delete_test(2);
-         //s.Select_test();
+        Sql sql = new Sql();
+        Scanner sc = new Scanner(System.in);
+        String command  = sc.nextLine();
+
+        ////////////////////
+        // add your variable here
+        
+        ////////////////////
+
+        while (!command.equals("end")) {
+
+
+
+            command  = sc.nextLine();
+        }
+
+        sc.close();
+        // sql.Select_test();
+         //sql.Insert_test("akbar", "akbari");
+         //sql.Select_test();
+         //sql.delete_test(2);
+         //sql.Select_test();
     }
 }
