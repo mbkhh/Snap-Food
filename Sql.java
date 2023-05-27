@@ -128,4 +128,29 @@ public class Sql {
         }
         
     }
+    ArrayList<Cart> getCart(int UserId , int OrderId)
+    {
+        ArrayList<Cart> ans = new ArrayList<Cart>();
+        try {
+            Statement stm = con.createStatement();
+            ResultSet rs = stm.executeQuery( "SELECT * FROM Cart Where `userId` = "+UserId+" AND `orderId`="+OrderId+";" );            
+            while ( rs.next() ) {
+               int id = rs.getInt("id");
+               int foodId = rs.getInt("foodId");
+               int userId = rs.getInt("userId");
+               int orderId = rs.getInt("orderId");
+               int cost = rs.getInt("cost");
+               int count = rs.getInt("count");
+
+               ans.add(new Cart(id, foodId, userId, orderId, cost, count));
+            }
+            rs.close();
+            stm.close();
+            return ans;
+        } catch (SQLException e) {
+            System.out.println("Could not select data from database : Select_test : "+e.getMessage());
+            return ans;
+        }
+        
+    }
 }

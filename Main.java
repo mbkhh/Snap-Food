@@ -25,11 +25,17 @@ public class Main {
                     continue;
                 Cart.addToCart(functions.parseInt(command.split(" ")[4]), User.currentUser);
             }
-            if(command.matches("(?i)remove\\s+food\\s+with\\s+id\\s+\\d+\\s+from\\s+cart\\s*"))
+            else if(command.matches("(?i)remove\\s+food\\s+with\\s+id\\s+\\d+\\s+from\\s+cart\\s*"))
             {
                 if(User.currentUser == null)
                     continue;
                 Cart.removeFromCart(functions.parseInt(command.split(" ")[4]),User.currentUser);
+            }
+            else if(command.matches("(?i)display\\s+cart\\s+status\\s*"))
+            {
+                if(User.currentUser == null)
+                    continue;
+                Cart.printCart(User.currentUser);
             }
 
             

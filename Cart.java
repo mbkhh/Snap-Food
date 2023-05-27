@@ -76,4 +76,25 @@ public class Cart {
                 System.out.println("there is some error in adding food Code:51");
         }
     }
+    static void printCart(ArrayList<Cart> cart)
+    {
+        String leftAlignFormat = "| %-25s | %-10d | %-5d | %-8d | %-10d |%n";
+        String leftAlignHeaderFormat = "| %-25s | %-10s | %-5s | %-8s | %-10s |%n";
+        System.out.println("--------------------------------------------------------------------------");
+        System.out.format(leftAlignHeaderFormat,"Foodname","Cost","Count","Discount","Total Cost");
+        System.out.println("--------------------------------------------------------------------------");
+        for (int i = 0; i < cart.size(); i++) {
+           // System.out.println(cart.get(i).food.name + "\t" +  cart.get(i).cost + "\t" +  cart.get(i).count + "\t" +  "0" + "\t" +  cart.get(i).cost*cart.get(i).count);
+            System.out.format(leftAlignFormat,cart.get(i).food.name,cart.get(i).cost,cart.get(i).count,0,cart.get(i).cost*cart.get(i).count);
+        }
+        System.out.println("--------------------------------------------------------------------------");
+    }
+    static void printCart(User user)
+    {
+        ArrayList<Cart> te = Main.sql.getCart(user.id, 0);
+        if(te.size() == 0)
+            System.out.println("Your cart is empty");
+        else
+            printCart(te);
+    }
 }

@@ -18,6 +18,7 @@ public class Food {
         // for Test change it when ready
         Food test = new Food();
         test.id = id;
+        test.name = "ffsss";
         test.price = 1000;
         test.isActive = true;
         return test;
