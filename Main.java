@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class Main {
-    static Sql sql;
+    public static Sql sql;
     public static void main(String[] args) {
         sql = new Sql();
         Scanner sc = new Scanner(System.in);

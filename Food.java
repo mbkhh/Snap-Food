@@ -4,6 +4,7 @@ import java.util.ArrayList;
  */
 public class Food {
     public int id;
+    public int restaurantId;
     public String name ;
     public int price;
     public int discountPercent;
@@ -13,7 +14,7 @@ public class Food {
 
     
 
-    static Food getFoodById(int id)
+    public static Food getFoodById(int id)
     {
         // for Test change it when ready
         Food test = new Food();
