@@ -81,6 +81,48 @@ public class Sql {
             System.out.println("Could not Insert data to database : InsertToCart : "+e.getMessage());
         }
     }
+    public void InsertToMap(int node1 ,int node2 ,int weight)
+    {
+        try {
+            Statement stm = connection.createStatement();
+            stm.executeUpdate( "Insert INTO Map (node1 , node2 , weight ) VALUES ('"+node1+"' , '"+node2+"' , '"+weight+"' );" );
+            stm.close();
+        } catch (SQLException e) {
+            System.out.println("Could not Insert data to database : InsertToCart : "+e.getMessage());
+        }
+    }
+    public void deleteMap()
+    {
+        try {
+            Statement stm = connection.createStatement();
+            stm.executeUpdate( "DELETE FROM Map;" );
+            stm.close();
+        } catch (SQLException e) {
+            System.out.println("Could not delete data to database : deleteFromCart : "+e.getMessage());
+        }
+    }
+    public ArrayList<Branch> getConnectedBranch(int node)
+    {
+        ArrayList<Branch> ans = new ArrayList<Branch>();
+        try {
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery( "SELECT * FROM Cart Where `node1`="+node+" OR `node2`="+node+";" );
+            while ( rs.next() ) {
+               int id = rs.getInt("id");
+               int node1 = rs.getInt("node1");
+               int node2 = rs.getInt("node2");
+               int weight = rs.getInt("weight");
+                           
+               ans.add(new Branch(id, node1, node2, weight));
+            }              
+            rs.close();    
+            stm.close();   
+            return ans;
+        } catch (SQLException e) {
+            System.out.println("Could not select data from database : getConnectedBranch : "+e.getMessage());
+            return ans;
+        }
+    }
     public void EditCart(int id, int cost, int count)
     {
         try {
@@ -121,7 +163,7 @@ public class Sql {
             stm.close();   
             return ans;
         } catch (SQLException e) {
-            System.out.println("Could not select data from database : Select_test : "+e.getMessage());
+            System.out.println("Could not select data from database : getCart : "+e.getMessage());
             return ans;
         }
         
@@ -146,7 +188,7 @@ public class Sql {
             stm.close();
             return ans;
         } catch (SQLException e) {
-            System.out.println("Could not select data from database : Select_test : "+e.getMessage());
+            System.out.println("Could not select data from database : getCart 2 : "+e.getMessage());
             return ans;
         }
     }

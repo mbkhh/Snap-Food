@@ -6,7 +6,6 @@ public class Main {
         sql = new Sql();
         Scanner sc = new Scanner(System.in);
         String command;
-
         ////////////////////
         // add your variable here
         
