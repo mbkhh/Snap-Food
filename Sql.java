@@ -106,7 +106,7 @@ public class Sql {
         ArrayList<Branch> ans = new ArrayList<Branch>();
         try {
             Statement stm = connection.createStatement();
-            ResultSet rs = stm.executeQuery( "SELECT * FROM Cart Where `node1`="+node+" OR `node2`="+node+";" );
+            ResultSet rs = stm.executeQuery( "SELECT * FROM Map Where `node1`="+node+" OR `node2`="+node+";" );
             while ( rs.next() ) {
                int id = rs.getInt("id");
                int node1 = rs.getInt("node1");
@@ -120,6 +120,28 @@ public class Sql {
             return ans;
         } catch (SQLException e) {
             System.out.println("Could not select data from database : getConnectedBranch : "+e.getMessage());
+            return ans;
+        }
+    }
+    public ArrayList<Branch> getAllBranch()
+    {
+        ArrayList<Branch> ans = new ArrayList<Branch>();
+        try {
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery( "SELECT * FROM Map;" );
+            while ( rs.next() ) {
+               int id = rs.getInt("id");
+               int node1 = rs.getInt("node1");
+               int node2 = rs.getInt("node2");
+               int weight = rs.getInt("weight");
+                           
+               ans.add(new Branch(id, node1, node2, weight));
+            }              
+            rs.close();    
+            stm.close();   
+            return ans;
+        } catch (SQLException e) {
+            System.out.println("Could not select data from database : getAllBranch : "+e.getMessage());
             return ans;
         }
     }
