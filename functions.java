@@ -1,5 +1,6 @@
-public class functions {
-    static int parseInt(String i, String part)
+public class functions
+{
+    public static int parseInt(String i, String part)
     {
         int ans = 0;
         try {
@@ -9,7 +10,7 @@ public class functions {
         }
         return ans;
     }
-    static int parseInt(String i)
+    public static int parseInt(String i)
     {
         int ans = 0;
         try {

@@ -1,3 +1,3 @@
 public class Order {
-    int id;
+    public int id;
 }

@@ -1,17 +1,16 @@
 import java.util.Scanner;
 
 public class Main {
-    static Sql sql;
+    public static Sql sql;
     public static void main(String[] args) {
         sql = new Sql();
         Scanner sc = new Scanner(System.in);
         String command;
-
         ////////////////////
         // add your variable here
         
         ////////////////////
-
+        //Map.findPath(127, 414);
 
         //test
         User.currentUser = User.getUserById(1);

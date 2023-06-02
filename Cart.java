@@ -1,15 +1,15 @@
 import java.util.ArrayList;
+public class Cart
+{
+    public int id;
+    public Food food;
+    public User user;
+    public Order order;
+    public int cost;
+    public int count;
+    public static ArrayList<Cart> currentCart = new ArrayList<Cart>();
 
-public class Cart {
-    int id;
-    Food food;
-    User user;
-    Order order;
-    int cost;
-    int count;
-    static ArrayList<Cart> currentCart = new ArrayList<Cart>();
-
-    Cart(int id, int foodId, int userId, int orderId, int cost, int count)
+    public Cart(int id, int foodId, int userId, int orderId, int cost, int count)
     {
         this.id = id;
         food = Food.getFoodById(foodId);
@@ -20,7 +20,7 @@ public class Cart {
         this.cost = cost;
         this.count = count;
     }
-    static Boolean addToCart(Food food, User user)
+    public static Boolean addToCart(Food food, User user)
     {
         ArrayList<Cart> te = Main.sql.getCart(food.id, user.id, 0) ;
         if(te.size() == 0)
@@ -33,7 +33,7 @@ public class Cart {
         }
         return true;
     }
-    static boolean removeFromCart(Food food, User user)
+    public static boolean removeFromCart(Food food, User user)
     {
         ArrayList<Cart> te = Main.sql.getCart(food.id, user.id, 0) ;
         if(te.size() != 0)
@@ -42,7 +42,7 @@ public class Cart {
         }
         return true;
     }
-    static void removeFromCart(int foodId, User user)
+    public static void removeFromCart(int foodId, User user)
     {
         Food food = Food.getFoodById(foodId);
         if(food == null)
@@ -59,7 +59,7 @@ public class Cart {
                 System.out.println("there is some error in deleting food Code:52");                
         }
     }
-    static void addToCart(int foodId, User user)
+    public static void addToCart(int foodId, User user)
     {
         Food food = Food.getFoodById(foodId);
         if(food == null)
@@ -76,7 +76,7 @@ public class Cart {
                 System.out.println("there is some error in adding food Code:51");
         }
     }
-    static void printCart(ArrayList<Cart> cart)
+    public static void printCart(ArrayList<Cart> cart)
     {
         String leftAlignFormat = "| %-25s | %-10d | %-5d | %-8d | %-10d |%n";
         String leftAlignHeaderFormat = "| %-25s | %-10s | %-5s | %-8s | %-10s |%n";
@@ -89,7 +89,7 @@ public class Cart {
         }
         System.out.println("--------------------------------------------------------------------------");
     }
-    static void printCart(User user)
+    public static void printCart(User user)
     {
         ArrayList<Cart> te = Main.sql.getCart(user.id, 0);
         if(te.size() == 0)
