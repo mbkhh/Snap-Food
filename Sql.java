@@ -153,4 +153,109 @@ public class Sql {
         }
         
     }
+        
+
+    void InsertToUser(String username , String password , String name ,  String securityQuestion, String securityAnswer, int type , int balance)
+    {
+        try {
+            Statement stm = con.createStatement();
+            stm.executeUpdate( "Insert INTO User (username , password , name , securityQuestion , securityAnswer , type , balance) VALUES ('"+username+"' , '"+password+"' , '"+name+"' , '"+securityQuestion+"' , '"+securityAnswer+"' , '"+type+"' , '"+balance+"');" );
+            stm.close();
+        } catch (SQLException e) {
+            System.out.println("Could not Insert data to database : InsertToUser : "+e.getMessage());
+        }
+    }
+
+    User getUser (int id)
+    {  
+        User ans = null;
+        try {
+            Statement stm = con.createStatement();
+            ResultSet rs = stm.executeQuery( "SELECT * FROM User Where `id` = "+id+";");            
+            while ( rs.next() ) {
+               String username = rs.getString("username");
+               String password = rs.getString("password");
+               String name = rs.getString("name");
+               String securityQuestion = rs.getString("securityQuestion");
+               String securityAnswer = rs.getString("securityAnswer");
+               int type = rs.getInt("type");
+               int balance = rs.getInt("balance");
+
+                ans = new User(id,username, password, name, securityQuestion, securityAnswer, type, balance);
+              
+            }
+            rs.close();
+            stm.close();
+            return ans;
+        } catch (SQLException e) {
+            System.out.println("Could not select data from database : getUser : "+e.getMessage());
+            return ans;
+        }
+        
+    }
+    User getUser (String username , String password)
+    {  
+        User ans = null;
+        try {
+            Statement stm = con.createStatement();
+            ResultSet rs = stm.executeQuery( "SELECT * FROM User Where `username` = '"+username+"' AND `password`='"+password+"';" );              
+            while ( rs.next() ) {
+               int id=rs.getInt("id");
+               String name = rs.getString("name");
+               String securityQuestion = rs.getString("securityQuestion");
+               String securityAnswer = rs.getString("securityAnswer");
+               int type = rs.getInt("type");
+               int balance = rs.getInt("balance");
+                ans = new User(id,username, password, name, securityQuestion, securityAnswer, type, balance);
+              
+            }
+            rs.close();
+            stm.close();
+            return ans;
+        } catch (SQLException e) {
+            System.out.println("Could not select data from database : getUser : "+e.getMessage());
+            return ans;
+        }
+        
+    }
+
+    User getUser (String username)
+    {  
+        User ans = null;
+        try {
+            Statement stm = con.createStatement();
+            ResultSet rs = stm.executeQuery( "SELECT * FROM User Where `username` = '"+username+"';" );              
+            while ( rs.next() ) {
+               int id=rs.getInt("id");
+               String password = rs.getString("password");
+               String name = rs.getString("name");
+               String securityQuestion = rs.getString("securityQuestion");
+               String securityAnswer = rs.getString("securityAnswer");
+               int type = rs.getInt("type");
+               int balance = rs.getInt("balance");
+                ans = new User(id,username, password, name, securityQuestion, securityAnswer, type, balance);
+              
+            }
+            rs.close();
+            stm.close();
+            return ans;
+        } catch (SQLException e) {
+            System.out.println("Could not select data from database : getUser : "+e.getMessage());
+            return ans;
+        }
+        
+    }
+
+
+
+    void deleteFromUser(int id )
+    {
+        try {
+            Statement stm = con.createStatement();
+            stm.executeUpdate( "DELETE FROM User WHERE `id` = "+id+";" );
+            stm.close();
+        } catch (SQLException e) {
+            System.out.println("Could not delete data to database : deleteFromUser : "+e.getMessage());
+        }
+    }
 }
