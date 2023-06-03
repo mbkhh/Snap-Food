@@ -306,9 +306,6 @@ public class Sql {
         }
         
     }
-
-
-
     void deleteFromUser(int id )
     {
         try {
@@ -317,6 +314,27 @@ public class Sql {
             stm.close();
         } catch (SQLException e) {
             System.out.println("Could not delete data to database : deleteFromUser : "+e.getMessage());
+        }
+    }
+    public ArrayList<Restaurant> getRestaurant(int idKey, String whichId) {
+        ArrayList<Restaurant> restaurants = new ArrayList<>();
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM Restaurant Where `" + whichId + "` = " + idKey + ";");
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                User owner = User.getUserById(resultSet.getInt("ownerId"));
+                ArrayList<FoodType> types = Functions.stringToEnum(resultSet.getString("type"));
+                int postCost = resultSet.getInt("postCost");
+                restaurants.add(new Restaurant(id, owner, name, types, postCost));
+            }
+            resultSet.close();
+            statement.close();
+            return restaurants;
+        } catch (SQLException e) {
+            System.out.println("Could not select data from database : Select_test : "+e.getMessage());
+            return restaurants;
         }
     }
 }

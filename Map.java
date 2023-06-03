@@ -14,9 +14,9 @@ public class Map {
             String data = myReader.nextLine();
             while (myReader.hasNextLine()) {
                 data = myReader.nextLine();
-                int node1 = functions.parseInt(data.split(" ")[0] , "Map insert");
-                int node2 = functions.parseInt(data.split(" ")[1] , "Map insert");
-                int weight = functions.parseInt(data.split(" ")[2] , "Map insert");
+                int node1 = Functions.parseInt(data.split(" ")[0] , "Map insert");
+                int node2 = Functions.parseInt(data.split(" ")[1] , "Map insert");
+                int weight = Functions.parseInt(data.split(" ")[2] , "Map insert");
                 Main.sql.InsertToMap(node1, node2, weight);
             }
             myReader.close();
