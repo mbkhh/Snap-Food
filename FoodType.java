@@ -7,16 +7,13 @@ public enum FoodType {
     /////////////////////////////////
     OTHER("OTHER");
     private final String type;
-    FoodType(String type)
-    {
+    FoodType(String type) {
         this.type = type;
     }
-    public String getType(FoodType foodType)
-    {
-        return foodType.type;
+    public String getType() {
+        return type;
     }
-    public static FoodType stringToFoodType(String type)
-    {
+    public static FoodType stringToFoodType(String type) {
         for (FoodType foodType : FoodType.values()) {
             if (foodType.name().equals(type))
                 return foodType;

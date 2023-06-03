@@ -16,8 +16,12 @@ public class Restaurant {
         this.types = types;
         this.postCost = postCost;
     }
-    public static String typesToString(ArrayList<FoodType> foodTypes) {
-
+    public String typesToString() {
+        String foodType = types.get(0).getType();
+        for (int i = 1; i < types.size(); i++) {
+            foodType += ", " + types.get(i).getType();
+        }
+        return foodType;
     }
     public static void printRestaurant(ArrayList<Restaurant> restaurants) {
         String leftAlignFormat = "| %-5d | %-25s | %-25s | %-10d |%n";
@@ -28,16 +32,21 @@ public class Restaurant {
         System.out.println(dashedLine);
         System.out.format(leftAlignHeaderFormat,"Id","Name","Types","PostCost");
         System.out.println (dashedLine);
-        for (int i = 0; i < restaurants.size(); i++) {
-            System.out.format(leftAlignFormat,restaurants.get(i).id,restaurants.get(i).name,cart.get(i).count,0,cart.get(i).cost*cart.get(i).count);
-        }
+        for (int i = 0; i < restaurants.size(); i++)
+            System.out.format(leftAlignFormat,restaurants.get(i).id,restaurants.get(i).name,restaurants.get(i).typesToString(),restaurants.get(i).postCost);
         System.out.println(dashedLine);
-
     }
-    public static Restaurant getRestaurantById(int id) {
+    public static Restaurant getRestaurantBy(int id) {
         return Main.sql.getRestaurant(id, "id").get(0);
     }
-    public static Restaurant getRestaurantByOwnerId(int ownerId) {
-        return Main.sql.getRestaurant(ownerId, "ownerId").get(0);
+    public static void printRestaurant(int ownerId) {
+        ArrayList<Restaurant> restaurants = new ArrayList<>(Main.sql.getRestaurant(ownerId, "ownerId"));
+        if (restaurants.size() == 0)
+            System.out.println("You don't have any restaurant");
+        else if (restaurants.size() == 1)
+            //TODO must go in that restaurant
+            ;
+        else
+            printRestaurant(restaurants);
     }
 }
