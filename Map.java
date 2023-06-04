@@ -3,7 +3,6 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
-
 public class Map {
     static void InsertMapFromFile()
     {
@@ -34,7 +33,7 @@ public class Map {
         list.add(new Vertex(node1));
         
         while (list.get(0).nodeName != node2) {
-            //System.out.println("on vertex: "+list.get(0).nodeName + "   " + list.get(0).pathLenght);
+            //System.out.println("on vertex: "+list.get(0).nodeName + "   " + list.get(0).pathLength);
             //ArrayList<Branch> connected = Main.sql.getConnectedBranch(list.get(0).nodeName);
             ArrayList<Branch> connected = getConnectedBranches(list.get(0).nodeName, all);
             // for (int i = 0; i < connected.size(); i++) {
@@ -47,7 +46,7 @@ public class Map {
                     if(index == -1)
                         list.add(new Vertex(list.get(0),connected.get(i).weight, connected.get(i).node2));
                     else{
-                        if(list.get(0).pathLenght + connected.get(i).weight > list.get(index).pathLenght)
+                        if(list.get(0).pathLength + connected.get(i).weight > list.get(index).pathLength)
                             list.set(index, new Vertex(list.get(0),connected.get(i).weight, connected.get(i).node2));
                     }
                     
@@ -58,7 +57,7 @@ public class Map {
                     if(index == -1)
                         list.add(new Vertex(list.get(0),connected.get(i).weight, connected.get(i).node1));
                     else{
-                        if(list.get(0).pathLenght + connected.get(i).weight > list.get(index).pathLenght)
+                        if(list.get(0).pathLength + connected.get(i).weight > list.get(index).pathLength)
                             list.set(index, new Vertex(list.get(0),connected.get(i).weight, connected.get(i).node1));
                     }
                 }                    
@@ -68,7 +67,7 @@ public class Map {
 
             for (int i = 0; i < list.size(); i++) {
                 for (int j = i; j < list.size(); j++) {
-                    if(j!=list.size()-1 && list.get(j+1).pathLenght < list.get(j).pathLenght)
+                    if(j!=list.size()-1 && list.get(j+1).pathLength < list.get(j).pathLength)
                     {
                         Collections.swap(list, j+1, j);
                     }
@@ -80,7 +79,7 @@ public class Map {
             System.out.print(list.get(0).nodes[i] + " ");
         }
         System.out.println();
-        System.out.println("path size:"+list.get(0).pathLenght);
+        System.out.println("path size:"+list.get(0).pathLength);
         return list.get(0);
     }
     static int searchInList(int node , ArrayList<Vertex> list)

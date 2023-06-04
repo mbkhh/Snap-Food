@@ -36,7 +36,14 @@ public class Restaurant {
             System.out.format(leftAlignFormat,restaurants.get(i).id,restaurants.get(i).name,restaurants.get(i).typesToString(),restaurants.get(i).postCost);
         System.out.println(dashedLine);
     }
-    public static Restaurant getRestaurantBy(int id) {
+    public int getRestaurantAddress() {
+        //TODO for Bagher: fill this part
+        return 0;
+    }
+    public void editRestaurantAddress() {
+
+    }
+    public static Restaurant getRestaurant(int id) {
         return Main.sql.getRestaurant(id, "id").get(0);
     }
     public static void printRestaurant(int ownerId) {
