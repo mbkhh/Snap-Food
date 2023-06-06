@@ -14,9 +14,9 @@ public class Map {
             String data = myReader.nextLine();
             while (myReader.hasNextLine()) {
                 data = myReader.nextLine();
-                int node1 = functions.parseInt(data.split(" ")[0] , "Map insert");
-                int node2 = functions.parseInt(data.split(" ")[1] , "Map insert");
-                int weight = functions.parseInt(data.split(" ")[2] , "Map insert");
+                int node1 = Functions.parseInt(data.split(" ")[0] , "Map insert");
+                int node2 = Functions.parseInt(data.split(" ")[1] , "Map insert");
+                int weight = Functions.parseInt(data.split(" ")[2] , "Map insert");
                 Main.sql.InsertToMap(node1, node2, weight);
             }
             myReader.close();
@@ -47,7 +47,7 @@ public class Map {
                     if(index == -1)
                         list.add(new Vertex(list.get(0),connected.get(i).weight, connected.get(i).node2));
                     else{
-                        if(list.get(0).pathLenght + connected.get(i).weight > list.get(index).pathLenght)
+                        if(list.get(0).pathLength + connected.get(i).weight > list.get(index).pathLength)
                             list.set(index, new Vertex(list.get(0),connected.get(i).weight, connected.get(i).node2));
                     }
                     
@@ -58,7 +58,7 @@ public class Map {
                     if(index == -1)
                         list.add(new Vertex(list.get(0),connected.get(i).weight, connected.get(i).node1));
                     else{
-                        if(list.get(0).pathLenght + connected.get(i).weight > list.get(index).pathLenght)
+                        if(list.get(0).pathLength + connected.get(i).weight > list.get(index).pathLength)
                             list.set(index, new Vertex(list.get(0),connected.get(i).weight, connected.get(i).node1));
                     }
                 }                    
@@ -68,7 +68,7 @@ public class Map {
 
             for (int i = 0; i < list.size(); i++) {
                 for (int j = i; j < list.size(); j++) {
-                    if(j!=list.size()-1 && list.get(j+1).pathLenght < list.get(j).pathLenght)
+                    if(j!=list.size()-1 && list.get(j+1).pathLength < list.get(j).pathLength)
                     {
                         Collections.swap(list, j+1, j);
                     }

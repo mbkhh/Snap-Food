@@ -18,6 +18,10 @@ public class Food {
         this.name = name;
 
     }
+    public Food()
+    {
+        
+    }
     public static Food getFoodById(int id)
     {
         // for Test change it when ready

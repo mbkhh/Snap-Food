@@ -51,7 +51,7 @@ public class Order {
             {
                 System.out.println("Discription: (if nothing just press enter)");
                 String discription = Main.sc.nextLine();
-                Address resturantAddress = Address.getAddress(0, te.get(0).food.restaurantId);
+                Address resturantAddress = Address.getAddress(0, te.get(0).food.restaurant.id);
                 Address userAddress = Address.getAddress(user.id, 0);
                 if(userAddress == null)
                 {
@@ -62,7 +62,7 @@ public class Order {
                         node = node.trim();
                         if(node.matches("\\d+"))
                         {
-                            int n = functions.parseInt(node);
+                            int n = Functions.parseInt(node);
                             Address.addAddress(user.id, 0, n);
                         }
                     }while(Address.getAddress(user.id, 0) == null);
@@ -72,7 +72,7 @@ public class Order {
 
                 Vertex x = Map.findPath(resturantAddress.node, userAddress.node);
                 
-                Main.sql.InsertToOrder(user.id, te.get(0).food.restaurantId, 0, x.getPath(), x.pathLenght, x.pathLenght*100, System.currentTimeMillis(), totalPrice, totalDiscount, OrderStatus.Registered, discription);
+                Main.sql.InsertToOrder(user.id, te.get(0).food.restaurant.id, 0, x.getPath(), x.pathLength, x.pathLength*100, System.currentTimeMillis(), totalPrice, totalDiscount, OrderStatus.Registered, discription);
             }
         }
     }

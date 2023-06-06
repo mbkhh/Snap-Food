@@ -61,7 +61,7 @@ public class Cart
                 Main.sql.InsertToCart(food.id, user.id, 0, food.price, 1);
                 System.out.println("Food added to cart successfully");
             }
-            else if(te.get(0).food.restaurantId != food.restaurantId)
+            else if(te.get(0).food.restaurant.id != food.restaurant.id)
             {
                 System.out.println("You can't add this food to your cart because it's impossible to order from two different restaurant with one order.");
             }
