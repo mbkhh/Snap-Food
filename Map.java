@@ -28,7 +28,7 @@ public class Map {
     static Vertex findPath(int node1, int node2)
     {
         ArrayList<Branch> all = Main.sql.getAllBranch();
-        System.out.println("search start!");
+        //System.out.println("search start!");
         ArrayList<Integer> indexed = new ArrayList<Integer>();
         ArrayList<Vertex> list = new ArrayList<Vertex>();
         list.add(new Vertex(node1));
@@ -75,12 +75,12 @@ public class Map {
                 }
             }
         }
-        System.out.println("path finded - path detail:");
-        for (int i = 0; i < list.get(0).nodes.length; i++) {
-            System.out.print(list.get(0).nodes[i] + " ");
-        }
-        System.out.println();
-        System.out.println("path size:"+list.get(0).pathLenght);
+        //System.out.println("path finded - path detail:");
+        //for (int i = 0; i < list.get(0).nodes.length; i++) {
+        //    System.out.print(list.get(0).nodes[i] + " ");
+        //}
+        //System.out.println();
+        //System.out.println("path size:"+list.get(0).pathLenght);
         return list.get(0);
     }
     static int searchInList(int node , ArrayList<Vertex> list)

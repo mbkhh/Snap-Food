@@ -21,4 +21,13 @@ public class Vertex {
         nodes[0] = node;
         nodeName = node;
     }
+    String getPath()
+    {
+        String ans = "";
+        for (int i = 0; i < nodes.length; i++) {
+            ans += nodes[i] + " - ";
+        }
+
+        return ans;
+    }
 }

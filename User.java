@@ -32,7 +32,7 @@ public class User {
     static void addUser(String username , String password , String name ,  String securityQuestion, String securityAnswer, int type , int balance)
     {
 
-        if(MainParham.sql.getUser(username)!= null)
+        if(Main.sql.getUser(username)!= null)
         {
             System.out.println("Invalid username! Username is already in use!");
         }
@@ -62,7 +62,7 @@ public class User {
         }
         else
         {
-        MainParham.sql.InsertToUser(username, password, name, securityQuestion, securityAnswer, type, balance);
+        Main.sql.InsertToUser(username, password, name, securityQuestion, securityAnswer, type, balance);
         System.out.println("User added successfully");
         }
 
@@ -70,7 +70,7 @@ public class User {
     
     static User getUserById(int id)
     {
-        User ans = MainParham.sql.getUser(id);
+        User ans = Main.sql.getUser(id);
         return ans;
 
     }
@@ -80,24 +80,24 @@ public class User {
         String ans;
         boolean get=true;
 
-        if(MainParham.sql.getUser(username)==null)
+        if(Main.sql.getUser(username)==null)
         {
          System.out.println("Invalid username! Username doesn't exist!");
         }
-        else if(MainParham.sql.getUser(username, password)== null)
+        else if(Main.sql.getUser(username, password)== null)
         {
         
-         while(MainParham.sql.getUser(username, password)== null && get)
+         while(Main.sql.getUser(username, password)== null && get)
          {
             System.out.println("Invalid password! Password is incorrect! Would you like to recover your password? 1-Yes 2-No i try again 3-continue");
-            ans=MainParham.sc.nextLine();
+            ans=Main.sc.nextLine();
             if(ans.trim().equals("1"))
             { 
-                System.out.println(MainParham.sql.getUser(username).securityQuestion);
-                ans=MainParham.sc.nextLine();
-                if(ans.trim().equals(MainParham.sql.getUser(username).securityAnswer))
+                System.out.println(Main.sql.getUser(username).securityQuestion);
+                ans=Main.sc.nextLine();
+                if(ans.trim().equals(Main.sql.getUser(username).securityAnswer))
                 {
-                    currentUser=MainParham.sql.getUser(username);
+                    currentUser=Main.sql.getUser(username);
                     System.out.println("User logged in successfully");
                     get=false;
                 }
@@ -113,7 +113,7 @@ public class User {
             else if(ans.trim().equals("2"))
             {
              System.out.println("Enter password:");
-             password=MainParham.sc.nextLine();
+             password=Main.sc.nextLine();
              get=true;  
             }
             
@@ -124,9 +124,9 @@ public class User {
 
          }
           
-         if(MainParham.sql.getUser(username, password)!= null)
+         if(Main.sql.getUser(username, password)!= null)
          {
-            currentUser=MainParham.sql.getUser(username, password);
+            currentUser=Main.sql.getUser(username, password);
             System.out.println("User logged in successfully");
          }
 
@@ -134,7 +134,7 @@ public class User {
 
         else
         {
-            currentUser=MainParham.sql.getUser(username, password);
+            currentUser=Main.sql.getUser(username, password);
             System.out.println("User logged in successfully");
         }
 
@@ -172,12 +172,12 @@ public class User {
 
     static void deleteAccount (String username , String password)
     {
-        User ans = MainParham.sql.getUser(username,password);
+        User ans = Main.sql.getUser(username,password);
         if(ans==null)
         System.out.println("error");
         else
         {
-            MainParham.sql.deleteFromUser(ans.id);
+            Main.sql.deleteFromUser(ans.id);
         }
     }
 

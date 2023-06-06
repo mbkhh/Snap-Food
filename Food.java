@@ -20,8 +20,15 @@ public class Food {
         Food test = new Food();
         test.id = id;
         test.name = "ffsss";
+        test.restaurantId = 2;
         test.price = 1000;
         test.isActive = true;
         return test;
+    }
+    public int[] getPrice(int id)
+    {
+        // TODO : connect this part to database and calculate discount {final price , discount amount in rial}
+        int[] a= {1000 , 100};
+        return a;
     }
 }

@@ -81,6 +81,16 @@ public class Sql {
             System.out.println("Could not Insert data to database : InsertToCart : "+e.getMessage());
         }
     }
+    public void InsertToAddress(int userId ,int restaurantId ,int node )
+    {
+        try {
+            Statement stm = connection.createStatement();
+            stm.executeUpdate( "Insert INTO Address (userId , restaurantId , node) VALUES ('"+userId+"' , '"+restaurantId+"' , '"+node+"' );" );
+            stm.close();
+        } catch (SQLException e) {
+            System.out.println("Could not Insert data to database : InsertToAddress : "+e.getMessage());
+        }
+    }
     public void InsertToMap(int node1 ,int node2 ,int weight)
     {
         try {
@@ -226,6 +236,16 @@ public class Sql {
             System.out.println("Could not Insert data to database : InsertToUser : "+e.getMessage());
         }
     }
+    void InsertToOrder(int userId, int restaurantId, int deliveryId, String path, int pathLength,int estimatedTime, Long addTime, int totalprice, int totalDiscount, OrderStatus status, String discription)
+    {
+        try {
+            Statement stm =  connection.createStatement();
+            stm.executeUpdate( "Insert INTO Orders (userId ,restaurantId ,deliveryId,path , pathLenght ,estimatedTotalTime ,addTime ,totalPrice ,totalDiscount ,status ,discription) VALUES ('"+userId+"' ,'"+restaurantId+"' ,'"+deliveryId+"','"+path+"' , '"+pathLength+"' ,'"+estimatedTime+"' ,'"+addTime+"' ,'"+totalprice+"' ,'"+totalDiscount+"' ,'"+status+"' ,'"+discription+"');" );
+            stm.close();
+        } catch (SQLException e) {
+            System.out.println("Could not Insert data to database : InsertToOrder : "+e.getMessage());
+        }
+    }
 
     User getUser (int id)
     {  
@@ -250,6 +270,27 @@ public class Sql {
             return ans;
         } catch (SQLException e) {
             System.out.println("Could not select data from database : getUser : "+e.getMessage());
+            return ans;
+        }
+        
+    }
+    Address getAddress (int userId , int restaurantId)
+    {  
+        Address ans = null;
+        try {
+            Statement stm =  connection.createStatement();
+            ResultSet rs = stm.executeQuery( "SELECT * FROM Address Where `userId` = "+userId+" AND `restaurantId` = "+restaurantId+";");            
+            while ( rs.next() ) {
+               int id = rs.getInt("id");
+               int node = rs.getInt("node");
+            
+               ans = new Address(id, userId , restaurantId , node);  
+            }
+            rs.close();
+            stm.close();
+            return ans;
+        } catch (SQLException e) {
+            System.out.println("Could not select data from database : getAddress : "+e.getMessage());
             return ans;
         }
         

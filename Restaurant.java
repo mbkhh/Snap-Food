@@ -6,4 +6,12 @@ public class Restaurant {
     public String type;
     public int postCost; //we have a unique post cost of a restaurant for any address??
 
+    public static Restaurant getRestuarantById(int id)
+    {
+        // for Test change it when ready
+        Restaurant test = new Restaurant();
+        test.id = id;
+        test.name = "ffsss";
+        return test;
+    }
 }

@@ -20,19 +20,6 @@ public class Cart
         this.cost = cost;
         this.count = count;
     }
-    public static Boolean addToCart(Food food, User user)
-    {
-        ArrayList<Cart> te = Main.sql.getCart(food.id, user.id, 0) ;
-        if(te.size() == 0)
-        {
-            Main.sql.InsertToCart(food.id, user.id, 0, food.price, 1);
-        }
-        else
-        {
-            Main.sql.EditCart(te.get(0).id, te.get(0).food.price, te.get(0).count+1);
-        }
-        return true;
-    }
     public static boolean removeFromCart(Food food, User user)
     {
         ArrayList<Cart> te = Main.sql.getCart(food.id, user.id, 0) ;
@@ -68,12 +55,21 @@ public class Cart
         }
         else
         {
-            if(addToCart(food, user) == true)
+            ArrayList<Cart> te = Main.sql.getCart(food.id, user.id, 0) ;
+            if(te.size() == 0)
             {
+                Main.sql.InsertToCart(food.id, user.id, 0, food.price, 1);
                 System.out.println("Food added to cart successfully");
             }
+            else if(te.get(0).food.restaurantId != food.restaurantId)
+            {
+                System.out.println("You can't add this food to your cart because it's impossible to order from two different restaurant with one order.");
+            }
             else
-                System.out.println("there is some error in adding food Code:51");
+            {
+                Main.sql.EditCart(te.get(0).id, te.get(0).food.price, te.get(0).count+1);
+                System.out.println("Food added to cart successfully");
+            }
         }
     }
     public static void printCart(ArrayList<Cart> cart)
