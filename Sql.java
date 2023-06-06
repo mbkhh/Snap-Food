@@ -11,8 +11,7 @@ public class Sql {
             System.out.println("Database connection error : " + e.getMessage());
         }
     }
-    void Select_test()
-    {
+    void Select_test() {
         try {
             Statement stm = connection.createStatement();
             ResultSet rs = stm.executeQuery( "SELECT * FROM User;" );
@@ -41,8 +40,7 @@ public class Sql {
             System.out.println("Could not select data from database : Select_test : "+e.getMessage());
         }
     }
-    void Insert_test(String name , String fullname)
-    {
+    void Insert_test(String name , String fullname) {
         try {
             Statement stm = connection.createStatement();
             stm.executeUpdate( "Insert INTO User (name , fullname) VALUES ('"+name+"' , '"+fullname+"');" );
@@ -51,8 +49,7 @@ public class Sql {
             System.out.println("Could not Insert data to database : Insert_test : "+e.getMessage());
         }
     }
-    void Update_test(int ID , String name , String fullname)
-    {
+    void Update_test(int ID , String name , String fullname) {
         try {
             Statement stm = connection.createStatement();
             stm.executeUpdate( "UPDATE User SET `name`='"+name+"' , `fullname`='"+fullname+"' WHERE `ID` = "+ID+";" );
@@ -61,8 +58,7 @@ public class Sql {
             System.out.println("Could not update data to database : update test : "+e.getMessage());
         }
     }
-    void delete_test(int ID )
-    {
+    void delete_test(int ID ) {
         try {
             Statement stm = connection.createStatement();
             stm.executeUpdate( "DELETE FROM User  WHERE `ID` = "+ID+";" );
@@ -71,6 +67,15 @@ public class Sql {
             System.out.println("Could not delete data to database : delete test : "+e.getMessage());
         }
     }
+    /**
+     * *
+     * *
+     * *
+     * M.Bagher's functions
+     * *
+     * *
+     * *
+     */
     public void InsertToCart(int foodId ,int userId ,int orderId ,int cost ,int count)
     {
         try {
@@ -198,7 +203,7 @@ public class Sql {
             System.out.println("Could not select data from database : getCart : "+e.getMessage());
             return ans;
         }
-        
+
     }
     public ArrayList<Cart> getCart(int UserId , int OrderId)
     {
@@ -224,7 +229,16 @@ public class Sql {
             return ans;
         }
     }
-        
+
+    /**
+     * *
+     * *
+     * *
+     * Parham's functions
+     * *
+     * *
+     * *
+     */
 
     void InsertToUser(String username , String password , String name ,  String securityQuestion, String securityAnswer, int type , int balance)
     {
@@ -345,11 +359,7 @@ public class Sql {
             System.out.println("Could not select data from database : getUser : "+e.getMessage());
             return ans;
         }
-        
     }
-
-
-
     void deleteFromUser(int id )
     {
         try {
@@ -358,6 +368,37 @@ public class Sql {
             stm.close();
         } catch (SQLException e) {
             System.out.println("Could not delete data to database : deleteFromUser : "+e.getMessage());
+        }
+    }
+
+    /**
+     * *
+     * *
+     * *
+     * Taha's functions
+     * *
+     * *
+     * *
+     */
+    public ArrayList<Restaurant> getRestaurant(int idKey, String whichId) {
+        ArrayList<Restaurant> restaurants = new ArrayList<>();
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM Restaurant Where " + whichId + " = " + idKey + " ORDER BY name, id;");
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                User owner = User.getUserById(resultSet.getInt("ownerId"));
+                ArrayList<FoodType> types = Functions.stringToEnum(resultSet.getString("type"));
+                int postCost = resultSet.getInt("postCost");
+                restaurants.add(new Restaurant(id, owner, name, types, postCost));
+            }
+            resultSet.close();
+            statement.close();
+            return restaurants;
+        } catch (SQLException e) {
+            System.out.println("Could not select data from database : Select_test : "+e.getMessage());
+            return restaurants;
         }
     }
 }

@@ -1,11 +1,11 @@
 public class Vertex {
-    int pathLenght;
+    int pathLength;
     int nodeCount;
     int[] nodes;
     int nodeName;
     Vertex(Vertex ver,int weight,int node)
     {
-        pathLenght = ver.pathLenght + weight;
+        pathLength = ver.pathLength + weight;
         nodeCount = ver.nodeCount + 1;
         nodes = new int[nodeCount];
         for (int i = 0; i < ver.nodes.length; i++)
@@ -15,7 +15,7 @@ public class Vertex {
     }
     Vertex(int node)
     {
-        pathLenght = 0;
+        pathLength = 0;
         nodeCount = 1;
         nodes = new int[1];
         nodes[0] = node;

@@ -1,5 +1,7 @@
-public class functions
-{
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class Functions {
     public static int parseInt(String i, String part)
     {
         int ans = 0;
@@ -19,5 +21,14 @@ public class functions
             System.out.println("Bad Input. in parsing in: ");
         }
         return ans;
+    }
+    public static ArrayList<FoodType> stringToEnum(String foodTypes)
+    {
+        ArrayList<String> foodType = (ArrayList<String>) Arrays.asList(foodTypes.split(", *"));
+        ArrayList<FoodType> types = new ArrayList<>();
+        for (String type : foodType) {
+            types.add(FoodType.stringToFoodType(type));
+        }
+        return types;
     }
 }
