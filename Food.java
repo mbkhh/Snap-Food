@@ -1,7 +1,4 @@
 import java.util.ArrayList;
-/**
- * User
- */
 public class Food {
     public int id;
     public Restaurant restaurant;
@@ -12,18 +9,14 @@ public class Food {
     public int discountTime;
     public boolean isActive;
     public static ArrayList<Food> foods = new ArrayList<Food>();
-    public Food (int id, int restaurantId, String name, String price, int discountPercent, int discountTime)
-    {
+    public Food (int id, int restaurantId, String name, String price, int discountPercent, int discountTime) {
         this.id = id;
         this.name = name;
+    }
+    public Food() {
 
     }
-    public Food()
-    {
-        
-    }
-    public static Food getFoodById(int id)
-    {
+    public static Food getFoodById(int id) {
         // for Test change it when ready
         Food test = new Food();
         test.id = id;
@@ -32,5 +25,10 @@ public class Food {
         test.isActive = true;
         return test;
     }
-
+    public double[] getPrice(int i) {
+        double[] prices = new double[2];
+        prices[0] = 1100;
+        prices[1] = 10;
+        return prices;
+    }
 }

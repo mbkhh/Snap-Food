@@ -5,11 +5,10 @@ import java.util.Collections;
 import java.util.Scanner;
 
 public class Map {
-    static void InsertMapFromFile()
-    {
+    static void InsertMapFromFile() {
         try {
             Main.sql.deleteMap();
-            File myObj = new File("graph.txt");
+            File myObj = new File("D:\\Desktop\\Programing\\untitled\\graph.txt");
             Scanner myReader = new Scanner(myObj);
             String data = myReader.nextLine();
             while (myReader.hasNextLine()) {
@@ -20,19 +19,18 @@ public class Map {
                 Main.sql.InsertToMap(node1, node2, weight);
             }
             myReader.close();
-          } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
-          }
+        }
     }
-    static Vertex findPath(int node1, int node2)
-    {
+    static Vertex findPath(int node1, int node2) {
         ArrayList<Branch> all = Main.sql.getAllBranch();
         //System.out.println("search start!");
         ArrayList<Integer> indexed = new ArrayList<Integer>();
         ArrayList<Vertex> list = new ArrayList<Vertex>();
         list.add(new Vertex(node1));
-        
+
         while (list.get(0).nodeName != node2) {
             //System.out.println("on vertex: "+list.get(0).nodeName + "   " + list.get(0).pathLenght);
             //ArrayList<Branch> connected = Main.sql.getConnectedBranch(list.get(0).nodeName);
@@ -50,8 +48,8 @@ public class Map {
                         if(list.get(0).pathLength + connected.get(i).weight > list.get(index).pathLength)
                             list.set(index, new Vertex(list.get(0),connected.get(i).weight, connected.get(i).node2));
                     }
-                    
-                }                   
+
+                }
                 else if(connected.get(i).node2 == list.get(0).nodeName && !indexed.contains(connected.get(i).node1))
                 {
                     int index = searchInList(connected.get(i).node1, list);
@@ -61,7 +59,7 @@ public class Map {
                         if(list.get(0).pathLength + connected.get(i).weight > list.get(index).pathLength)
                             list.set(index, new Vertex(list.get(0),connected.get(i).weight, connected.get(i).node1));
                     }
-                }                    
+                }
             }
             indexed.add(list.get(0).nodeName);
             list.remove(0);
@@ -83,16 +81,14 @@ public class Map {
         //System.out.println("path size:"+list.get(0).pathLenght);
         return list.get(0);
     }
-    static int searchInList(int node , ArrayList<Vertex> list)
-    {
+    static int searchInList(int node , ArrayList<Vertex> list) {
         for (int i = 0; i < list.size(); i++) {
             if (node == list.get(i).nodeName)
                 return i;
         }
         return -1;
     }
-    static ArrayList<Branch> getConnectedBranches(int node , ArrayList<Branch> all)
-    {
+    static ArrayList<Branch> getConnectedBranches(int node , ArrayList<Branch> all) {
         ArrayList<Branch> ans = new ArrayList<Branch>();
         for (int i = 0; i < all.size(); i++) {
             if(all.get(i).node1 == node || all.get(i).node2 == node)

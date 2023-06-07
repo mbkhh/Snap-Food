@@ -2,8 +2,7 @@ import java.util.Scanner;
 
 public class TahaMain {
     public static Sql sql;
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         sql = new Sql();
         Scanner sc = new Scanner(System.in);
         String command;
@@ -20,28 +19,22 @@ public class TahaMain {
         do{
             command  = sc.nextLine();
 
-            if(command.matches("(?i)add\\s+food\\s+with\\s+id\\s+\\d+\\s+to\\s+cart\\s*"))
-            {
+            if(command.matches("(?i)add\\s+food\\s+with\\s+id\\s+\\d+\\s+to\\s+cart\\s*")) {
                 if(User.currentUser == null)
                     continue;
                 Cart.addToCart(Functions.parseInt(command.split(" ")[4]), User.currentUser);
             }
-            else if(command.matches("(?i)remove\\s+food\\s+with\\s+id\\s+\\d+\\s+from\\s+cart\\s*"))
-            {
+            else if(command.matches("(?i)remove\\s+food\\s+with\\s+id\\s+\\d+\\s+from\\s+cart\\s*")) {
                 if(User.currentUser == null)
                     continue;
                 Cart.removeFromCart(Functions.parseInt(command.split(" ")[4]),User.currentUser);
             }
-            else if(command.matches("(?i)display\\s+cart\\s+status\\s*"))
-            {
+            else if(command.matches("(?i)display\\s+cart\\s+status\\s*")) {
                 if(User.currentUser == null)
                     continue;
                 Cart.printCart(User.currentUser);
             }
-
-
         }while (!command.equals("end"));
-
         sc.close();
         // sql.Select_test();
         //sql.Insert_test("akbar", "akbari");

@@ -14,11 +14,10 @@ public class Order {
     public OrderStatus status;
     public String discription;
 
-    Order(int id ,int userId ,int restaurantId ,int deliveryId ,String path , int pathLength , int estimatedTime ,long addTime ,int totalprice ,int totalDiscount ,String status ,String discription)
-    {
+    Order(int id ,int userId ,int restaurantId ,int deliveryId ,String path , int pathLength , int estimatedTime ,long addTime ,int totalprice ,int totalDiscount ,String status ,String discription) {
         this.id = id;
         this.user = User.getUserById(userId);
-        this.restaurant = Restaurant.getRestuarantById(restaurantId);
+        this.restaurant = Restaurant.getRestaurant(restaurantId);
         if(deliveryId == 0)
             this.delivery = null;
         else
@@ -32,13 +31,11 @@ public class Order {
         this.status = OrderStatus.valueOf(status);
         this.discription = discription;
     }
-
-    static void confirmOrder(User user)
-    {
+    static void confirmOrder(User user) {
         ArrayList<Cart> te = Main.sql.getCart(user.id, 0) ;
         if(te.size() == 0)
             System.out.println("there is nothing in your cart!");
-        else{
+        else {
             int totalPrice = 0;
             int totalDiscount = 0;
             for (int i = 0; i < te.size(); i++) {
@@ -47,16 +44,13 @@ public class Order {
             }
             if(totalPrice > user.balance)
                 System.out.println("You do not have enough credit");
-            else
-            {
+            else {
                 System.out.println("Discription: (if nothing just press enter)");
                 String discription = Main.sc.nextLine();
                 Address resturantAddress = Address.getAddress(0, te.get(0).food.restaurant.id);
                 Address userAddress = Address.getAddress(user.id, 0);
-                if(userAddress == null)
-                {
-                    do
-                    {
+                if(userAddress == null) {
+                    do {
                         System.out.println("You have no registered Address please enter your address:");
                         String node = Main.sc.nextLine();
                         node = node.trim();
@@ -65,13 +59,11 @@ public class Order {
                             int n = Functions.parseInt(node);
                             Address.addAddress(user.id, 0, n);
                         }
-                    }while(Address.getAddress(user.id, 0) == null);
+                    } while(Address.getAddress(user.id, 0) == null);
                     userAddress = Address.getAddress(user.id, 0);
                 }
                 System.out.println(System.currentTimeMillis());
-
                 Vertex x = Map.findPath(resturantAddress.node, userAddress.node);
-                
                 Main.sql.InsertToOrder(user.id, te.get(0).food.restaurant.id, 0, x.getPath(), x.pathLength, x.pathLength*100, System.currentTimeMillis(), totalPrice, totalDiscount, OrderStatus.Registered, discription);
             }
         }

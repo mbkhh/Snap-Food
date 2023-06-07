@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-
 public class Comment {
     public int id;
     public int foodId = 0;

@@ -1,7 +1,7 @@
 public enum OrderStatus {
     Registered,
     Accepted,
-    Sended,
+    Sent,
     Completed,
     Canceled
 }

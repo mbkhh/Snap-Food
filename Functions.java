@@ -2,8 +2,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Functions {
-    public static int parseInt(String i, String part)
-    {
+    public static int parseInt(String i, String part) {
         int ans = 0;
         try {
             ans = Integer.parseInt(i);
@@ -12,8 +11,7 @@ public class Functions {
         }
         return ans;
     }
-    public static int parseInt(String i)
-    {
+    public static int parseInt(String i) {
         int ans = 0;
         try {
             ans = Integer.parseInt(i);
@@ -22,8 +20,7 @@ public class Functions {
         }
         return ans;
     }
-    public static ArrayList<FoodType> stringToEnum(String foodTypes)
-    {
+    public static ArrayList<FoodType> stringToEnum(String foodTypes) {
         ArrayList<String> foodType = (ArrayList<String>) Arrays.asList(foodTypes.split(", *"));
         ArrayList<FoodType> types = new ArrayList<>();
         for (String type : foodType) {
