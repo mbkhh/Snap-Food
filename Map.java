@@ -8,7 +8,7 @@ public class Map {
     static void InsertMapFromFile() {
         try {
             Main.sql.deleteMap();
-            File myObj = new File("D:\\Desktop\\Programing\\untitled\\graph.txt");
+            File myObj = new File("graph.txt");
             Scanner myReader = new Scanner(myObj);
             String data = myReader.nextLine();
             while (myReader.hasNextLine()) {

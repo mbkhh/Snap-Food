@@ -5,8 +5,14 @@ public class Address {
     int node;
     Address(int id, int userId , int restaurantId, int node) {
         this.id = id;
-        this.user = User.getUserById(userId);
-        this.restaurant = Restaurant.getRestaurant(restaurantId);
+        if(userId != 0)
+            this.user = User.getUserById(userId);
+        else
+            this.user = null;
+        if(restaurantId != 0)
+            this.restaurant = Restaurant.getRestaurant(restaurantId);
+        else
+            this.restaurant =null;
         this.node = node;
     }
     static Address getAddress(int userId ,int restaurantId) {

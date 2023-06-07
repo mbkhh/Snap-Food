@@ -22,6 +22,7 @@ public class Food {
         test.id = id;
         test.name = "ffsss";
         test.price = 1000;
+        test.restaurant = Restaurant.getRestaurant(1);
         test.isActive = true;
         return test;
     }

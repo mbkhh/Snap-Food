@@ -57,7 +57,7 @@ public class User {
         }
     }
     static User getUserById(int id) {
-        User ans = TahaMain.sql.getUser(id);
+        User ans = Main.sql.getUser(id);
         return ans;
     }
     static void loginUser (String username , String password) {

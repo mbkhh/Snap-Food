@@ -13,7 +13,7 @@ public class Main {
 
         ////////////////////
         //Map.InsertMapFromFile();
-        Map.findPath(127, 414);
+        //Map.findPath(127, 414);
 
         ArrayList<String> info = new ArrayList<String>();
 

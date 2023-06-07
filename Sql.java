@@ -5,7 +5,7 @@ public class Sql {
     public Sql() {
         try {
             Class.forName("org.sqlite.JDBC");
-            connection = DriverManager.getConnection("jdbc:sqlite:D:\\Desktop\\Programing\\untitled\\Databases\\test.db");
+            connection = DriverManager.getConnection("jdbc:sqlite:Databases\\test.db");
             //connection.setAutoCommit(false);
         } catch (Exception e) {
             System.out.println("Database connection error : " + e.getMessage());
@@ -242,7 +242,7 @@ public class Sql {
     void InsertToOrder(int userId, int restaurantId, int deliveryId, String path, int pathLength,int estimatedTime, Long addTime, int totalprice, int totalDiscount, OrderStatus status, String discription) {
         try {
             Statement stm =  connection.createStatement();
-            stm.executeUpdate( "Insert INTO Orders (userId ,restaurantId ,deliveryId,path , pathLenght ,estimatedTotalTime ,addTime ,totalPrice ,totalDiscount ,status ,discription) VALUES ('"+userId+"' ,'"+restaurantId+"' ,'"+deliveryId+"','"+path+"' , '"+pathLength+"' ,'"+estimatedTime+"' ,'"+addTime+"' ,'"+totalprice+"' ,'"+totalDiscount+"' ,'"+status+"' ,'"+discription+"');" );
+            stm.executeUpdate( "Insert INTO Orders (userId ,restaurantId ,deliveryId,path , pathLength ,estimatedTotalTime ,addTime ,totalPrice ,totalDiscount ,status ,discription) VALUES ('"+userId+"' ,'"+restaurantId+"' ,'"+deliveryId+"','"+path+"' , '"+pathLength+"' ,'"+estimatedTime+"' ,'"+addTime+"' ,'"+totalprice+"' ,'"+totalDiscount+"' ,'"+status+"' ,'"+discription+"');" );
             stm.close();
         } catch (SQLException e) {
             System.out.println("Could not Insert data to database : InsertToOrder : "+e.getMessage());
@@ -283,7 +283,6 @@ public class Sql {
             while ( rs.next() ) {
                 int id = rs.getInt("id");
                 int node = rs.getInt("node");
-
                 ans = new Address(id, userId , restaurantId , node);
             }
             rs.close();
