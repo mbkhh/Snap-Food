@@ -62,9 +62,11 @@ public class Order {
                     } while(Address.getAddress(user.id, 0) == null);
                     userAddress = Address.getAddress(user.id, 0);
                 }
-                System.out.println(System.currentTimeMillis());
+                //System.out.println(System.currentTimeMillis());
                 Vertex x = Map.findPath(resturantAddress.node, userAddress.node);
                 Main.sql.InsertToOrder(user.id, te.get(0).food.restaurant.id, 0, x.getPath(), x.pathLength, x.pathLength*100, System.currentTimeMillis(), totalPrice, totalDiscount, OrderStatus.Registered, discription);
+                Main.sql.finalizeCart(user.id, Main.sql.getOrderLastId());
+                //TODO change user balance
             }
         }
     }
