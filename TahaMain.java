@@ -11,7 +11,7 @@ public class TahaMain {
         // add your variable here
 
         ////////////////////
-        Restaurant restaurant = new Restaurant();
+        //Restaurant restaurant = new Restaurant();
 
 //        do{
 //            command  = sc.nextLine();

@@ -39,9 +39,18 @@ public class Restaurant {
             System.out.format(leftAlignFormat,restaurants.get(i).id,restaurants.get(i).name,restaurants.get(i).typesToString(),restaurants.get(i).postCost);
         System.out.println(dashedLine);
     }
-    public int getRestaurantAddress() {
-        ///TODO for Bagher: fill this part
-        return 0;
+    
+    public static Restaurant getRestaurantByOwnerId(int UserId)
+    {
+        ///TODO For taha: a function that get restaurant by owner id;
+        ArrayList<FoodType> foods = new ArrayList<FoodType>();
+        foods.add(FoodType.IRANIAN);
+        Restaurant t =new Restaurant(1, User.currentUser, "kkk", foods, 0);
+        return t;
+    }
+
+    public Address getRestaurantAddress() {
+        return Main.sql.getAddress(0 , id);
     }
     public void editRestaurantAddress() {
 

@@ -1,3 +1,6 @@
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.ArrayList;
 
 public class Order {
@@ -30,6 +33,89 @@ public class Order {
         this.totalDiscount = totalDiscount;
         this.status = OrderStatus.valueOf(status);
         this.discription = discription;
+    }
+    static void printOrders(ArrayList<Order> orders)
+    {
+        String leftAlignFormat = "| %-5d | %-25s | %-11d | %-10d | %-10s |%n";
+        String leftAlignHeaderFormat = "| %-5s | %-25s | %-11s | %-10s | %-10s |%n";
+        System.out.println("-----------------------------------------------------------------------------");
+        System.out.format(leftAlignHeaderFormat,"Id","Add time","total Price","Discount","Status");
+        System.out.println("-----------------------------------------------------------------------------");
+        for (int i = 0; i < orders.size(); i++) {
+            // System.out.println(cart.get(i).food.name + "\t" +  cart.get(i).cost + "\t" +  cart.get(i).count + "\t" +  "0" + "\t" +  cart.get(i).cost*cart.get(i).count);
+            //double[] prices = cart.get(i).food.getPrice(1);
+            DateFormat f = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            Date date = new Date(orders.get(i).addTime);
+            System.out.format(leftAlignFormat,orders.get(i).id , f.format(date) , orders.get(i).totalprice , orders.get(i).totalDiscount , orders.get(i).status);
+        }
+        System.out.println("-----------------------------------------------------------------------------");
+    }
+    static void printOrder(User user, int orderId)
+    {
+        ArrayList<Order> te = Main.sql.getAllOrderById(orderId ,user.id);
+        if(te.size() == 0)
+            System.out.println("There is no order registered with this ID for you");
+        else
+        {
+            System.out.println("\nOrder info:");
+            printOrders(te);
+            System.out.println();
+            if(!te.get(0).discription.isEmpty()) System.out.println("discription: "+te.get(0).discription);
+            
+            System.out.println("Restaurant name: "+te.get(0).restaurant.name);
+            System.out.println("\nFoods info:");
+            ArrayList<Cart> cart = Main.sql.getCart(user.id, orderId);
+            Cart.printCart(cart);
+            System.out.println();
+
+        }
+    }
+    static void showEstimatedTimeOfOrder(User user)
+    {
+        ArrayList<Order> te = Main.sql.getAllOrderOfUser(user.id);
+        if(te.size() == 0)
+            System.out.println("There is no active Order");
+        else
+        {
+            if(te.get(te.size()-1).status != OrderStatus.Canceled ||te.get(te.size()-1).status != OrderStatus.Completed )
+            {
+                System.out.println("Estimated total time: " + te.get(te.size()-1).estimatedTime);
+            }
+            else
+                System.out.println("There is no active Order");
+        }
+
+    }
+    static void printOrderHistory(User user)
+    {
+        ArrayList<Order> te = Main.sql.getAllOrderOfUser(user.id);
+        if(te.size() == 0)
+            System.out.println("You don't have any registered ORDER!");
+        else
+            printOrders(te);
+    }
+    static void getRestaurantOpenOrder(User user)
+    {
+        ArrayList<Order> te = Main.sql.getRestaurantOpenOrder(Restaurant.getRestaurantByOwnerId(user.id).id);
+        if(te.size() == 0)
+            System.out.println("No order yet");
+        else
+        {
+            String leftAlignFormat = "| %-5d | %-25s | %-10s | %-25s | %-11d | %-10d | %-10s |%n";
+            String leftAlignHeaderFormat = "| %-5s | %-25s | %-10s | %-25s | %-11s | %-10s | %-10s |%n";
+            System.out.println("----------------------------------------------------------------------------------------------------------------------");
+            System.out.format(leftAlignHeaderFormat,"Id","User Name" , "Address","Add time","total Price","Discount","Status");
+            System.out.println("----------------------------------------------------------------------------------------------------------------------");
+            for (int i = 0; i < te.size(); i++) {
+                // System.out.println(cart.get(i).food.name + "\t" +  cart.get(i).cost + "\t" +  cart.get(i).count + "\t" +  "0" + "\t" +  cart.get(i).cost*cart.get(i).count);
+                //double[] prices = cart.get(i).food.getPrice(1);
+                DateFormat f = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                Date date = new Date(te.get(i).addTime);
+                Address t = Main.sql.getAddress(te.get(i).user.id, 0);
+                System.out.format(leftAlignFormat,te.get(i).id,te.get(i).user.name ,t.node, f.format(date) , te.get(i).totalprice , te.get(i).totalDiscount , te.get(i).status);
+            }
+            System.out.println("----------------------------------------------------------------------------------------------------------------------");
+        }
     }
     static void confirmOrder(User user) {
         ArrayList<Cart> te = Main.sql.getCart(user.id, 0) ;
