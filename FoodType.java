@@ -1,7 +1,7 @@
 public enum FoodType {
     IRANIAN("IRANIAN"),
     KEBAB("KEBAB"),
-    FAST_FOOD("FAST FOOD"),
+    FAST_FOOD("FAST_FOOD"),
     /////////////////////////////////
     // TODO INSERT YOUR TYPES OF FOOD
     /////////////////////////////////

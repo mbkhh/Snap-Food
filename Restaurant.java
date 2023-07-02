@@ -16,6 +16,9 @@ public class Restaurant {
         this.types = types;
         this.postCost = postCost;
     }
+    public void addRestaurant() {
+
+    }
     public String typesToString() {
         String foodType = types.get(0).getType();
         for (int i = 1; i < types.size(); i++) {
@@ -37,7 +40,7 @@ public class Restaurant {
         System.out.println(dashedLine);
     }
     public int getRestaurantAddress() {
-        //TODO for Bagher: fill this part
+        ///TODO for Bagher: fill this part
         return 0;
     }
     public void editRestaurantAddress() {

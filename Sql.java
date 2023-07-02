@@ -5,8 +5,8 @@ public class Sql {
     public Sql() {
         try {
             Class.forName("org.sqlite.JDBC");
-//            connection = DriverManager.getConnection("jdbc:sqlite:D:\\Desktop\\Programing\\Snap-Food\\Databases\\test.db");
-            connection = DriverManager.getConnection("jdbc:sqlite:Databases\\test.db");
+            connection = DriverManager.getConnection("jdbc:sqlite:D:\\Desktop\\Programing\\Snap-Food\\Databases\\test.db");
+//            connection = DriverManager.getConnection("jdbc:sqlite:Databases\\test.db");
 //            connection.setAutoCommit(false);
         } catch (Exception e) {
             System.out.println("Database connection error : " + e.getMessage());
@@ -381,7 +381,25 @@ public class Sql {
      * *
      * *
      * *
-     */
+     **/
+    public void insertToRestaurant(Restaurant restaurant) {
+        try {
+            Statement statement = connection.createStatement();
+            statement.executeUpdate("Insert INTO Restaurant (ownerId, name, type, postCost) VALUES ('" + restaurant.owner.id + "', '" + restaurant.name + "', '" + restaurant.typesToString() + "', '" + restaurant.postCost + "');");
+            statement.close();
+        } catch (SQLException e) {
+            System.out.println("Could not Insert data to database : insertToRestaurant : " + e.getMessage());
+        }
+    }
+    public void editRestaurant(int id, int ownerId, String name,  String type, int postCost) {
+        try {
+            Statement statement = connection.createStatement();
+            statement.executeUpdate( "UPDATE Reastaurant SET ownerId = " + ownerId + ", name = '" + name + "', type = '" + type + "', postCost = " + postCost + " WHERE id = " + id + ";" );
+            statement.close();
+        } catch (SQLException e) {
+            System.out.println("Could not update data to database : editRestaurant : "+e.getMessage());
+        }
+    }
     public ArrayList<Restaurant> getRestaurant(int idKey, String whichId) {
         ArrayList<Restaurant> restaurants = new ArrayList<>();
         try {
@@ -399,8 +417,9 @@ public class Sql {
             statement.close();
             return restaurants;
         } catch (SQLException e) {
-            System.out.println("Could not select data from database : Select_test : "+e.getMessage());
+            System.out.println("Could not select data from database : getRestaurant : "+e.getMessage());
             return restaurants;
         }
     }
+
 }

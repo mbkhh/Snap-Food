@@ -11,30 +11,26 @@ public class TahaMain {
         // add your variable here
 
         ////////////////////
+        Restaurant restaurant = new Restaurant();
 
-
-        //test
-        User.currentUser = User.getUserById(1);
-
-        do{
-            command  = sc.nextLine();
-
-            if(command.matches("(?i)add\\s+food\\s+with\\s+id\\s+\\d+\\s+to\\s+cart\\s*")) {
-                if(User.currentUser == null)
-                    continue;
-                Cart.addToCart(Functions.parseInt(command.split(" ")[4]), User.currentUser);
-            }
-            else if(command.matches("(?i)remove\\s+food\\s+with\\s+id\\s+\\d+\\s+from\\s+cart\\s*")) {
-                if(User.currentUser == null)
-                    continue;
-                Cart.removeFromCart(Functions.parseInt(command.split(" ")[4]),User.currentUser);
-            }
-            else if(command.matches("(?i)display\\s+cart\\s+status\\s*")) {
-                if(User.currentUser == null)
-                    continue;
-                Cart.printCart(User.currentUser);
-            }
-        }while (!command.equals("end"));
+//        do{
+//            command  = sc.nextLine();
+//            if(command.matches("(?i)add\\s+food\\s+with\\s+id\\s+\\d+\\s+to\\s+cart\\s*")) {
+//                if(User.currentUser == null)
+//                    continue;
+//                Cart.addToCart(Functions.parseInt(command.split(" ")[4]), User.currentUser);
+//            }
+//            else if(command.matches("(?i)remove\\s+food\\s+with\\s+id\\s+\\d+\\s+from\\s+cart\\s*")) {
+//                if(User.currentUser == null)
+//                    continue;
+//                Cart.removeFromCart(Functions.parseInt(command.split(" ")[4]),User.currentUser);
+//            }
+//            else if(command.matches("(?i)display\\s+cart\\s+status\\s*")) {
+//                if(User.currentUser == null)
+//                    continue;
+//                Cart.printCart(User.currentUser);
+//            }
+//        } while (!command.equals("end"));
         sc.close();
         // sql.Select_test();
         //sql.Insert_test("akbar", "akbari");
