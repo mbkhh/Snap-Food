@@ -16,8 +16,12 @@ public class Restaurant {
         this.types = types;
         this.postCost = postCost;
     }
-    public void addRestaurant() {
-
+    public static boolean addRestaurant(int ownerId, String name, int postCost, String type) {
+        if (User.getUserById(ownerId) != null) {
+            Main.sql.insertToRestaurant(ownerId, name, type, postCost);
+            return true;
+        }
+        return false;
     }
     public String typesToString() {
         String foodType = types.get(0).getType();
@@ -30,7 +34,6 @@ public class Restaurant {
         String leftAlignFormat = "| %-5d | %-25s | %-25s | %-10d |%n";
         String leftAlignHeaderFormat = "| %-5s | %-25s | %-25s | %-10s |%n";
         String dashedLine = "--------------------------------------------------------------------------";
-        //TODO what happen if we not have any restaurant?
         System.out.println("Yours restaurant(s):");
         System.out.println(dashedLine);
         System.out.format(leftAlignHeaderFormat,"Id","Name","Types","PostCost");
@@ -39,12 +42,11 @@ public class Restaurant {
             System.out.format(leftAlignFormat,restaurants.get(i).id,restaurants.get(i).name,restaurants.get(i).typesToString(),restaurants.get(i).postCost);
         System.out.println(dashedLine);
     }
-    public int getRestaurantAddress() {
-        ///TODO for Bagher: fill this part
-        return 0;
+    public Address getRestaurantAddress() {
+        return Address.getAddress(-1, id);
     }
-    public void editRestaurantAddress() {
-
+    public void editRestaurantAddress(int node) {
+        Main.sql.editAddress(getRestaurantAddress().id, -1, id, node);
     }
     public static Restaurant getRestaurant(int id) {
         return Main.sql.getRestaurant(id, "id").get(0);
@@ -53,9 +55,10 @@ public class Restaurant {
         ArrayList<Restaurant> restaurants = new ArrayList<>(Main.sql.getRestaurant(ownerId, "ownerId"));
         if (restaurants.size() == 0)
             System.out.println("You don't have any restaurant");
-        else if (restaurants.size() == 1)
-            //TODO must go in that restaurant
-            ;
+        else if (restaurants.size() == 1) {
+            printRestaurant(restaurants);
+            currentRestaurant = restaurants.get(0);
+        }
         else
             printRestaurant(restaurants);
     }

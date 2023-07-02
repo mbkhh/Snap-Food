@@ -21,7 +21,7 @@ public class Functions {
         return ans;
     }
     public static ArrayList<FoodType> stringToEnum(String foodTypes) {
-        String[] foodType =  foodTypes.split(", *");
+        String[] foodType =  foodTypes.split(",");
         ArrayList<FoodType> types = new ArrayList<>();
         for (String type : foodType) {
             types.add(FoodType.stringToFoodType(type));

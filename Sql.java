@@ -273,15 +273,20 @@ public class Sql {
             return ans;
         }
     }
-    /**
-     * *
-     * *
-     * *
-     * Parham's functions
-     * *
-     * *
-     * *
-     */
+    public void editAddress(int id, int userId, int restaurantId, int node) {
+        try {
+            Statement statement = connection.createStatement();
+            statement.executeUpdate( "UPDATE User SET userId = " + userId + ", restaurantId = " + restaurantId + ", node = " + node + " WHERE id = " + id + ";" );
+            statement.close();
+        } catch (SQLException e) {
+            System.out.println("Could not update data to database : editAddress : " + e.getMessage());
+        }
+    }
+
+    /***********************
+     * Parham's functions **
+     * *********************/
+
     void InsertToUser(String username , String password , String name ,  String securityQuestion, String securityAnswer, int type , int balance) {
         try {
             Statement stm =  connection.createStatement();
@@ -382,10 +387,10 @@ public class Sql {
      * *
      * *
      **/
-    public void insertToRestaurant(Restaurant restaurant) {
+    public void insertToRestaurant(int ownerId, String name, String type, int postCost) {
         try {
             Statement statement = connection.createStatement();
-            statement.executeUpdate("Insert INTO Restaurant (ownerId, name, type, postCost) VALUES ('" + restaurant.owner.id + "', '" + restaurant.name + "', '" + restaurant.typesToString() + "', '" + restaurant.postCost + "');");
+            statement.executeUpdate("Insert INTO Restaurant (ownerId, name, type, postCost) VALUES ('" + ownerId + "', '" + name + "', '" + type + "', '" + postCost + "');");
             statement.close();
         } catch (SQLException e) {
             System.out.println("Could not Insert data to database : insertToRestaurant : " + e.getMessage());
@@ -397,7 +402,16 @@ public class Sql {
             statement.executeUpdate( "UPDATE Reastaurant SET ownerId = " + ownerId + ", name = '" + name + "', type = '" + type + "', postCost = " + postCost + " WHERE id = " + id + ";" );
             statement.close();
         } catch (SQLException e) {
-            System.out.println("Could not update data to database : editRestaurant : "+e.getMessage());
+            System.out.println("Could not update data to database : editRestaurant : " + e.getMessage());
+        }
+    }
+    public void deleteFromRestaurant(int id) {
+        try {
+            Statement statement = connection.createStatement();
+            statement.executeUpdate( "DELETE FROM Restaurant WHERE id = " + id + ";" );
+            statement.close();
+        } catch (SQLException e) {
+            System.out.println("Could not delete data to database : deleteFromRestaurant : " + e.getMessage());
         }
     }
     public ArrayList<Restaurant> getRestaurant(int idKey, String whichId) {
@@ -417,7 +431,7 @@ public class Sql {
             statement.close();
             return restaurants;
         } catch (SQLException e) {
-            System.out.println("Could not select data from database : getRestaurant : "+e.getMessage());
+            System.out.println("Could not select data from database : getRestaurant : " + e.getMessage());
             return restaurants;
         }
     }

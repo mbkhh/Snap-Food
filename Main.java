@@ -8,6 +8,7 @@ public class Main {
         sql = new Sql();
         sc = new Scanner(System.in);
         String command;
+        String[] commands;
         ////////////////////
         // add your variable here
 
@@ -19,10 +20,10 @@ public class Main {
 
         //test
         //User.currentUser = User.getUserById(1);
-
         do {
             command  = sc.nextLine();
-
+            command.trim();
+            commands = command.split(" ");
             if(command.matches("(?i)ADD\\s+food\\s+with\\s+id\\s+\\d+\\s+to\\s+cart\\s*")) {
                 if(User.currentUser == null)
                     continue;
@@ -111,6 +112,20 @@ public class Main {
             else if(command.matches("(?i)logout+\\s*") && !User.checkCurrentUser2())
             {
                 User.logoutUser();
+            }
+
+            /////////////////
+            // taha's main //
+            /////////////////
+
+            if (command.matches("add\\s+restaurant\\s+with\\s+owner\\s+id\\s+\\d+\\s+name\\s+\\w+\\s+post\\s+cost\\s+\\d+\\s+typ(e|es)\\s+[\\w,]+")) {
+                if (!Restaurant.addRestaurant(Integer.parseInt(commands[5]), commands[7], Integer.parseInt(commands[10]), commands[12])){
+                    System.out.println("There wasn't a user with this id");
+                } else
+                    System.out.println("the restaurant was successfully added");
+            }
+            else if (command.matches("edit")) {
+
             }
 
         }while (!command.equals("end"));
