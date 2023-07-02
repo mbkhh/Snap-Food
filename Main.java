@@ -1,3 +1,5 @@
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -122,9 +124,33 @@ public class Main {
                 if (!Restaurant.addRestaurant(Integer.parseInt(commands[5]), commands[7], Integer.parseInt(commands[10]), commands[12])){
                     System.out.println("There wasn't a user with this id");
                 } else
-                    System.out.println("the restaurant was successfully added");
+                    System.out.println("The restaurant was successfully added");
             }
-            else if (command.matches("edit")) {
+            else if (command.matches("delete\\s+restaurant\\s+with\\s+id\\s+\\d+")) {
+                if (User.currentUser.id == Restaurant.getRestaurant(Integer.parseInt(commands[4])).id){
+                    if (Restaurant.deleteRestaurant(Integer.parseInt(commands[4])))
+                        System.out.println("successful");
+                    else
+                        System.out.println("there wasn't any restaurant with this id");
+                } else
+                    System.out.println("You don't have an access to delete this restaurant");
+            }
+            else if (command.matches("select\\s+restaurant\\s+with\\s+id\\s+\\d+")) {
+                if (Restaurant.setCurrentRestaurant(Integer.parseInt(commands[4])))
+                    System.out.println("You entered restaurant successfully");
+                else
+                    System.out.println("There wasn't any restaurant with this id");
+            }
+            if (Restaurant.currentRestaurant != null) {
+                if (command.matches("show\\s+restaurant\\s+location"))
+                    System.out.println(Restaurant.currentRestaurant.getRestaurantAddress().node);
+                else if (command.matches("change\\s+restaurant\\s+address\\s+to\\s+node\\s+\\d+"))
+                    if (Restaurant.currentRestaurant.editRestaurantAddress(Integer.parseInt(commands[5])))
+                        System.out.println("Address changed successfully");
+                else if (command.matches("show\\s+food\\s+types\\s+"))
+                    System.out.println(Restaurant.currentRestaurant.typesToString());
+                else if (command.matches("edit\\s+food\\s+types"))
+
 
             }
 

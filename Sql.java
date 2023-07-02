@@ -273,13 +273,15 @@ public class Sql {
             return ans;
         }
     }
-    public void editAddress(int id, int userId, int restaurantId, int node) {
+    public boolean editAddress(int id, int userId, int restaurantId, int node) {
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate( "UPDATE User SET userId = " + userId + ", restaurantId = " + restaurantId + ", node = " + node + " WHERE id = " + id + ";" );
             statement.close();
+            return true;
         } catch (SQLException e) {
             System.out.println("Could not update data to database : editAddress : " + e.getMessage());
+            return false;
         }
     }
 

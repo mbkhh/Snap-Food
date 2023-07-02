@@ -7,7 +7,7 @@ public class Restaurant {
     public User owner;
     public String name;
     public ArrayList<FoodType> types;
-    public int postCost; //we have a unique post cost of a restaurant for any address??
+    public int postCost;
 
     public Restaurant(int id, User owner, String name, ArrayList<FoodType> types, int postCost) {
         this.id = id;
@@ -30,11 +30,11 @@ public class Restaurant {
         }
         return foodType;
     }
-    public static void printRestaurant(ArrayList<Restaurant> restaurants) {
+    public static void printRestaurant(ArrayList<Restaurant> restaurants, String topic) {
         String leftAlignFormat = "| %-5d | %-25s | %-25s | %-10d |%n";
         String leftAlignHeaderFormat = "| %-5s | %-25s | %-25s | %-10s |%n";
         String dashedLine = "--------------------------------------------------------------------------";
-        System.out.println("Yours restaurant(s):");
+        System.out.println(topic);
         System.out.println(dashedLine);
         System.out.format(leftAlignHeaderFormat,"Id","Name","Types","PostCost");
         System.out.println (dashedLine);
@@ -45,8 +45,8 @@ public class Restaurant {
     public Address getRestaurantAddress() {
         return Address.getAddress(-1, id);
     }
-    public void editRestaurantAddress(int node) {
-        Main.sql.editAddress(getRestaurantAddress().id, -1, id, node);
+    public boolean editRestaurantAddress(int node) {
+        return Main.sql.editAddress(getRestaurantAddress().id, -1, id, node);
     }
     public static Restaurant getRestaurant(int id) {
         return Main.sql.getRestaurant(id, "id").get(0);
@@ -56,10 +56,26 @@ public class Restaurant {
         if (restaurants.size() == 0)
             System.out.println("You don't have any restaurant");
         else if (restaurants.size() == 1) {
-            printRestaurant(restaurants);
+            printRestaurant(restaurants, "Yours restaurant:");
             currentRestaurant = restaurants.get(0);
+            System.out.println("You entered your restaurant successfully");
         }
         else
-            printRestaurant(restaurants);
+            printRestaurant(restaurants, "Yours restaurants:");
+    }
+    public static boolean deleteRestaurant(int id) {
+        if (getRestaurant(id) != null) {
+            Main.sql.deleteFromRestaurant(id);
+            return true;
+        }
+        return false;
+    }
+    public static boolean setCurrentRestaurant(int id) {
+        Restaurant restaurant = getRestaurant(id);
+        if (restaurant != null) {
+            currentRestaurant = new Restaurant(id, restaurant.owner, restaurant.name, restaurant.types, restaurant.postCost);
+            return true;
+        }
+        return false;
     }
 }
