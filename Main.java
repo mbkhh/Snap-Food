@@ -3,9 +3,10 @@ import java.util.Scanner;
 
 public class Main {
     public static Sql sql;
+    public static Scanner scanner;
     public static void main(String[] args) {
         sql = new Sql();
-        Scanner scanner = new Scanner(System.in);
+        scanner = new Scanner(System.in);
         String command;
         String[] commands;
         ////////////////////
@@ -33,11 +34,29 @@ public class Main {
                     continue;
                 Cart.removeFromCart(Functions.parseInt(command.split(" ")[4]),User.currentUser);
             }
+            else if(command.matches("(?i)select\\s+order\\s+\\d+\\s*") && !User.checkCurrentUser2())
+            {
+                Order.printOrder(User.currentUser, Functions.parseInt(command.split(" ")[2]));
+            }
+            else if(command.matches("(?i)show\\s+ESTIMATED\\s+DELIVERY\\s+time\\s*") && !User.checkCurrentUser2())
+            {
+                Order.showEstimatedTimeOfOrder(User.currentUser);
+            }
+            else if(command.matches("(?i)access\\s+order\\s+history\\s*") && !User.checkCurrentUser2())
+            {
+                Order.printOrderHistory(User.currentUser);
+            }
             else if(command.matches("(?i)display\\s+cart\\s+status\\s*") && !User.checkCurrentUser2()) {
                 Cart.printCart(User.currentUser);
             }
             else if(command.matches("(?i)confirm\\s+order\\s*") && !User.checkCurrentUser2()) {
                 Order.confirmOrder(User.currentUser);
+            }
+            else if(command.matches("(?i)display\\s+open\\s+orders\\s*") && !User.checkCurrentUser2()) {
+                if(User.currentUser.type==2)
+                {
+                    Order.getRestaurantOpenOrder(User.currentUser);
+                }
             }
             else if(command.matches("(?i)register\\s+new\\s+user\\s*") && !User.checkCurrentUser()) {
 
