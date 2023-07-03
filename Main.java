@@ -94,13 +94,55 @@ public class Main {
             else if(command.matches("(?i)confirm\\s+order\\s*") && !User.checkCurrentUser2()) {
                 Order.confirmOrder(User.currentUser);
             }
+            else if(command.matches("(?i)show\\s+map\\s*") && !User.checkCurrentUser2()) {
+                Map.showMap();
+            }
+            else if(command.matches("(?i)show\\s+Path\\s+\\d+\\s*") && !User.checkCurrentUser2()) {
+                Order.showBestPath(User.currentUser,Functions.parseInt(command.split(" ")[2]) );
+            }
+            else if(command.matches("(?i)show\\s+free\\s+orders\\s*") && !User.checkCurrentUser2()) {
+                if(User.currentUser.type==3)
+                {
+                    Order.showFreeOrders();
+                }
+            }
+            else if(command.matches("(?i)find\\s+best\\s+path\\s+\\d+\\s*") && !User.checkCurrentUser2()) {
+                if(User.currentUser.type==3)
+                {
+                    Order.showBestPathDelivery(User.currentUser,Functions.parseInt(command.split(" ")[3]));
+                }
+            }
+            else if(command.matches("(?i)accept\\s+order\\s+\\d+\\s*") && !User.checkCurrentUser2()) {
+                if(User.currentUser.type==3)
+                {
+                    Order.acceptOrder(User.currentUser, Functions.parseInt(command.split(" ")[2]));
+                }
+            }
+            else if(command.matches("(?i)receive\\s+order\\s+\\d+\\s*") && !User.checkCurrentUser2()) {
+                if(User.currentUser.type==3)
+                {
+                    Order.recieveOrder(User.currentUser, Functions.parseInt(command.split(" ")[2]));
+                }
+            }
+            else if(command.matches("(?i)complete\\s+order\\s+\\d+\\s*") && !User.checkCurrentUser2()) {
+                if(User.currentUser.type==3)
+                {
+                    Order.CompleteOrder(User.currentUser, Functions.parseInt(command.split(" ")[2]));
+                }
+            }
+            else if(command.matches("(?i)accept\\s+order\\s+\\d+\\s*") && !User.checkCurrentUser2()) {
+                if(User.currentUser.type==3)
+                {
+                    Order.acceptOrder(User.currentUser, Functions.parseInt(command.split(" ")[2]));
+                }
+            }
             else if(command.matches("(?i)display\\s+open\\s+orders\\s*") && !User.checkCurrentUser2()) {
                 if(User.currentUser.type==2)
                 {
                     Order.getRestaurantOpenOrder(User.currentUser);
                 }
             }
-            else if(command.matches("(?i)display\\s+all\\s+orders\\s*") && !User.checkCurrentUser2()) {
+            else if(command.matches("(?i)show\\s+orders\\s+history\\s*") && !User.checkCurrentUser2()) {
                 if(User.currentUser.type==2)
                 {
                     Order.getRestaurantAllOrder(User.currentUser);
@@ -159,7 +201,17 @@ public class Main {
                 info = new ArrayList<String>();
                 command  = scanner.nextLine();
             }
+            else if (command.matches("(?i)charge\\s+my\\s+account+\\s+\"\\d+\"\\s*") && !User.checkCurrentUser2())
+            {
+                info.add(command.split("\"")[1].trim());
+                User.increaseBalance(Integer.parseInt(info.get(0)));
+                info = new ArrayList<String>();
 
+            }
+            else if (command.matches("(?i)show\\s+my\\s+balance+\\s*") && !User.checkCurrentUser2())
+            {
+              System.out.println("Your account balance is "+User.getBalance());
+            }
             //TODO PARHAM MUST USE THE FUNCTION THAT PRINT ALL RESTAURANTS
             //TODO YOU MUST BUILD A CONFIGURATION THAT REGISTRATION AND LOGIN IS FOR WHEN WE DON'T LOGIN BEFORE AND LOGOUT FOR WHEN WE HAVE LOGGED IN BEFORE
             else if(command.matches("(?i)login\\s+user\\s+with+\\s+username+\\s+\".+\"\\s*") && !User.checkCurrentUser()) {
