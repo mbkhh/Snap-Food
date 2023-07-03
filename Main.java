@@ -36,7 +36,23 @@ public class Main {
             }
             else if(command.matches("(?i)select\\s+order\\s+\\d+\\s*") && !User.checkCurrentUser2())
             {
-                Order.printOrder(User.currentUser, Functions.parseInt(command.split(" ")[2]));
+                if(User.currentUser.type==2)
+                    Order.printOrderRestaurant(User.currentUser, Functions.parseInt(command.split(" ")[2]));
+                else
+                    Order.printOrder(User.currentUser, Functions.parseInt(command.split(" ")[2]));
+            }
+            else if(command.matches("(?i)edit\\s+order\\s+\\d+\\s*") && !User.checkCurrentUser2())
+            {
+                if(User.currentUser.type==2)
+                {
+                    System.out.println("Enter new status:");
+                    String status  = scanner.nextLine();
+                    System.out.println("Enter new Estiamted time (null for no change):");
+                    String time  = scanner.nextLine();
+                    int tim = 0;
+                    if (!time.isEmpty()) tim = Functions.parseInt(time);
+                    Order.editOrder(tim, status, User.currentUser, Functions.parseInt(command.split(" ")[2]));
+                }
             }
             else if(command.matches("(?i)show\\s+ESTIMATED\\s+DELIVERY\\s+time\\s*") && !User.checkCurrentUser2())
             {
@@ -56,6 +72,12 @@ public class Main {
                 if(User.currentUser.type==2)
                 {
                     Order.getRestaurantOpenOrder(User.currentUser);
+                }
+            }
+            else if(command.matches("(?i)display\\s+all\\s+orders\\s*") && !User.checkCurrentUser2()) {
+                if(User.currentUser.type==2)
+                {
+                    Order.getRestaurantAllOrder(User.currentUser);
                 }
             }
             else if(command.matches("(?i)register\\s+new\\s+user\\s*") && !User.checkCurrentUser()) {
@@ -170,7 +192,7 @@ public class Main {
                     System.out.println(Restaurant.currentRestaurant.typesToString());
                 else if (command.matches("change\\s+food\\s+types\\s+to\\s+[\\w,]+")) {
                     if (Restaurant.currentRestaurant.id == User.currentUser.id) {
-                        if (Order.openOrders(Restaurant.currentRestaurant.id)[1].size() == 0) {
+                        if (Order.openOrders(Restaurant.currentRestaurant.id).size() == 0) {
                             System.out.println("Are you that you want to change your types? all food in your menu will be deleted");
                             command = scanner.nextLine();
                             if (command.equals("yes")) {

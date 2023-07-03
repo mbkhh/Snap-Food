@@ -42,10 +42,13 @@ public class Restaurant {
         System.out.println(dashedLine);
     }
     public Address getRestaurantAddress() {
-        return Address.getAddress(-1, id);
+        return Address.getAddress(0, id);
     }
     public boolean editRestaurantAddress(int node) {
         return Main.sql.editAddress(getRestaurantAddress().id, -1, id, node);
+    }
+    public static Restaurant getRestaurantByOwnerId(int id) {
+        return Main.sql.getRestaurant(id, "ownerId", false).get(0);
     }
     public static Restaurant getRestaurant(int id) {
         return Main.sql.getRestaurant(id, "id", false).get(0);
