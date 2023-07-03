@@ -24,7 +24,33 @@ public class Main {
             command  = scanner.nextLine();
             command.trim();
             commands = command.split(" ");
-            if(command.matches("(?i)ADD\\s+food\\s+with\\s+id\\s+\\d+\\s+to\\s+cart\\s*")) {
+            if (command.matches("return")) {
+                if (User.currentUser != null) {
+                    if (Restaurant.currentRestaurant != null) {
+                        if (Food.currentFood != null) {
+                            if (Comment.currentComment != null) {
+
+                            }
+                            else {
+
+                            }
+                        }
+                        else if (Comment.currentComment != null) {
+
+                        }
+                        else if (Cart.currentCart != null) {
+                            //TODO bagher
+                        }
+                        else {
+                            Restaurant.printRestaurant(Restaurant.currentRestaurant.id);
+                            Restaurant.currentRestaurant = null;
+                        }
+                    }
+                    else
+                        User.logoutUser();
+                }
+            }
+            else if(command.matches("(?i)add\\s+food\\s+with\\s+id\\s+\\d+\\s+to\\s+cart\\s*")) {
                 if(User.currentUser == null)
                     continue;
                 Cart.addToCart(Functions.parseInt(command.split(" ")[4]), User.currentUser);
@@ -126,28 +152,26 @@ public class Main {
             }
             else if(command.matches("(?i)remove\\s+user\\s+with+\\s+username+\\s+\".+\"\\s*") && !User.checkCurrentUser()) {
                 info.add(command.split("\"")[1].trim());
-
                 System.out.println("Enter password:");
                 command  = scanner.nextLine();
                 info.add(command.trim());
                 User.deleteAccount(info.get(0), info.get(1));
                 info = new ArrayList<String>();
                 command  = scanner.nextLine();
-
-
             }
 
             //TODO PARHAM MUST USE THE FUNCTION THAT PRINT ALL RESTAURANTS
             //TODO YOU MUST BUILD A CONFIGURATION THAT REGISTRATION AND LOGIN IS FOR WHEN WE DON'T LOGIN BEFORE AND LOGOUT FOR WHEN WE HAVE LOGGED IN BEFORE
             else if(command.matches("(?i)login\\s+user\\s+with+\\s+username+\\s+\".+\"\\s*") && !User.checkCurrentUser()) {
                 info.add(command.split("\"")[1].trim());
-
                 System.out.println("Enter password:");
                 command  = scanner.nextLine();
                 info.add(command);
                 User.loginUser(info.get(0), info.get(1));
                 info = new ArrayList<String>();
-
+                Restaurant.printRestaurant(User.currentUser.id);
+                if (Restaurant.currentRestaurant != null)
+                    System.out.println("You entered your restaurant successfully");
             }
             else if(command.matches("(?i)logout+\\s*") && !User.checkCurrentUser2()) {
                 User.logoutUser();
@@ -157,11 +181,38 @@ public class Main {
             // taha's main //
             /////////////////
 
-            if (command.matches("add\\s+restaurant\\s+with\\s+owner\\s+id\\s+\\d+\\s+name\\s+\\w+\\s+post\\s+cost\\s+\\d+\\s+typ(e|es)\\s+[\\w,]+")) {
-                if (!Restaurant.addRestaurant(Integer.parseInt(commands[5]), commands[7], Integer.parseInt(commands[10]), commands[12])){
-                    System.out.println("There wasn't a user with this id");
+            if (command.matches("add\\s+restaurant")) {
+                System.out.print("enter the owner id: ");
+                command = scanner.nextLine();
+                if (command.matches("\\w+")) {
+                    int ownerId = Integer.parseInt(command);
+                    if (User.getUserById(ownerId) != null) {
+                        System.out.print("enter the name: ");
+                        command = scanner.nextLine();
+                        if (command.matches("\\w+")) {
+                            String name = command;
+                            System.out.print("enter the post cost: ");
+                            command = scanner.nextLine();
+                            if (command.matches("\\w+")) {
+                                int postCost = Integer.parseInt(command);
+                                System.out.print("enter the type(s) with a  between them if they're two or more without any white space: ");
+                                command = scanner.nextLine();
+                                if (command.matches("[\\w,]+")) {
+                                    String type = command;
+                                    if (!Restaurant.addRestaurant(Integer.parseInt(commands[5]), commands[7], Integer.parseInt(commands[10]), commands[12]))
+                                        System.out.println("The restaurant was successfully added");
+                                    else
+                                        System.out.println("There wasn't a user with this id");
+                                } else
+                                    System.out.println("Invalid food type type");
+                            } else
+                                System.out.println("Invalid post cost type");
+                        } else
+                            System.out.println("Invalid name type");
+                    } else
+                        System.out.println("There wasn't a user with this id");
                 } else
-                    System.out.println("The restaurant was successfully added");
+                    System.out.println("Invalid owner id type");
             }
             else if (command.matches("delete\\s+restaurant\\s+with\\s+id\\s+\\d+")) {
                 if (User.currentUser.id == Restaurant.getRestaurant(Integer.parseInt(commands[4])).id){
@@ -203,6 +254,29 @@ public class Main {
                             System.out.println("You have open orders and can't change the types of your restaurant before you finish your jobs");
                     } else
                         System.out.println("You don't have an access to change this");
+                }
+                else if (command.matches("add\\s+food")) {
+                    if (Restaurant.currentRestaurant.id == User.currentUser.id) {
+                        System.out.println("enter the name: ");
+                        command = scanner.nextLine();
+                        if (command.matches("\\w+")) {
+                            String name = command;
+                            System.out.println("enter the price: ");
+                            command = scanner.nextLine();
+                            if (command.matches("\\w+")) {
+                                int price = Integer.parseInt(command);
+                                System.out.println("enter the type: ");
+                                command = scanner.nextLine();
+                                if (command.matches("\\w+")) {
+
+                                } else
+                                    System.out.println("invalid price type");
+                            } else
+                                System.out.println("invalid price type");
+                        } else
+                            System.out.println("invalid name type");
+                    } else
+                        System.out.println("you don't have an access to add food");
                 }
             }
 
