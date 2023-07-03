@@ -294,6 +294,92 @@ public class Sql {
             return ans;
         }
     }
+    public ArrayList<Order> getFreeOrder() {
+        ArrayList<Order> ans = new ArrayList<Order>();
+        try {
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery( "SELECT * FROM `Order` WHERE `deliveryId`=0 AND `status`!='Canceled' AND `status`!='Completed' ;" );
+            while ( rs.next() ) {
+                int id = rs.getInt("id");
+                int userId = rs.getInt("userId");
+                int restaurantId = rs.getInt("restaurantId");
+                int deliveryId = rs.getInt("deliveryId");
+                String path = rs.getString("path");
+                int pathLength = rs.getInt("pathLength");
+                int estimatedTime = rs.getInt("estimatedTotalTime");
+                long addTime = rs.getLong("addTime");
+                int totalprice = rs.getInt("totalprice");
+                int totalDiscount = rs.getInt("totalDiscount");
+                String status = rs.getString("status");
+                String discription= rs.getString("discription");
+
+                ans.add(new Order(id, userId, restaurantId, deliveryId, path, pathLength, estimatedTime, addTime, totalprice, totalDiscount, status, discription));
+            }
+            rs.close();
+            stm.close();
+            return ans;
+        } catch (SQLException e) {
+            System.out.println("Could not select data from database : getAllOrderOfUser : "+e.getMessage());
+            return ans;
+        }
+    }
+    public ArrayList<Order> getFreeOrderById(int orderId) {
+        ArrayList<Order> ans = new ArrayList<Order>();
+        try {
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery( "SELECT * FROM `Order` WHERE `deliveryId`=0 AND `status`!='Canceled' AND `status`!='Completed' AND id="+orderId+";" );
+            while ( rs.next() ) {
+                int id = rs.getInt("id");
+                int userId = rs.getInt("userId");
+                int restaurantId = rs.getInt("restaurantId");
+                int deliveryId = rs.getInt("deliveryId");
+                String path = rs.getString("path");
+                int pathLength = rs.getInt("pathLength");
+                int estimatedTime = rs.getInt("estimatedTotalTime");
+                long addTime = rs.getLong("addTime");
+                int totalprice = rs.getInt("totalprice");
+                int totalDiscount = rs.getInt("totalDiscount");
+                String status = rs.getString("status");
+                String discription= rs.getString("discription");
+
+                ans.add(new Order(id, userId, restaurantId, deliveryId, path, pathLength, estimatedTime, addTime, totalprice, totalDiscount, status, discription));
+            }
+            rs.close();
+            stm.close();
+            return ans;
+        } catch (SQLException e) {
+            System.out.println("Could not select data from database : getAllOrderOfUser : "+e.getMessage());
+            return ans;
+        }
+    }
+    public ArrayList<Order> getOrderByIdAndDelivery(int orderId,int deliveryId) {
+        ArrayList<Order> ans = new ArrayList<Order>();
+        try {
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery( "SELECT * FROM `Order` WHERE `deliveryId`="+deliveryId+" AND id="+orderId+";" );
+            while ( rs.next() ) {
+                int id = rs.getInt("id");
+                int userId = rs.getInt("userId");
+                int restaurantId = rs.getInt("restaurantId");
+                String path = rs.getString("path");
+                int pathLength = rs.getInt("pathLength");
+                int estimatedTime = rs.getInt("estimatedTotalTime");
+                long addTime = rs.getLong("addTime");
+                int totalprice = rs.getInt("totalprice");
+                int totalDiscount = rs.getInt("totalDiscount");
+                String status = rs.getString("status");
+                String discription= rs.getString("discription");
+
+                ans.add(new Order(id, userId, restaurantId, deliveryId, path, pathLength, estimatedTime, addTime, totalprice, totalDiscount, status, discription));
+            }
+            rs.close();
+            stm.close();
+            return ans;
+        } catch (SQLException e) {
+            System.out.println("Could not select data from database : getAllOrderOfUser : "+e.getMessage());
+            return ans;
+        }
+    }
     public ArrayList<Order> getAllOrderById2(int orderId, int restaurantId) {
         ArrayList<Order> ans = new ArrayList<Order>();
         try {
@@ -387,10 +473,19 @@ public class Sql {
             System.out.println("Could not update data to database : editOrder : " + e.getMessage());
         }
     }
+    public void editOrder2(int id,int deliveryId, String status) {
+        try {
+            Statement statement = connection.createStatement();
+            statement.executeUpdate( "UPDATE `Order` SET status = '" + status + "',deliveryId = " + deliveryId + "  WHERE id = " + id + ";" );
+            statement.close();
+        } catch (SQLException e) {
+            System.out.println("Could not update data to database : editOrder : " + e.getMessage());
+        }
+    }
     public int getOrderLastId() {
         try {
             Statement stm = connection.createStatement();
-            ResultSet rs = stm.executeQuery( "SELECT MAX(id) AS max_id FROM Order;" );
+            ResultSet rs = stm.executeQuery( "SELECT MAX(id) AS max_id FROM `Order`;" );
             int id = rs.getInt("max_id");
             //while ( rs.next() ) {
             //    int id = rs.getInt("max_id");
@@ -399,7 +494,7 @@ public class Sql {
             stm.close();
             return id;
         } catch (SQLException e) {
-            System.out.println("Could not select data from database : getCart 2 : "+e.getMessage());
+            System.out.println("Could not select data from database : getOrderLastId : "+e.getMessage());
             return 0;
         }
     }
@@ -528,7 +623,34 @@ public class Sql {
             System.out.println("Could not delete data to database : deleteFromUser : "+e.getMessage());
         }
     }
+    void updateUserBalance(int ID , int balance) {
+        try {
+            Statement stm = connection.createStatement();
+            stm.executeUpdate( "UPDATE User SET `balance`='"+balance+"' WHERE `ID` = "+ID+";" );
+            stm.close();
+        } catch (SQLException e) {
+            System.out.println("Could not update data to database : update test : "+e.getMessage());
+        }
+    }
 
+    int getNewBalance (int id)
+    {  
+        int balance = -1;
+        try {
+            Statement stm =  connection.createStatement();
+            ResultSet rs = stm.executeQuery( "SELECT * FROM User Where `id` = "+id+";");            
+            while ( rs.next() ) {
+             balance = rs.getInt("balance");  
+            }
+            rs.close();
+            stm.close();
+            return balance;
+        } catch (SQLException e) {
+            System.out.println("Could not select data from database : getUser : "+e.getMessage());
+            return balance;
+        }
+        
+    }
     /**
      * *
      * *
@@ -624,9 +746,9 @@ public class Sql {
             Statement statement = connection.createStatement();
             ResultSet resultSet;
             if (!isForAll)
-                resultSet = statement.executeQuery("SELECT * FROM Restaurant Where " + whichId + " = " + idKey + " ORDER BY type, name, id;");
+                resultSet = statement.executeQuery("SELECT * FROM Food Where " + whichId + " = " + idKey + " ORDER BY type, name, id;");
             else
-                resultSet = statement.executeQuery("SELECT * FROM Restaurant ORDER BY type, name, id;");
+                resultSet = statement.executeQuery("SELECT * FROM Food ORDER BY type, name, id;");
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 int restaurantId = resultSet.getInt("restaurantId");

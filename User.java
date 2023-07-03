@@ -130,4 +130,21 @@ public class User {
             Main.sql.deleteFromUser(ans.id);
         }
     }
+    static void increaseBalance (int increase)
+    {
+      MainParham.sql.updateUserBalance(currentUser.id, increase+MainParham.sql.getNewBalance(currentUser.id));
+      System.out.println("The account has been charged successfully");
+      
+    }
+
+    static void reductionBalance(int reduction)
+    {
+        MainParham.sql.updateUserBalance(currentUser.id, reduction);
+    }
+    
+    static int getBalance()
+    {
+        int balance=MainParham.sql.getNewBalance(currentUser.id);
+        return balance;
+    }
 }

@@ -88,6 +88,20 @@ public class Map {
         }
         return -1;
     }
+    static void showMap()
+    {
+        ArrayList<Branch> branches = Main.sql.getAllBranch();
+        String leftAlignFormat = "| %-5d | %-5d | %-10d |%n";
+        String leftAlignHeaderFormat = "| %-5s | %-5s | %-10s |%n";
+        System.out.println("------------------------------");
+        System.out.format(leftAlignHeaderFormat,"Node1","Node2","Weight");
+        System.out.println("------------------------------");
+        
+        for (Branch branch : branches) {
+            System.out.format(leftAlignFormat,branch.node1,branch.node2,branch.weight);
+        }
+        System.out.println("------------------------------");
+    }
     static ArrayList<Branch> getConnectedBranches(int node , ArrayList<Branch> all) {
         ArrayList<Branch> ans = new ArrayList<Branch>();
         for (int i = 0; i < all.size(); i++) {

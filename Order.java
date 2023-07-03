@@ -78,6 +78,7 @@ public class Order {
                 Main.sql.editOrder(orderId, te.get(0).estimatedTime, status);
             else
                 Main.sql.editOrder(orderId, time, status);
+            System.out.println("Order edited successfully");
         }
     }
     static void printOrder(User user, int orderId)
@@ -98,6 +99,91 @@ public class Order {
             Cart.printCart(cart);
             System.out.println();
 
+        }
+    }
+    static void showBestPath(User user, int orderId)
+    {
+        ArrayList<Order> te = Main.sql.getAllOrderById(orderId ,user.id);
+        if(te.size() == 0)
+            System.out.println("There is no order registered with this ID for you");
+        else
+        {
+            
+            System.out.println("Path lenght: "+te.get(0).pathLength);
+            System.out.println("Estiamted total time: "+te.get(0).estimatedTime);
+            System.out.println("Path: "+te.get(0).path);
+        }
+    }
+    static void showBestPathDelivery(User user, int orderId)
+    {
+        ArrayList<Order> te = Main.sql.getOrderByIdAndDelivery(orderId ,user.id);
+        if(te.size() == 0)
+            System.out.println("There is no order registered with this ID for you");
+        else
+        {
+            Address resturantAddress = Address.getAddress(0, te.get(0).restaurant.id);
+            Address userAddress = Address.getAddress(user.id, 0);
+            System.out.println("Path to restaurant: " + Map.findPath(userAddress.node, resturantAddress.node).getPath());
+            //System.out.println("Path lenght: "+te.get(0).pathLength);
+            //System.out.println("Estiamted total time: "+te.get(0).estimatedTime);
+            System.out.println("Path to costumer: "+te.get(0).path);
+        }
+    }
+    static void acceptOrder(User user, int orderId)
+    {
+        ArrayList<Order> te = Main.sql.getFreeOrderById(orderId);
+        if(te.size() == 0)
+            System.out.println("You cant get this order!");
+        else
+        {
+            Main.sql.editOrder2(orderId,user.id, te.get(0).status.toString());
+            System.out.println("Order Accepted successfully");
+        }
+    }
+    static void recieveOrder(User user, int orderId)
+    {
+        ArrayList<Order> te = Main.sql.getOrderByIdAndDelivery(orderId,user.id);
+        if(te.size() == 0)
+            System.out.println("Bad id number!");
+        else
+        {
+            Main.sql.editOrder(orderId, te.get(0).estimatedTime, "Sent");
+            System.out.println("Order updated successfully");
+        }
+    }
+    static void CompleteOrder(User user, int orderId)
+    {
+        ArrayList<Order> te = Main.sql.getOrderByIdAndDelivery(orderId,user.id);
+        if(te.size() == 0)
+            System.out.println("Bad id number!");
+        else
+        {
+            Main.sql.editOrder(orderId, te.get(0).estimatedTime, "Completed");
+            System.out.println("Order updated successfully");
+        }
+    }
+    static void showFreeOrders()
+    {
+        ArrayList<Order> te = Main.sql.getFreeOrder();
+        if(te.size() == 0)
+            System.out.println("There is no order FREE ORDER!");
+        else
+        {
+            String leftAlignFormat = "| %-5d | %-25s | %-15s | %-25s | %-20s | %-20d | %-10d |%n";
+            String leftAlignHeaderFormat = "| %-5s | %-25s | %-15s | %-25s | %-20s | %-20s | %-10s |%n";
+            System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.format(leftAlignHeaderFormat,"Id","User Name" , "User Address","Add time","Restaurant Name","Restaurant Address","Post Cost");
+            System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------");
+            for (int i = 0; i < te.size(); i++) {
+                // System.out.println(cart.get(i).food.name + "\t" +  cart.get(i).cost + "\t" +  cart.get(i).count + "\t" +  "0" + "\t" +  cart.get(i).cost*cart.get(i).count);
+                //double[] prices = cart.get(i).food.getPrice(1);
+                DateFormat f = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                Date date = new Date(te.get(i).addTime);
+                Address t = Main.sql.getAddress(te.get(i).user.id, 0);
+                Address resaurantAddress = Main.sql.getAddress(0, te.get(i).restaurant.id);
+                System.out.format(leftAlignFormat,te.get(i).id,te.get(i).user.name ,t.node, f.format(date) ,te.get(i).restaurant.name  , resaurantAddress.node,  te.get(i).restaurant.postCost);
+            }
+            System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------");
         }
     }
     static void showEstimatedTimeOfOrder(User user)
@@ -173,6 +259,7 @@ public class Order {
                 totalPrice += te.get(i).food.getPrice(i)[0] * te.get(i).count;
                 totalDiscount += te.get(i).food.getPrice(i)[1] * te.get(i).count;
             }
+            totalPrice += te.get(0).food.restaurant.postCost;
             if(totalPrice > user.balance)
                 System.out.println("You do not have enough credit");
             else {
@@ -196,8 +283,10 @@ public class Order {
                 //System.out.println(System.currentTimeMillis());
                 Vertex x = Map.findPath(resturantAddress.node, userAddress.node);
                 Main.sql.InsertToOrder(user.id, te.get(0).food.restaurant.id, 0, x.getPath(), x.pathLength, x.pathLength*100, System.currentTimeMillis(), totalPrice, totalDiscount, OrderStatus.Registered, discription);
-                Main.sql.finalizeCart(user.id, Main.sql.getOrderLastId());
-                //TODO change user balance
+                int lastId = Main.sql.getOrderLastId();
+                Main.sql.finalizeCart(user.id, lastId);
+                User.reductionBalance(totalPrice);
+                System.out.println("Order with id "+lastId + " added successfully.");
             }
         }
     }

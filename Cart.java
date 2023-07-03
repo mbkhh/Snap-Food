@@ -70,6 +70,7 @@ public class Cart {
             System.out.format(leftAlignFormat,cart.get(i).food.name,(int)(prices[0] + prices[1]),cart.get(i).count,(int)prices[1],(int)(prices[0]*cart.get(i).count));
         }
         System.out.println("--------------------------------------------------------------------------");
+        System.out.println("Post cost :" + cart.get(0).food.restaurant.postCost);
     }
     public static void printCart(User user) {
         ArrayList<Cart> te = Main.sql.getCart(user.id, 0);
