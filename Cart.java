@@ -9,7 +9,7 @@ public class Cart {
     public static ArrayList<Cart> currentCart = new ArrayList<Cart>();
     public Cart(int id, int foodId, int userId, int orderId, int cost, int count) {
         this.id = id;
-        food = Food.getFoodById(foodId);
+        food = Food.getFood(foodId);
         user = User.getUserById(userId);
         if(orderId == 0)
             order = null;
@@ -25,7 +25,7 @@ public class Cart {
         return true;
     }
     public static void removeFromCart(int foodId, User user) {
-        Food food = Food.getFoodById(foodId);
+        Food food = Food.getFood(foodId);
         if(food == null)
             System.out.println("There is no food with id: "+foodId);
         else {
@@ -39,7 +39,7 @@ public class Cart {
         }
     }
     public static void addToCart(int foodId, User user) {
-        Food food = Food.getFoodById(foodId);
+        Food food = Food.getFood(foodId);
         if(food == null) {
             System.out.println("There is no food with id: "+foodId);
         }

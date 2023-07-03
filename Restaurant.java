@@ -1,4 +1,3 @@
-import java.awt.print.Printable;
 import java.util.ArrayList;
 
 public class Restaurant {
@@ -49,10 +48,10 @@ public class Restaurant {
         return Main.sql.editAddress(getRestaurantAddress().id, -1, id, node);
     }
     public static Restaurant getRestaurant(int id) {
-        return Main.sql.getRestaurant(id, "id").get(0);
+        return Main.sql.getRestaurant(id, "id", false).get(0);
     }
     public static void printRestaurant(int ownerId) {
-        ArrayList<Restaurant> restaurants = new ArrayList<>(Main.sql.getRestaurant(ownerId, "ownerId"));
+        ArrayList<Restaurant> restaurants = new ArrayList<>(Main.sql.getRestaurant(ownerId, "ownerId", false));
         if (restaurants.size() == 0)
             System.out.println("You don't have any restaurant");
         else if (restaurants.size() == 1) {
@@ -77,5 +76,9 @@ public class Restaurant {
             return true;
         }
         return false;
+    }
+    public void editFoodType(String type) {
+        Main.sql.editRestaurant(id, owner.id, name, type, postCost);
+        //TODO delete all the foods
     }
 }

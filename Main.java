@@ -1,14 +1,11 @@
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
     public static Sql sql;
-    static Scanner sc;
     public static void main(String[] args) {
         sql = new Sql();
-        sc = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
         String command;
         String[] commands;
         ////////////////////
@@ -23,7 +20,7 @@ public class Main {
         //test
         //User.currentUser = User.getUserById(1);
         do {
-            command  = sc.nextLine();
+            command  = scanner.nextLine();
             command.trim();
             commands = command.split(" ");
             if(command.matches("(?i)ADD\\s+food\\s+with\\s+id\\s+\\d+\\s+to\\s+cart\\s*")) {
@@ -45,35 +42,35 @@ public class Main {
             else if(command.matches("(?i)register\\s+new\\s+user\\s*") && !User.checkCurrentUser()) {
 
                 System.out.println("Enter type of user : 1-normal 2-restaurantOwner 3-Service 4-developer");
-                command  = sc.nextLine();
+                command  = scanner.nextLine();
                 info.add(command.trim());
 
                 System.out.println("Enter username:");
-                command  = sc.nextLine();
+                command  = scanner.nextLine();
                 info.add(command.trim());
 
                 System.out.println("Enter password:");
-                command  = sc.nextLine();
+                command  = scanner.nextLine();
                 info.add(command.trim());
 
                 System.out.println("Enter full name:");
-                command  = sc.nextLine();
+                command  = scanner.nextLine();
                 info.add(command.trim());
 
                 System.out.println("Enter security question in case you forget your pass:");
-                command  = sc.nextLine();
+                command  = scanner.nextLine();
                 info.add(command.trim());
 
                 System.out.println("Enter security answer:");
-                command  = sc.nextLine();
+                command  = scanner.nextLine();
                 info.add(command.trim());
 
                 System.out.println("Your balance is 0 toomans. Do you want to charge it ? Enter 1-Yes or 2-No");
-                command  = sc.nextLine();
+                command  = scanner.nextLine();
                 command.trim();
                 if(command.matches("1")) {
                     System.out.println("Enter balance:");
-                    command  = sc.nextLine();
+                    command  = scanner.nextLine();
                     info.add(command.trim());
                 }
                 else if(command.matches("2")) {
@@ -86,33 +83,32 @@ public class Main {
                 info = new ArrayList<String>();
 
             }
-
             else if(command.matches("(?i)remove\\s+user\\s+with+\\s+username+\\s+\".+\"\\s*") && !User.checkCurrentUser()) {
                 info.add(command.split("\"")[1].trim());
 
                 System.out.println("Enter password:");
-                command  = sc.nextLine();
+                command  = scanner.nextLine();
                 info.add(command.trim());
                 User.deleteAccount(info.get(0), info.get(1));
                 info = new ArrayList<String>();
-                command  = sc.nextLine();
+                command  = scanner.nextLine();
 
 
             }
 
+            //TODO PARHAM MUST USE THE FUNCTION THAT PRINT ALL RESTAURANTS
+            //TODO YOU MUST BUILD A CONFIGURATION THAT REGISTRATION AND LOGIN IS FOR WHEN WE DON'T LOGIN BEFORE AND LOGOUT FOR WHEN WE HAVE LOGGED IN BEFORE
             else if(command.matches("(?i)login\\s+user\\s+with+\\s+username+\\s+\".+\"\\s*") && !User.checkCurrentUser()) {
                 info.add(command.split("\"")[1].trim());
 
                 System.out.println("Enter password:");
-                command  = sc.nextLine();
+                command  = scanner.nextLine();
                 info.add(command);
                 User.loginUser(info.get(0), info.get(1));
                 info = new ArrayList<String>();
 
             }
-
-            else if(command.matches("(?i)logout+\\s*") && !User.checkCurrentUser2())
-            {
+            else if(command.matches("(?i)logout+\\s*") && !User.checkCurrentUser2()) {
                 User.logoutUser();
             }
 
@@ -144,19 +140,34 @@ public class Main {
             if (Restaurant.currentRestaurant != null) {
                 if (command.matches("show\\s+restaurant\\s+location"))
                     System.out.println(Restaurant.currentRestaurant.getRestaurantAddress().node);
-                else if (command.matches("change\\s+restaurant\\s+address\\s+to\\s+node\\s+\\d+"))
-                    if (Restaurant.currentRestaurant.editRestaurantAddress(Integer.parseInt(commands[5])))
-                        System.out.println("Address changed successfully");
+                else if (command.matches("change\\s+restaurant\\s+address\\s+to\\s+node\\s+\\d+")) {
+                    if (Restaurant.currentRestaurant.id == User.currentUser.id) {
+                        if (Restaurant.currentRestaurant.editRestaurantAddress(Integer.parseInt(commands[5])))
+                            System.out.println("Address changed successfully");
+                    } else
+                        System.out.println("You don't have an access to change this");
+                }
                 else if (command.matches("show\\s+food\\s+types\\s+"))
                     System.out.println(Restaurant.currentRestaurant.typesToString());
-                else if (command.matches("edit\\s+food\\s+types"))
-
-
+                else if (command.matches("change\\s+food\\s+types\\s+to\\s+[\\w,]+")) {
+                    if (Restaurant.currentRestaurant.id == User.currentUser.id) {
+                        if (Order.openOrders(Restaurant.currentRestaurant.id)[1].size() == 0) {
+                            System.out.println("Are you that you want to change your types? all food in your menu will be deleted");
+                            command = scanner.nextLine();
+                            if (command.equals("yes")) {
+                                Restaurant.currentRestaurant.editFoodType(commands[4]);
+                                System.out.println("the food types was changed successfully");
+                            }
+                        } else
+                            System.out.println("You have open orders and can't change the types of your restaurant before you finish your jobs");
+                    } else
+                        System.out.println("You don't have an access to change this");
+                }
             }
 
         }while (!command.equals("end"));
 
-        sc.close();
+        scanner.close();
         // sql.Select_test();
         //sql.Insert_test("akbar", "akbari");
         //sql.Select_test();

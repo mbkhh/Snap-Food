@@ -229,20 +229,19 @@ public class Sql {
             return ans;
         }
     }
-    void InsertToOrder(int userId, int restaurantId, int deliveryId, String path, int pathLength,int estimatedTime, Long addTime, int totalprice, int totalDiscount, OrderStatus status, String discription) {
+    public void InsertToOrder(int userId, int restaurantId, int deliveryId, String path, int pathLength,int estimatedTime, Long addTime, int totalprice, int totalDiscount, OrderStatus status, String discription) {
         try {
             Statement stm =  connection.createStatement();
-            stm.executeUpdate( "Insert INTO Orders (userId ,restaurantId ,deliveryId,path , pathLength ,estimatedTotalTime ,addTime ,totalPrice ,totalDiscount ,status ,discription) VALUES ('"+userId+"' ,'"+restaurantId+"' ,'"+deliveryId+"','"+path+"' , '"+pathLength+"' ,'"+estimatedTime+"' ,'"+addTime+"' ,'"+totalprice+"' ,'"+totalDiscount+"' ,'"+status+"' ,'"+discription+"');" );
+            stm.executeUpdate( "Insert INTO Order (userId ,restaurantId ,deliveryId,path , pathLength ,estimatedTotalTime ,addTime ,totalPrice ,totalDiscount ,status ,discription) VALUES ('"+userId+"' ,'"+restaurantId+"' ,'"+deliveryId+"','"+path+"' , '"+pathLength+"' ,'"+estimatedTime+"' ,'"+addTime+"' ,'"+totalprice+"' ,'"+totalDiscount+"' ,'"+status+"' ,'"+discription+"');" );
             stm.close();
         } catch (SQLException e) {
             System.out.println("Could not Insert data to database : InsertToOrder : "+e.getMessage());
         }
     }
-    int getOrderLastId()
-    {
+    public int getOrderLastId() {
         try {
             Statement stm = connection.createStatement();
-            ResultSet rs = stm.executeQuery( "SELECT MAX(id) AS max_id FROM Orders;" );
+            ResultSet rs = stm.executeQuery( "SELECT MAX(id) AS max_id FROM Order;" );
             int id = rs.getInt("max_id");
             //while ( rs.next() ) {
             //    int id = rs.getInt("max_id");
@@ -255,7 +254,7 @@ public class Sql {
             return 0;
         }
     }
-    Address getAddress (int userId , int restaurantId) {
+    public Address getAddress (int userId , int restaurantId) {
         Address ans = null;
         try {
             Statement stm =  connection.createStatement();
@@ -285,11 +284,11 @@ public class Sql {
         }
     }
 
-    /***********************
+    /****
      * Parham's functions **
      * *********************/
 
-    void InsertToUser(String username , String password , String name ,  String securityQuestion, String securityAnswer, int type , int balance) {
+    public void InsertToUser(String username , String password , String name ,  String securityQuestion, String securityAnswer, int type , int balance) {
         try {
             Statement stm =  connection.createStatement();
             stm.executeUpdate( "Insert INTO User (username , password , name , securityQuestion , securityAnswer , type , balance) VALUES ('"+username+"' , '"+password+"' , '"+name+"' , '"+securityQuestion+"' , '"+securityAnswer+"' , '"+type+"' , '"+balance+"');" );
@@ -299,7 +298,7 @@ public class Sql {
         }
     }
 
-    User getUser (int id) {
+    public User getUser (int id) {
         User ans = null;
         try {
             Statement stm =  connection.createStatement();
@@ -325,7 +324,7 @@ public class Sql {
         }
 
     }
-    User getUser (String username , String password) {
+    public User getUser (String username , String password) {
         User ans = null;
         try {
             Statement stm =  connection.createStatement();
@@ -348,7 +347,7 @@ public class Sql {
         }
 
     }
-    User getUser (String username) {
+    public User getUser (String username) {
         User ans = null;
         try {
             Statement stm =  connection.createStatement();
@@ -371,7 +370,7 @@ public class Sql {
             return ans;
         }
     }
-    void deleteFromUser(int id ) {
+    public void deleteFromUser(int id ) {
         try {
             Statement stm =  connection.createStatement();
             stm.executeUpdate( "DELETE FROM User WHERE `id` = "+id+";" );
@@ -380,6 +379,7 @@ public class Sql {
             System.out.println("Could not delete data to database : deleteFromUser : "+e.getMessage());
         }
     }
+
     /**
      * *
      * *
@@ -389,10 +389,20 @@ public class Sql {
      * *
      * *
      **/
+
     public void insertToRestaurant(int ownerId, String name, String type, int postCost) {
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate("Insert INTO Restaurant (ownerId, name, type, postCost) VALUES ('" + ownerId + "', '" + name + "', '" + type + "', '" + postCost + "');");
+            statement.close();
+        } catch (SQLException e) {
+            System.out.println("Could not Insert data to database : insertToRestaurant : " + e.getMessage());
+        }
+    }
+    public void insertToFood(int restaurantId, String name, int price, String type, int discountPercent, long discountTime, String isActive) {
+        try {
+            Statement statement = connection.createStatement();
+            statement.executeUpdate("Insert INTO Food (restaurantId, name, price, type, discountPercent, discountTime, isActive) VALUES (" + restaurantId + ", '" + name + "', " + price + ", '" + type + "', " + discountPercent + ", " + discountTime + ", '" + isActive + "');");
             statement.close();
         } catch (SQLException e) {
             System.out.println("Could not Insert data to database : insertToRestaurant : " + e.getMessage());
@@ -407,6 +417,15 @@ public class Sql {
             System.out.println("Could not update data to database : editRestaurant : " + e.getMessage());
         }
     }
+    public void editFood(int id, int restaurantId, String name, int price, String type, int discountPercent, long discountTime, String isActive) {
+        try {
+            Statement statement = connection.createStatement();
+            statement.executeUpdate( "UPDATE Food SET restaurantId = " + restaurantId + ", name = '" + name + "', price = " + price + " type = '" + type + "', discountPercent = " + discountPercent + ", discountTime = " + discountTime + ", isActive = '" + isActive + "' WHERE id = " + id + ";" );
+            statement.close();
+        } catch (SQLException e) {
+            System.out.println("Could not update data to database : editRestaurant : " + e.getMessage());
+        }
+    }
     public void deleteFromRestaurant(int id) {
         try {
             Statement statement = connection.createStatement();
@@ -416,11 +435,24 @@ public class Sql {
             System.out.println("Could not delete data to database : deleteFromRestaurant : " + e.getMessage());
         }
     }
-    public ArrayList<Restaurant> getRestaurant(int idKey, String whichId) {
+    public void deleteFromFood(int idKey, String witchId) {
+        try {
+            Statement statement = connection.createStatement();
+            statement.executeUpdate( "DELETE FROM Food WHERE " + witchId + " = " + idKey + ";" );
+            statement.close();
+        } catch (SQLException e) {
+            System.out.println("Could not delete data to database : deleteFromRestaurant : " + e.getMessage());
+        }
+    }
+    public ArrayList<Restaurant> getRestaurant(int idKey, String whichId, boolean isForAll) {
         ArrayList<Restaurant> restaurants = new ArrayList<>();
         try {
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM Restaurant Where " + whichId + " = " + idKey + " ORDER BY name, id;");
+            ResultSet resultSet;
+            if (!isForAll)
+                resultSet = statement.executeQuery("SELECT * FROM Restaurant Where " + whichId + " = " + idKey + " ORDER BY name, id;");
+            else
+                resultSet = statement.executeQuery("SELECT * FROM Restaurant ORDER BY name, id;");
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String name = resultSet.getString("name");
@@ -437,5 +469,32 @@ public class Sql {
             return restaurants;
         }
     }
-
+    public ArrayList<Food> getFood(int idKey, String whichId, boolean isForAll) {
+        ArrayList<Food> foods = new ArrayList<>();
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet;
+            if (!isForAll)
+                resultSet = statement.executeQuery("SELECT * FROM Restaurant Where " + whichId + " = " + idKey + " ORDER BY type, name, id;");
+            else
+                resultSet = statement.executeQuery("SELECT * FROM Restaurant ORDER BY type, name, id;");
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                int restaurantId = resultSet.getInt("restaurantId");
+                String name = resultSet.getString("name");
+                int price = resultSet.getInt("price");
+                String type = resultSet.getString("type");
+                int discountPercent = resultSet.getInt("discountPercent");
+                long discountTime = resultSet.getLong("discountTime");
+                String isActive = resultSet.getString("isActive");
+                foods.add(new Food(id, restaurantId, name, price, type, discountPercent, discountTime, isActive));
+            }
+            resultSet.close();
+            statement.close();
+            return foods;
+        } catch (SQLException e) {
+            System.out.println("Could not select data from database : getRestaurant : " + e.getMessage());
+            return foods;
+        }
+    }
 }

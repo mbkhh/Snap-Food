@@ -46,13 +46,13 @@ public class Order {
                 System.out.println("You do not have enough credit");
             else {
                 System.out.println("Discription: (if nothing just press enter)");
-                String discription = Main.sc.nextLine();
+                String discription = Main.scanner.nextLine();
                 Address resturantAddress = Address.getAddress(0, te.get(0).food.restaurant.id);
                 Address userAddress = Address.getAddress(user.id, 0);
                 if(userAddress == null) {
                     do {
                         System.out.println("You have no registered Address please enter your address:");
-                        String node = Main.sc.nextLine();
+                        String node = Main.scanner.nextLine();
                         node = node.trim();
                         if(node.matches("\\d+"))
                         {
@@ -69,5 +69,11 @@ public class Order {
                 //TODO change user balance
             }
         }
+    }
+    //TODO BAGHER MUST CREATE A FUNCTION FOR ALL ORDERS OF A RESTAURANT
+    //first element is for all orders second is for just open orders
+    public static ArrayList<Order>[] openOrders(int restaurantId) {
+        ArrayList<Order>[] orders = new ArrayList[2];
+        return orders;
     }
 }

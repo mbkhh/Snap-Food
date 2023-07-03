@@ -70,10 +70,10 @@ public class User {
         else if (Main.sql.getUser(username, password) == null) {
             while (Main.sql.getUser(username, password) == null && get) {
                 System.out.println("Invalid password! Password is incorrect! Would you like to recover your password? 1-Yes 2-No i try again 3-continue");
-                ans = Main.sc.nextLine();
+                ans = Main.scanner.nextLine();
                 if (ans.trim().equals("1")) {
                     System.out.println(Main.sql.getUser(username).securityQuestion);
-                    ans = Main.sc.nextLine();
+                    ans = Main.scanner.nextLine();
                     if (ans.trim().equals(Main.sql.getUser(username).securityAnswer)) {
                         currentUser = Main.sql.getUser(username);
                         System.out.println("User logged in successfully");
@@ -86,7 +86,7 @@ public class User {
                 }
                 else if (ans.trim().equals("2")) {
                     System.out.println("Enter password:");
-                    password = Main.sc.nextLine();
+                    password = Main.scanner.nextLine();
                     get = true;
                 }
                 else if (ans.trim().equals("3")) {

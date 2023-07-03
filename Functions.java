@@ -1,7 +1,9 @@
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Functions {
+    public SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMMdd-hh:mm:ss");
     public static int parseInt(String i, String part) {
         int ans = 0;
         try {
