@@ -25,10 +25,11 @@ public class Food {
     public static Food getFood(int id) {
         return Main.sql.getFood(id, "id", false).get(0);
     }
-    public double[] getPrice(int i) {
+    public
+    public double[] getPrice(int id) {
         double[] prices = new double[2];
-        prices[0] = 1100;
-        prices[1] = 10;
+        prices[0] = price;
+        prices[1] = ;
         return prices;
     }
 }

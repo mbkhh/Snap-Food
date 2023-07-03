@@ -63,7 +63,6 @@ public class User {
     static void loginUser (String username , String password) {
         String ans;
         boolean get = true;
-
         if (Main.sql.getUser(username) == null) {
             System.out.println("Invalid username! Username doesn't exist!");
         }

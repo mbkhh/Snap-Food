@@ -290,8 +290,6 @@ public class Order {
             }
         }
     }
-    //TODO BAGHER MUST CREATE A FUNCTION FOR ALL ORDERS OF A RESTAURANT
-    //first element is for all orders second is for just open orders
     public static ArrayList<Order> openOrders(int restaurantId) {
         ArrayList<Order> orders = Main.sql.getRestaurantOpenOrder(restaurantId);
         return orders;

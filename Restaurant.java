@@ -54,16 +54,19 @@ public class Restaurant {
         return Main.sql.getRestaurant(id, "id", false).get(0);
     }
     public static void printRestaurant(int ownerId) {
-        ArrayList<Restaurant> restaurants = new ArrayList<>(Main.sql.getRestaurant(ownerId, "ownerId", false));
-        if (restaurants.size() == 0)
-            System.out.println("You don't have any restaurant");
-        else if (restaurants.size() == 1) {
-            printRestaurant(restaurants, "Yours restaurant:");
-            currentRestaurant = restaurants.get(0);
-            System.out.println("You entered your restaurant successfully");
+        if (currentRestaurant.owner.name.equals(User.currentUser.name)) {
+            ArrayList<Restaurant> restaurants = new ArrayList<>(Main.sql.getRestaurant(ownerId, "ownerId", false));
+            if (restaurants.size() == 0)
+                System.out.println("You don't have any restaurant");
+            else if (restaurants.size() == 1) {
+                printRestaurant(restaurants, "Yours restaurant:");
+                currentRestaurant = restaurants.get(0);
+            } else
+                printRestaurant(restaurants, "Yours restaurants:");
         }
-        else
-            printRestaurant(restaurants, "Yours restaurants:");
+        else {
+            printRestaurant(Main.sql.getRestaurant(0, "", true), "These are all of the restaurants:");
+        }
     }
     public static boolean deleteRestaurant(int id) {
         if (getRestaurant(id) != null) {
@@ -82,6 +85,6 @@ public class Restaurant {
     }
     public void editFoodType(String type) {
         Main.sql.editRestaurant(id, owner.id, name, type, postCost);
-        //TODO delete all the foods
+        Main.sql.deleteFromFood(id, "restaurantId");
     }
 }

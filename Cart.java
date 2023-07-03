@@ -62,7 +62,7 @@ public class Cart {
         String leftAlignFormat = "| %-25s | %-10d | %-5d | %-8d | %-10d |%n";
         String leftAlignHeaderFormat = "| %-25s | %-10s | %-5s | %-8s | %-10s |%n";
         System.out.println("--------------------------------------------------------------------------");
-        System.out.format(leftAlignHeaderFormat,"Foodname","Cost","Count","Discount","Total Cost");
+        System.out.format(leftAlignHeaderFormat,"FoodName","Cost","Count","Discount","Total Cost");
         System.out.println("--------------------------------------------------------------------------");
         for (int i = 0; i < cart.size(); i++) {
             // System.out.println(cart.get(i).food.name + "\t" +  cart.get(i).cost + "\t" +  cart.get(i).count + "\t" +  "0" + "\t" +  cart.get(i).cost*cart.get(i).count);
