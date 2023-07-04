@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.InvalidPropertiesFormatException;
 import java.util.Scanner;
 
 public class Main {
@@ -319,10 +321,29 @@ public class Main {
                                 int price = Integer.parseInt(command);
                                 System.out.println("enter the type: ");
                                 command = scanner.nextLine();
-                                if (command.matches("\\w+")) {
-
+                                if (command.matches("\\w+") && Functions.stringToEnum(command).get(0) != null) {
+                                    String type = command;
+                                    System.out.println("is it active? ");
+                                    command = scanner.nextLine();
+                                    if (command.matches("yes") || command.matches("no")) {
+                                        String isActive = command;
+                                        System.out.println("enter the discountPercent it must be between 0 and 50 (if want, you can say 0): ");
+                                        command = scanner.nextLine();
+                                        if (command.matches("\\d+") && Integer.parseInt(command) <= 50) {
+                                            int discountPercent = Integer.parseInt(command);
+                                            System.out.println("enter the period of time that you want the discount lasts by number of hours and minutes (something like 4h4m or 0h0m for nothing)");
+                                            command = scanner.nextLine();
+                                            if (command.matches("\\d+h\\d+m")) {
+                                                long discountTime = Integer.parseInt(command.split("\\w")[0]) * 3600000L + Integer.parseInt(command.split("\\w")[1]) * 60000L;
+                                                Food.addFood(Restaurant.currentRestaurant.id, name, price, type, discountPercent, new Date().getTime() + discountTime, isActive);
+                                            } else
+                                                System.out.println("invalid time");
+                                        } else
+                                            System.out.println("invalid discount percent");
+                                    } else
+                                        System.out.println("invalid answer");
                                 } else
-                                    System.out.println("invalid price type");
+                                    System.out.println("invalid type");
                             } else
                                 System.out.println("invalid price type");
                         } else
@@ -330,6 +351,16 @@ public class Main {
                     } else
                         System.out.println("you don't have an access to add food");
                 }
+                else if (command.matches("delete\\s+food\\s+with\\s+id\\s+\\d+")) {
+                    if (Restaurant.currentRestaurant.id == User.currentUser.id){
+                        if (Food.deleteFood(Integer.parseInt(commands[4])))
+                            System.out.println("successful");
+                        else
+                            System.out.println("there wasn't any restaurant with this id");
+                    } else
+                        System.out.println("You don't have an access to delete this food");
+                }
+
             }
 
         }while (!command.equals("end"));
