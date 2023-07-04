@@ -93,6 +93,9 @@ public class Main {
             else if(command.matches("(?i)display\\s+cart\\s+status\\s*") && !User.checkCurrentUser2()) {
                 Cart.printCart(User.currentUser);
             }
+            else if(command.matches("(?i)display\\s+discount\\s+codes\\s*") && !User.checkCurrentUser2()) {
+                DiscountCode.getUserDiscountCodes(User.currentUser);
+            }
             else if(command.matches("(?i)confirm\\s+order\\s*") && !User.checkCurrentUser2()) {
                 Order.confirmOrder(User.currentUser);
             }
@@ -150,58 +153,111 @@ public class Main {
                     Order.getRestaurantAllOrder(User.currentUser);
                 }
             }
-            else if(command.matches("(?i)register\\s+new\\s+user\\s*") && !User.checkCurrentUser()) {
-
-                System.out.println("Enter type of user : 1-normal 2-restaurantOwner 3-Service 4-developer");
+            if(command.matches("(?i)register\\s+new\\s+user\\s*") && !User.checkCurrentUser())
+            {   
+                do{
+                System.out.println("Enter type of user : 1-normal 2-BusinessOwner 3-Delivery"); 
+                if(info.size()>=1)
+                info.remove(0);
                 command  = scanner.nextLine();
                 info.add(command.trim());
-
-                System.out.println("Enter username:");
+                }
+                while (!User.addUser(info));
+                
+                do{
+                System.out.println("Enter username:"); 
+                if(info.size()>=2)  
+                info.remove(1);
                 command  = scanner.nextLine();
                 info.add(command.trim());
+                }
+                while (!User.addUser(info));
 
-                System.out.println("Enter password:");
+                do{
+                System.out.println("Enter password:"); 
+                if(info.size()>=3)  
+                info.remove(2);   
                 command  = scanner.nextLine();
                 info.add(command.trim());
+                }
+                while (!User.addUser(info));
 
-                System.out.println("Enter full name:");
+                do{
+                System.out.println("Enter full name:");  
+                if(info.size()>=4)  
+                info.remove(3);
                 command  = scanner.nextLine();
                 info.add(command.trim());
+                }
+                while (!User.addUser(info));
 
+             
                 System.out.println("Enter security question in case you forget your pass:");
                 command  = scanner.nextLine();
                 info.add(command.trim());
-
+               
                 System.out.println("Enter security answer:");
                 command  = scanner.nextLine();
                 info.add(command.trim());
-
+                
                 System.out.println("Your balance is 0 toomans. Do you want to charge it ? Enter 1-Yes or 2-No");
                 command  = scanner.nextLine();
                 command.trim();
-                if(command.matches("1")) {
+                if(command.matches("1"))
+                {
                     System.out.println("Enter balance:");
                     command  = scanner.nextLine();
                     info.add(command.trim());
                 }
-                else if(command.matches("2")) {
+                else if(command.matches("2"))
+                {
                     info.add("0");
                 }
+                do{
+                    System.out.println("Enter an address:");  
+                    if(info.size()>=8)  
+                    info.remove(7);
+                    command  = scanner.nextLine();
+                    info.add(command.trim());
+                    }
+                    while (!User.addUser(info));
 
 
-
-                User.addUser(info.get(1),info.get(2),info.get(3),info.get(4),info.get(5),Integer.parseInt(info.get(0)) ,Integer.parseInt(info.get(6)) );
-                info = new ArrayList<String>();
+                info = new ArrayList<String>(); 
+               
 
             }
-            else if(command.matches("(?i)remove\\s+user\\s+with+\\s+username+\\s+\".+\"\\s*") && !User.checkCurrentUser()) {
+
+            else if(command.matches("(?i)remove\\s+user\\s+with+\\s+username+\\s+\".+\"\\s*") && !User.checkCurrentUser())
+            {   
                 info.add(command.split("\"")[1].trim());
+
                 System.out.println("Enter password:");
                 command  = scanner.nextLine();
                 info.add(command.trim());
                 User.deleteAccount(info.get(0), info.get(1));
-                info = new ArrayList<String>();
+                info = new ArrayList<String>(); 
                 command  = scanner.nextLine();
+
+
+            }
+
+            else if(command.matches("(?i)login\\s+user\\s+with+\\s+username+\\s+\".+\"\\s*") && !User.checkCurrentUser())
+            {
+            
+                info.add(command.split("\"")[1].trim());
+
+                System.out.println("Enter password:");
+                command  = scanner.nextLine();
+                info.add(command);
+                User.loginUser(info.get(0), info.get(1));
+                info = new ArrayList<String>();
+               
+            }
+
+            else if(command.matches("(?i)logout+\\s*") && !User.checkCurrentUser2()) 
+            {
+                User.logoutUser();
             }
             else if (command.matches("(?i)charge\\s+my\\s+account+\\s+\"\\d+\"\\s*") && !User.checkCurrentUser2())
             {
@@ -213,22 +269,6 @@ public class Main {
             else if (command.matches("(?i)show\\s+my\\s+balance+\\s*") && !User.checkCurrentUser2())
             {
               System.out.println("Your account balance is "+User.getBalance());
-            }
-            //TODO PARHAM MUST USE THE FUNCTION THAT PRINT ALL RESTAURANTS
-            //TODO YOU MUST BUILD A CONFIGURATION THAT REGISTRATION AND LOGIN IS FOR WHEN WE DON'T LOGIN BEFORE AND LOGOUT FOR WHEN WE HAVE LOGGED IN BEFORE
-            else if(command.matches("(?i)login\\s+user\\s+with+\\s+username+\\s+\".+\"\\s*") && !User.checkCurrentUser()) {
-                info.add(command.split("\"")[1].trim());
-                System.out.println("Enter password:");
-                command  = scanner.nextLine();
-                info.add(command);
-                User.loginUser(info.get(0), info.get(1));
-                info = new ArrayList<String>();
-                Restaurant.printRestaurant(User.currentUser.id);
-                if (Restaurant.currentRestaurant != null)
-                    System.out.println("You entered your restaurant successfully");
-            }
-            else if(command.matches("(?i)logout+\\s*") && !User.checkCurrentUser2()) {
-                User.logoutUser();
             }
 
             /////////////////

@@ -2,9 +2,10 @@ public enum FoodType {
     IRANIAN("IRANIAN"),
     KEBAB("KEBAB"),
     FAST_FOOD("FAST_FOOD"),
-    TYPE1("TYPE1"),
-    TYPE2("TYPE2"),
-    TYPE3("TYPE3"),
+    DRINK("DRINK"),
+    FRIED("FRIED"),
+    PASTA("PASTA"),
+    SEAFOOD("SEAFOOD"),
     /////////////////////////////////
     // TODO INSERT YOUR TYPES OF FOOD
     /////////////////////////////////

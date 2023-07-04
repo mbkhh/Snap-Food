@@ -54,7 +54,7 @@ public class Restaurant {
         return Main.sql.getRestaurant(id, "id", false).get(0);
     }
     public static void printRestaurant(int ownerId) {
-        if (currentRestaurant.owner.name.equals(User.currentUser.name)) {
+        if (currentRestaurant!=null && currentRestaurant.owner.name.equals(User.currentUser.name)) {
             ArrayList<Restaurant> restaurants = new ArrayList<>(Main.sql.getRestaurant(ownerId, "ownerId", false));
             if (restaurants.size() == 0)
                 System.out.println("You don't have any restaurant");

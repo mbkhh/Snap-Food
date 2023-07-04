@@ -35,7 +35,7 @@ public class Food {
         }
         return false;
     }
-    public static void printFood(ArrayList<Food> foods, String topic) {
+    public static void printFood(ArrayList<Restaurant> restaurants, String topic) {
         String leftAlignFormat = "| %-5d | %-25s | %-25s | %-10d |%n";
         String leftAlignHeaderFormat = "| %-5s | %-25s | %-25s | %-10s |%n";
         String dashedLine = "--------------------------------------------------------------------------";
@@ -51,7 +51,7 @@ public class Food {
     public double[] getPrice(int id) {
         double[] prices = new double[2];
         prices[0] = price;
-        prices[1] = ;
+        prices[1] = price*discountPercent;
         return prices;
     }
 }

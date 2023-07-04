@@ -238,6 +238,61 @@ public class Sql {
             System.out.println("Could not Insert data to database : InsertToOrder : "+e.getMessage());
         }
     }
+    public void InsertToDiscountCode(int userId,  String code , int percent) {
+        try {
+            Statement stm =  connection.createStatement();
+            stm.executeUpdate( "Insert INTO `DiscountCode` (userId ,code ,percent) VALUES ('"+userId+"' ,'"+code+"' ,'"+percent+"');" );
+            stm.close();
+        } catch (SQLException e) {
+            System.out.println("Could not Insert data to database : InsertToDiscountCode : "+e.getMessage());
+        }
+    }
+    public void deleteFromDiscountCode(int ID ) {
+        try {
+            Statement stm = connection.createStatement();
+            stm.executeUpdate( "DELETE FROM `DiscountCode` WHERE `id` = "+ID+";" );
+            stm.close();
+        } catch (SQLException e) {
+            System.out.println("Could not delete data to database : deleteFromDiscountCode : "+e.getMessage());
+        }
+    }
+    public ArrayList<DiscountCode> getAllDiscountCodeOfUser(int userId) {
+        ArrayList<DiscountCode> ans = new ArrayList<DiscountCode>();
+        try {
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery( "SELECT * FROM `DiscountCode` WHERE `userId` ="+userId+" ;" );
+            while ( rs.next() ) {
+                int id = rs.getInt("id");
+                String code = rs.getString("code");
+                int percent = rs.getInt("percent");
+                ans.add(new DiscountCode(id, userId,code,percent));
+            }
+            rs.close();
+            stm.close();
+            return ans;
+        } catch (SQLException e) {
+            System.out.println("Could not select data from database : getAllDiscountCodeOfUser : "+e.getMessage());
+            return ans;
+        }
+    }
+    public ArrayList<DiscountCode> getDiscountCodeOfUser(int userId,String code) {
+        ArrayList<DiscountCode> ans = new ArrayList<DiscountCode>();
+        try {
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery( "SELECT * FROM `DiscountCode` WHERE `userId` ="+userId+" AND `code` ='"+code+"';" );
+            while ( rs.next() ) {
+                int id = rs.getInt("id");
+                int percent = rs.getInt("percent");
+                ans.add(new DiscountCode(id, userId,code,percent));
+            }
+            rs.close();
+            stm.close();
+            return ans;
+        } catch (SQLException e) {
+            System.out.println("Could not select data from database : getDiscountCodeOfUser : "+e.getMessage());
+            return ans;
+        }
+    }
     public ArrayList<Order> getAllOrderOfUser(int userId) {
         ArrayList<Order> ans = new ArrayList<Order>();
         try {
