@@ -11,17 +11,13 @@ public class Main {
         scanner = new Scanner(System.in);
         String command;
         String[] commands;
-        ////////////////////
-        // add your variable here
-
-        ////////////////////
-        //Map.InsertMapFromFile();
-        //Map.findPath(127, 414);
-
         ArrayList<String> info = new ArrayList<String>();
 
+        //Map.InsertMapFromFile();
+        //Map.findPath(127, 414);
         //test
         //User.currentUser = User.getUserById(1);
+
         do {
             command  = scanner.nextLine();
             command.trim();
@@ -62,17 +58,14 @@ public class Main {
                     continue;
                 Cart.removeFromCart(Functions.parseInt(command.split(" ")[4]),User.currentUser);
             }
-            else if(command.matches("(?i)select\\s+order\\s+\\d+\\s*") && !User.checkCurrentUser2())
-            {
+            else if (command.matches("(?i)select\\s+order\\s+\\d+\\s*") && !User.checkCurrentUser2()) {
                 if(User.currentUser.type==2)
                     Order.printOrderRestaurant(User.currentUser, Functions.parseInt(command.split(" ")[2]));
                 else
                     Order.printOrder(User.currentUser, Functions.parseInt(command.split(" ")[2]));
             }
-            else if(command.matches("(?i)edit\\s+order\\s+\\d+\\s*") && !User.checkCurrentUser2())
-            {
-                if(User.currentUser.type==2)
-                {
+            else if (command.matches("(?i)edit\\s+order\\s+\\d+\\s*") && !User.checkCurrentUser2()) {
+                if(User.currentUser.type==2) {
                     System.out.println("Enter new status:");
                     String status  = scanner.nextLine();
                     System.out.println("Enter new Estiamted time (null for no change):");
@@ -82,76 +75,57 @@ public class Main {
                     Order.editOrder(tim, status, User.currentUser, Functions.parseInt(command.split(" ")[2]));
                 }
             }
-            else if(command.matches("(?i)show\\s+ESTIMATED\\s+DELIVERY\\s+time\\s*") && !User.checkCurrentUser2())
-            {
+            else if (command.matches("(?i)show\\s+ESTIMATED\\s+DELIVERY\\s+time\\s*") && !User.checkCurrentUser2()) {
                 Order.showEstimatedTimeOfOrder(User.currentUser);
             }
-            else if(command.matches("(?i)access\\s+order\\s+history\\s*") && !User.checkCurrentUser2())
-            {
+            else if (command.matches("(?i)access\\s+order\\s+history\\s*") && !User.checkCurrentUser2()) {
                 Order.printOrderHistory(User.currentUser);
             }
-            else if(command.matches("(?i)display\\s+cart\\s+status\\s*") && !User.checkCurrentUser2()) {
+            else if (command.matches("(?i)display\\s+cart\\s+status\\s*") && !User.checkCurrentUser2()) {
                 Cart.printCart(User.currentUser);
             }
-            else if(command.matches("(?i)confirm\\s+order\\s*") && !User.checkCurrentUser2()) {
+            else if (command.matches("(?i)confirm\\s+order\\s*") && !User.checkCurrentUser2()) {
                 Order.confirmOrder(User.currentUser);
             }
-            else if(command.matches("(?i)show\\s+map\\s*") && !User.checkCurrentUser2()) {
+            else if (command.matches("(?i)show\\s+map\\s*") && !User.checkCurrentUser2()) {
                 Map.showMap();
             }
-            else if(command.matches("(?i)show\\s+Path\\s+\\d+\\s*") && !User.checkCurrentUser2()) {
+            else if (command.matches("(?i)show\\s+Path\\s+\\d+\\s*") && !User.checkCurrentUser2()) {
                 Order.showBestPath(User.currentUser,Functions.parseInt(command.split(" ")[2]) );
             }
-            else if(command.matches("(?i)show\\s+free\\s+orders\\s*") && !User.checkCurrentUser2()) {
+            else if (command.matches("(?i)show\\s+free\\s+orders\\s*") && !User.checkCurrentUser2()) {
                 if(User.currentUser.type==3)
-                {
                     Order.showFreeOrders();
-                }
             }
-            else if(command.matches("(?i)find\\s+best\\s+path\\s+\\d+\\s*") && !User.checkCurrentUser2()) {
+            else if (command.matches("(?i)find\\s+best\\s+path\\s+\\d+\\s*") && !User.checkCurrentUser2()) {
                 if(User.currentUser.type==3)
-                {
                     Order.showBestPathDelivery(User.currentUser,Functions.parseInt(command.split(" ")[3]));
-                }
             }
-            else if(command.matches("(?i)accept\\s+order\\s+\\d+\\s*") && !User.checkCurrentUser2()) {
+            else if (command.matches("(?i)accept\\s+order\\s+\\d+\\s*") && !User.checkCurrentUser2()) {
                 if(User.currentUser.type==3)
-                {
                     Order.acceptOrder(User.currentUser, Functions.parseInt(command.split(" ")[2]));
-                }
             }
-            else if(command.matches("(?i)receive\\s+order\\s+\\d+\\s*") && !User.checkCurrentUser2()) {
+            else if (command.matches("(?i)receive\\s+order\\s+\\d+\\s*") && !User.checkCurrentUser2()) {
                 if(User.currentUser.type==3)
-                {
                     Order.recieveOrder(User.currentUser, Functions.parseInt(command.split(" ")[2]));
-                }
             }
-            else if(command.matches("(?i)complete\\s+order\\s+\\d+\\s*") && !User.checkCurrentUser2()) {
+            else if (command.matches("(?i)complete\\s+order\\s+\\d+\\s*") && !User.checkCurrentUser2()) {
                 if(User.currentUser.type==3)
-                {
                     Order.CompleteOrder(User.currentUser, Functions.parseInt(command.split(" ")[2]));
-                }
             }
-            else if(command.matches("(?i)accept\\s+order\\s+\\d+\\s*") && !User.checkCurrentUser2()) {
+            else if (command.matches("(?i)accept\\s+order\\s+\\d+\\s*") && !User.checkCurrentUser2()) {
                 if(User.currentUser.type==3)
-                {
                     Order.acceptOrder(User.currentUser, Functions.parseInt(command.split(" ")[2]));
-                }
             }
-            else if(command.matches("(?i)display\\s+open\\s+orders\\s*") && !User.checkCurrentUser2()) {
+            else if (command.matches("(?i)display\\s+open\\s+orders\\s*") && !User.checkCurrentUser2()) {
                 if(User.currentUser.type==2)
-                {
                     Order.getRestaurantOpenOrder(User.currentUser);
-                }
             }
-            else if(command.matches("(?i)show\\s+orders\\s+history\\s*") && !User.checkCurrentUser2()) {
+            else if (command.matches("(?i)show\\s+orders\\s+history\\s*") && !User.checkCurrentUser2()) {
                 if(User.currentUser.type==2)
-                {
                     Order.getRestaurantAllOrder(User.currentUser);
-                }
             }
-            else if(command.matches("(?i)register\\s+new\\s+user\\s*") && !User.checkCurrentUser()) {
-
+            else if (command.matches("(?i)register\\s+new\\s+user\\s*") && !User.checkCurrentUser()) {
                 System.out.println("Enter type of user : 1-normal 2-restaurantOwner 3-Service 4-developer");
                 command  = scanner.nextLine();
                 info.add(command.trim());
@@ -188,13 +162,11 @@ public class Main {
                     info.add("0");
                 }
 
-
-
                 User.addUser(info.get(1),info.get(2),info.get(3),info.get(4),info.get(5),Integer.parseInt(info.get(0)) ,Integer.parseInt(info.get(6)) );
                 info = new ArrayList<String>();
 
             }
-            else if(command.matches("(?i)remove\\s+user\\s+with+\\s+username+\\s+\".+\"\\s*") && !User.checkCurrentUser()) {
+            else if (command.matches("(?i)remove\\s+user\\s+with+\\s+username+\\s+\".+\"\\s*") && !User.checkCurrentUser()) {
                 info.add(command.split("\"")[1].trim());
                 System.out.println("Enter password:");
                 command  = scanner.nextLine();
@@ -203,20 +175,16 @@ public class Main {
                 info = new ArrayList<String>();
                 command  = scanner.nextLine();
             }
-            else if (command.matches("(?i)charge\\s+my\\s+account+\\s+\"\\d+\"\\s*") && !User.checkCurrentUser2())
-            {
+            else if (command.matches("(?i)charge\\s+my\\s+account+\\s+\"\\d+\"\\s*") && !User.checkCurrentUser2()) {
                 info.add(command.split("\"")[1].trim());
                 User.increaseBalance(Integer.parseInt(info.get(0)));
                 info = new ArrayList<String>();
 
             }
-            else if (command.matches("(?i)show\\s+my\\s+balance+\\s*") && !User.checkCurrentUser2())
-            {
+            else if (command.matches("(?i)show\\s+my\\s+balance+\\s*") && !User.checkCurrentUser2()) {
               System.out.println("Your account balance is "+User.getBalance());
             }
-            //TODO PARHAM MUST USE THE FUNCTION THAT PRINT ALL RESTAURANTS
-            //TODO YOU MUST BUILD A CONFIGURATION THAT REGISTRATION AND LOGIN IS FOR WHEN WE DON'T LOGIN BEFORE AND LOGOUT FOR WHEN WE HAVE LOGGED IN BEFORE
-            else if(command.matches("(?i)login\\s+user\\s+with+\\s+username+\\s+\".+\"\\s*") && !User.checkCurrentUser()) {
+            else if (command.matches("(?i)login\\s+user\\s+with+\\s+username+\\s+\".+\"\\s*") && !User.checkCurrentUser()) {
                 info.add(command.split("\"")[1].trim());
                 System.out.println("Enter password:");
                 command  = scanner.nextLine();
@@ -227,46 +195,43 @@ public class Main {
                 if (Restaurant.currentRestaurant != null)
                     System.out.println("You entered your restaurant successfully");
             }
-            else if(command.matches("(?i)logout+\\s*") && !User.checkCurrentUser2()) {
+            else if (command.matches("(?i)logout+\\s*") && !User.checkCurrentUser2()) {
                 User.logoutUser();
             }
-
-            /////////////////
-            // taha's main //
-            /////////////////
-
-            if (command.matches("add\\s+restaurant")) {
-                System.out.print("enter the owner id: ");
-                command = scanner.nextLine();
-                if (command.matches("\\w+")) {
-                    int ownerId = Integer.parseInt(command);
-                    if (User.getUserById(ownerId) != null) {
-                        System.out.print("enter the name: ");
-                        command = scanner.nextLine();
-                        if (command.matches("\\w+")) {
-                            String name = command;
-                            System.out.print("enter the post cost: ");
+            else if (command.matches("add\\s+restaurant")) {
+                if (User.currentUser.type == 4) {
+                    System.out.print("enter the owner id: ");
+                    command = scanner.nextLine();
+                    if (command.matches("\\w+")) {
+                        int ownerId = Integer.parseInt(command);
+                        if (User.getUserById(ownerId) != null) {
+                            System.out.print("enter the name: ");
                             command = scanner.nextLine();
                             if (command.matches("\\w+")) {
-                                int postCost = Integer.parseInt(command);
-                                System.out.print("enter the type(s) with a  between them if they're two or more without any white space: ");
+                                String name = command;
+                                System.out.print("enter the post cost: ");
                                 command = scanner.nextLine();
-                                if (command.matches("[\\w,]+")) {
-                                    String type = command;
-                                    if (!Restaurant.addRestaurant(Integer.parseInt(commands[5]), commands[7], Integer.parseInt(commands[10]), commands[12]))
-                                        System.out.println("The restaurant was successfully added");
-                                    else
-                                        System.out.println("There wasn't a user with this id");
+                                if (command.matches("\\w+")) {
+                                    int postCost = Integer.parseInt(command);
+                                    System.out.print("enter the type(s) with a  between them if they're two or more without any white space: ");
+                                    command = scanner.nextLine();
+                                    if (command.matches("[\\w,]+")) {
+                                        String type = command;
+                                        if (!Restaurant.addRestaurant(Integer.parseInt(commands[5]), commands[7], Integer.parseInt(commands[10]), commands[12]))
+                                            System.out.println("The restaurant was successfully added");
+                                        else
+                                            System.out.println("There wasn't a user with this id");
+                                    } else
+                                        System.out.println("Invalid food type type");
                                 } else
-                                    System.out.println("Invalid food type type");
+                                    System.out.println("Invalid post cost type");
                             } else
-                                System.out.println("Invalid post cost type");
+                                System.out.println("Invalid name type");
                         } else
-                            System.out.println("Invalid name type");
+                            System.out.println("There wasn't a user with this id");
                     } else
-                        System.out.println("There wasn't a user with this id");
-                } else
-                    System.out.println("Invalid owner id type");
+                        System.out.println("Invalid owner id type");
+                }
             }
             else if (command.matches("delete\\s+restaurant\\s+with\\s+id\\s+\\d+")) {
                 if (User.currentUser.id == Restaurant.getRestaurant(Integer.parseInt(commands[4])).id){
@@ -278,9 +243,10 @@ public class Main {
                     System.out.println("You don't have an access to delete this restaurant");
             }
             else if (command.matches("select\\s+restaurant\\s+with\\s+id\\s+\\d+")) {
-                if (Restaurant.setCurrentRestaurant(Integer.parseInt(commands[4])))
+                if (Restaurant.setCurrentRestaurant(Integer.parseInt(commands[4]))) {
+                    Food.printFood(Restaurant.currentRestaurant.id);
                     System.out.println("You entered restaurant successfully");
-                else
+                } else
                     System.out.println("There wasn't any restaurant with this id");
             }
             if (Restaurant.currentRestaurant != null) {
@@ -351,16 +317,38 @@ public class Main {
                     } else
                         System.out.println("you don't have an access to add food");
                 }
-                else if (command.matches("delete\\s+food\\s+with\\s+id\\s+\\d+")) {
-                    if (Restaurant.currentRestaurant.id == User.currentUser.id){
-                        if (Food.deleteFood(Integer.parseInt(commands[4])))
-                            System.out.println("successful");
-                        else
-                            System.out.println("there wasn't any restaurant with this id");
-                    } else
-                        System.out.println("You don't have an access to delete this food");
+                else if (command.matches("select\\s+food\\s+with\\s+id\\s+\\d+")) {
+                    if (Food.setCurrentFood(Integer.parseInt(commands[4])))
+                        System.out.println("You entered restaurant successfully");
+                    else
+                        System.out.println("There wasn't any food with this id");
                 }
-
+                if (Food.currentFood != null) {
+                    if (command.matches("delete\\s+food\\s+with\\s+id\\s+\\d+")) {
+                        if (Restaurant.currentRestaurant.id == User.currentUser.id) {
+                            if (Food.deleteFood(Integer.parseInt(commands[4])))
+                                System.out.println("successful");
+                            else
+                                System.out.println("there wasn't any restaurant with this id");
+                        } else
+                            System.out.println("You don't have an access to delete this food");
+                    }
+                    else if (command.matches("change\\s+food\\s+name\\s+with\\s+id\\s+\\d+\\s+to\\s+\\w+")) {
+                        ;
+                    }
+                    else if (command.matches("change\\s+food\\s+price\\s+with\\s+id\\s+\\d+\\s+to\\s+\\w+")) {
+                        ;
+                    }
+                    else if (command.matches("activate\\s+food\\s+with\\s+id\\s+\\d+")) {
+                        ;
+                    }
+                    else if (command.matches("diactivate\\s+food\\s+with\\s+id\\s+\\d+")) {
+                        ;
+                    }
+                    else if (command.matches("set\\s+disscount\\s+for\\s+foos\\s+with\\s+id\\s+\\d+")) {
+                        ;
+                    }
+                }
             }
 
         }while (!command.equals("end"));

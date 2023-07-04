@@ -59,17 +59,17 @@ public class Cart {
         }
     }
     public static void printCart(ArrayList<Cart> cart) {
-        String leftAlignFormat = "| %-25s | %-10d | %-5d | %-8d | %-10d |%n";
-        String leftAlignHeaderFormat = "| %-25s | %-10s | %-5s | %-8s | %-10s |%n";
-        System.out.println("--------------------------------------------------------------------------");
-        System.out.format(leftAlignHeaderFormat,"FoodName","Cost","Count","Discount","Total Cost");
-        System.out.println("--------------------------------------------------------------------------");
+        String leftAlignFormat = "| %-15s | %-10d | %-5d | %-11d | %-10d |%n";
+        String leftAlignHeaderFormat = "| %-15s | %-10s | %-5s | %-11s | %-10s |%n";
+        System.out.println("-------------------------------------------------------------------");
+        System.out.format(leftAlignHeaderFormat,"   FoodName"," Cost PE","Count","Discount PE","Total Cost");
+        System.out.println("-------------------------------------------------------------------");
         for (int i = 0; i < cart.size(); i++) {
             // System.out.println(cart.get(i).food.name + "\t" +  cart.get(i).cost + "\t" +  cart.get(i).count + "\t" +  "0" + "\t" +  cart.get(i).cost*cart.get(i).count);
-            double[] prices = cart.get(i).food.getPrice(1);
-            System.out.format(leftAlignFormat,cart.get(i).food.name,(int)(prices[0] + prices[1]),cart.get(i).count,(int)prices[1],(int)(prices[0]*cart.get(i).count));
+            int[] prices = cart.get(i).food.getPrice();
+            System.out.format(leftAlignFormat, cart.get(i).food.name, prices[0], cart.get(i).count, prices[0] - prices[1], (prices[1] * cart.get(i).count));
         }
-        System.out.println("--------------------------------------------------------------------------");
+        System.out.println("-------------------------------------------------------------------");
         System.out.println("Post cost :" + cart.get(0).food.restaurant.postCost);
     }
     public static void printCart(User user) {

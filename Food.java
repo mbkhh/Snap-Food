@@ -11,7 +11,6 @@ public class Food {
     public int discountPercent;
     public Date discountTime;
     public boolean isActive;
-    public static ArrayList<Food> foods = new ArrayList<Food>();
     public Food (int id, int restaurantId, String name, int price, String type, int discountPercent, long discountTime, String isActive) {
         this.id = id;
         this.restaurant = Restaurant.getRestaurant(restaurantId);
@@ -36,22 +35,34 @@ public class Food {
         return false;
     }
     public static void printFood(ArrayList<Food> foods, String topic) {
-        String leftAlignFormat = "| %-5d | %-25s | %-25s | %-10d |%n";
-        String leftAlignHeaderFormat = "| %-5s | %-25s | %-25s | %-10s |%n";
-        String dashedLine = "--------------------------------------------------------------------------";
+        String leftAlignFormat = "| %-5d | %-12d | %-15s | %-15s | %-15s | %-17s | %-8s |%n";
+        String leftAlignHeaderFormat = "| %-5s | %-12s | %-15s | %-15s | %-15s | %-17s | %-8s |%n";
+        String dashedLine = "-------------------------------------------------------------------------------------------------------------";
         System.out.println(topic);
         System.out.println(dashedLine);
-        System.out.format(leftAlignHeaderFormat,"Id","RestaurantId" ,"Name","Type","DiscountPercent", "");
+        System.out.format(leftAlignHeaderFormat," Id","RestaurantId" ,"     Name","     Type","DiscountPercent", "  DiscountLasts", "isActive");
         System.out.println (dashedLine);
-        for (int i = 0; i < restaurants.size(); i++)
-            System.out.format(leftAlignFormat,restaurants.get(i).id,restaurants.get(i).name,restaurants.get(i).typesToString(),restaurants.get(i).postCost);
+        for (Food food : foods)
+            System.out.format(leftAlignFormat, food.id, food.restaurant.id, food.name, food.foodType.getType(), food.discountPercent + "%", Functions.simpleDateFormat.format(food.discountTime), (food.isActive)? "yes" : "no");
         System.out.println(dashedLine);
     }
+    public static void printFood(int restaurantId) {
+        ArrayList<Food> foods = Main.sql.getFood(restaurantId, "restaurantId", false);
+        printFood(foods, "This is all restaurant's foods");
+    }
+    public static boolean setCurrentFood(int id) {
+        Food food = getFood(id);
+        if (food != null) {
+            currentFood = new Food(id, food.restaurant.id, food.name, food.price, food.foodType.getType(), food.discountPercent, food.discountTime.getTime(), (food.isActive) ? "yes" : "no");
+            return true;
+        }
+        return false;
+    }
 
-    public double[] getPrice(int id) {
-        double[] prices = new double[2];
+    public int[] getPrice() {
+        int[] prices = new int[2];
         prices[0] = price;
-        prices[1] = ;
+        prices[1] = (discountTime.after(new Date())) ? (int) (price * (1 - (double) discountPercent / 100)) : price;
         return prices;
     }
 }

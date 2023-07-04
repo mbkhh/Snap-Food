@@ -30,12 +30,12 @@ public class Restaurant {
         return foodType;
     }
     public static void printRestaurant(ArrayList<Restaurant> restaurants, String topic) {
-        String leftAlignFormat = "| %-5d | %-25s | %-25s | %-10d |%n";
-        String leftAlignHeaderFormat = "| %-5s | %-25s | %-25s | %-10s |%n";
-        String dashedLine = "--------------------------------------------------------------------------";
+        String leftAlignFormat = "| %-5d | %-15s | %-50s | %-8d |%n";
+        String leftAlignHeaderFormat = "| %-5s | %-15s | %-50s | %-8s |%n";
+        String dashedLine = "-------------------------------------------------------------------------------------------";
         System.out.println(topic);
         System.out.println(dashedLine);
-        System.out.format(leftAlignHeaderFormat,"Id","Name","Types","PostCost");
+        System.out.format(leftAlignHeaderFormat," Id","     Name","                       Types","PostCost");
         System.out.println (dashedLine);
         for (int i = 0; i < restaurants.size(); i++)
             System.out.format(leftAlignFormat,restaurants.get(i).id,restaurants.get(i).name,restaurants.get(i).typesToString(),restaurants.get(i).postCost);

@@ -256,8 +256,8 @@ public class Order {
             int totalPrice = 0;
             int totalDiscount = 0;
             for (int i = 0; i < te.size(); i++) {
-                totalPrice += te.get(i).food.getPrice(i)[0] * te.get(i).count;
-                totalDiscount += te.get(i).food.getPrice(i)[1] * te.get(i).count;
+                totalPrice += te.get(i).food.getPrice()[0] * te.get(i).count;
+                totalDiscount += (te.get(i).food.getPrice()[0] - te.get(i).food.getPrice()[1]) * te.get(i).count;
             }
             totalPrice += te.get(0).food.restaurant.postCost;
             if(totalPrice > user.balance)
