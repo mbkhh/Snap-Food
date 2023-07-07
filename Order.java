@@ -265,6 +265,8 @@ public class Order {
             else {
                 System.out.println("Discription: (if nothing just press enter)");
                 String discription = Main.scanner.nextLine();
+                System.out.println("Discount Code: (if nothing just press enter)");
+                String code = Main.scanner.nextLine();
                 Address resturantAddress = Address.getAddress(0, te.get(0).food.restaurant.id);
                 Address userAddress = Address.getAddress(user.id, 0);
                 if(userAddress == null) {
@@ -280,13 +282,31 @@ public class Order {
                     } while(Address.getAddress(user.id, 0) == null);
                     userAddress = Address.getAddress(user.id, 0);
                 }
+                int CodePrice = 0;
+                if (!code.isEmpty())
+                {
+                    ArrayList<DiscountCode>  discountCode = Main.sql.getDiscountCodeOfUser(user.id,code);
+                    if(discountCode.size() != 0)
+                    {
+                        CodePrice = totalPrice*discountCode.get(0).percent/100;
+                        Main.sql.deleteFromDiscountCode(discountCode.get(0).id);
+                    }
+                    else
+                    {
+                        System.out.println("invalid discount code");
+                        return;
+                    }
+                }
                 //System.out.println(System.currentTimeMillis());
                 Vertex x = Map.findPath(resturantAddress.node, userAddress.node);
-                Main.sql.InsertToOrder(user.id, te.get(0).food.restaurant.id, 0, x.getPath(), x.pathLength, x.pathLength*100, System.currentTimeMillis(), totalPrice, totalDiscount, OrderStatus.Registered, discription);
+                Main.sql.InsertToOrder(user.id, te.get(0).food.restaurant.id, 0, x.getPath(), x.pathLength, x.pathLength*100, System.currentTimeMillis(), totalPrice-CodePrice, totalDiscount+CodePrice, OrderStatus.Registered, discription);
                 int lastId = Main.sql.getOrderLastId();
                 Main.sql.finalizeCart(user.id, lastId);
-                User.reductionBalance(totalPrice);
+                User.reductionBalance(totalPrice-CodePrice);
                 System.out.println("Order with id "+lastId + " added successfully.");
+                ArrayList<Order> tes =  Main.sql.getAllOrderOfUser(user.id);
+                if(tes.size() == 3)
+                    Main.sql.InsertToDiscountCode(user.id, "3ORDER", 10  );
             }
         }
     }

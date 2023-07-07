@@ -38,6 +38,10 @@ public class Food {
         String leftAlignFormat = "| %-5d | %-12d | %-15s | %-15s | %-15s | %-17s | %-8s |%n";
         String leftAlignHeaderFormat = "| %-5s | %-12s | %-15s | %-15s | %-15s | %-17s | %-8s |%n";
         String dashedLine = "-------------------------------------------------------------------------------------------------------------";
+    public static void printFood(ArrayList<Restaurant> restaurants, String topic) {
+        String leftAlignFormat = "| %-5d | %-25s | %-25s | %-10d |%n";
+        String leftAlignHeaderFormat = "| %-5s | %-25s | %-25s | %-10s |%n";
+        String dashedLine = "--------------------------------------------------------------------------";
         System.out.println(topic);
         System.out.println(dashedLine);
         System.out.format(leftAlignHeaderFormat," Id","RestaurantId" ,"     Name","     Type","DiscountPercent", "  DiscountLasts", "isActive");

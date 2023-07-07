@@ -68,6 +68,8 @@ public class Cart {
             // System.out.println(cart.get(i).food.name + "\t" +  cart.get(i).cost + "\t" +  cart.get(i).count + "\t" +  "0" + "\t" +  cart.get(i).cost*cart.get(i).count);
             int[] prices = cart.get(i).food.getPrice();
             System.out.format(leftAlignFormat, cart.get(i).food.name, prices[0], cart.get(i).count, prices[0] - prices[1], (prices[1] * cart.get(i).count));
+            double[] prices = cart.get(i).food.getPrice(cart.get(i).id);
+            System.out.format(leftAlignFormat,cart.get(i).food.name,(int)(prices[0] + prices[1]),cart.get(i).count,(int)prices[1],(int)(prices[0]*cart.get(i).count));
         }
         System.out.println("-------------------------------------------------------------------");
         System.out.println("Post cost :" + cart.get(0).food.restaurant.postCost);
