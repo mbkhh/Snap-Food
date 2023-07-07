@@ -255,7 +255,7 @@ public class Main {
                 User.logoutUser();
             }
             else if (command.matches("add\\s+restaurant")) {
-                if (User.currentUser.type == 4) {
+                if (true) {
                     System.out.print("enter the owner id: ");
                     command = scanner.nextLine();
                     if (command.matches("\\w+")) {

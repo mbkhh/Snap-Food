@@ -5,8 +5,8 @@ public class Sql {
     public Sql() {
         try {
             Class.forName("org.sqlite.JDBC");
-            //connection = DriverManager.getConnection("jdbc:sqlite:D:\\Desktop\\Programing\\Snap-Food\\Databases\\test.db");
-            connection = DriverManager.getConnection("jdbc:sqlite:Databases\\test.db");
+            connection = DriverManager.getConnection("jdbc:sqlite:D:\\Desktop\\Programing\\Snap-Food\\Databases\\test.db");
+//            connection = DriverManager.getConnection("jdbc:sqlite:Databases\\test.db");
 //            connection.setAutoCommit(false);
         } catch (Exception e) {
             System.out.println("Database connection error : " + e.getMessage());
