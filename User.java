@@ -45,7 +45,7 @@ public class User {
         }
         else if (registerRequirments.size()==2)
         {
-            if(MainParham.sql.getUser(registerRequirments.get(1))!= null)
+            if(Main.sql.getUser(registerRequirments.get(1))!= null)
             {
                 System.out.println("Invalid username! Username is already in use!");
                 return false;
@@ -92,8 +92,8 @@ public class User {
         {   if(Integer.parseInt(registerRequirments.get(7)) >=1  && Integer.parseInt(registerRequirments.get(7)) <= 1000 )
             {
             
-            MainParham.sql.InsertToUser(registerRequirments.get(1), registerRequirments.get(2), registerRequirments.get(3), registerRequirments.get(4), registerRequirments.get(5), Integer.parseInt(registerRequirments.get(0)),Integer.parseInt(registerRequirments.get(6)));
-            MainParham.sql.InsertToAddress(MainParham.sql.getUser(registerRequirments.get(1)).id,0,Integer.parseInt(registerRequirments.get(7)));
+            Main.sql.InsertToUser(registerRequirments.get(1), registerRequirments.get(2), registerRequirments.get(3), registerRequirments.get(4), registerRequirments.get(5), Integer.parseInt(registerRequirments.get(0)),Integer.parseInt(registerRequirments.get(6)));
+            Main.sql.InsertToAddress(Main.sql.getUser(registerRequirments.get(1)).id,0,Integer.parseInt(registerRequirments.get(7)));
             System.out.println("User added successfully");
             return true;
             }
