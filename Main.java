@@ -264,7 +264,7 @@ public class Main {
                 Comment.printComment(Integer.parseInt(commands[5]), "restaurantId");
             }
             else if (command.matches("show\\s+restaurants")) {
-                if (Restaurant.currentRestaurant.owner.type == 2) {
+                if (Restaurant.currentRestaurant != null && Restaurant.currentRestaurant.owner.type == 2) {
                     Restaurant.printRestaurant(Restaurant.currentRestaurant.id);
                 }
                 else {
