@@ -19,7 +19,7 @@ public class Food {
         this.foodType = Functions.stringToEnum(foodType).get(0);
         this.discountPercent = discountPercent;
         this.discountTime = new Date(discountTime);
-        this.isActive = isActive.equals("YES");
+        this.isActive = isActive.equals("yes");
     }
     public static Food getFood(int id) {
         return Main.sql.getFood(id, "id", false, "").get(0);
