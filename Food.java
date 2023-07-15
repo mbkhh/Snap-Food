@@ -29,23 +29,27 @@ public class Food {
     }
     public static boolean editFood(int id, String whichPart, String data1, int data2, long data3) {
         Food food = getFood(id);
-        switch (whichPart) {
-            case "name" -> food.name = data1;
-            case "price" -> food.price = data2;
-            case "isActive" -> food.isActive = (data1.equals("yes"));
-            case "discount" -> {
-                food.discountPercent = data2;
-                food.discountTime = new Date(data3);
+        if (Order.openOrders(id).size() == 0) {
+            if (food != null) {
+                switch (whichPart) {
+                    case "name" -> food.name = data1;
+                    case "price" -> food.price = data2;
+                    case "isActive" -> food.isActive = (data1.equals("yes"));
+                    case "discount" -> {
+                        food.discountPercent = data2;
+                        food.discountTime = new Date(data3);
+                    }
+                }
+                Main.sql.editFood(id, food.restaurant.id, food.name, food.price, food.foodType.getFoodType(), food.discountPercent, food.discountTime.getTime(), (food.isActive) ? "yes" : "no");
+                currentFood = getFood(id);
+                return true;
             }
-        }
-        if (food != null) {
-            Main.sql.editFood(id, food.restaurant.id, food.name, food.price, food.foodType.getFoodType(), food.discountPercent, food.discountTime.getTime(), (food.isActive) ? "yes" : "no");
-            return true;
         }
         return false;
     }
     public static boolean deleteFood(int id) {
         if (getFood(id) != null) {
+            Main.sql.deleteFromCartByFoodId(id);
             Main.sql.deleteFromFood(id, "id");
             Main.sql.deleteFromComment(id, "foodId");
         }

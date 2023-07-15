@@ -13,16 +13,16 @@ public class Comment {
     public Comment replyComment;
     public int rate;
     public String Comment;
-    public Date addingTime;
+    public Date addTime;
     public static Comment currentComment = null;
-    public Comment(int id, int userId, int foodId, int restaurantId, int replyId, int rate, String comment, long addingTime) {
+    public Comment(int id, int userId, int foodId, int restaurantId, int replyId, int rate, String comment, long addTime) {
         this.id = id;
         this.user = User.getUserById(userId);
         this.food = (foodId > 0) ? Food.getFood(foodId) : null;
         this.restaurant = (restaurantId > 0) ? Restaurant.getRestaurant(restaurantId) : null;
         this.rate = rate;
         this.Comment = comment;
-        this.addingTime = new Date(addingTime);
+        this.addTime = new Date(addTime);
     }
     public static Comment getComment(int id) {
         return Main.sql.getComment(id, "id", false).get(0);
@@ -38,15 +38,15 @@ public class Comment {
     public static boolean setCurrentComment(int id) {
         Comment comment = getComment(id);
         if (comment != null) {
-            currentComment = new Comment(id, comment.user.id, (comment.food != null) ? comment.food.id : 0, (comment.restaurant != null) ? comment.restaurant.id : 0, (comment.replyComment != null) ? comment.replyComment.id : 0, comment.rate, comment.Comment, comment.addingTime.getTime());
+            currentComment = new Comment(id, comment.user.id, (comment.food != null) ? comment.food.id : 0, (comment.restaurant != null) ? comment.restaurant.id : 0, (comment.replyComment != null) ? comment.replyComment.id : 0, comment.rate, comment.Comment, comment.addTime.getTime());
             return true;
         }
         return false;
     }
-    public static boolean editComment(int id, int data1, String data2) {
+    public static boolean editComment(int id, String data1, int data2) {
         Comment comment = getComment(id);
-        if (comment != null && comment.user.id == User.currentUser.id) {
-            Main.sql.editComment(id, data2, data1, new Date().getTime());
+        if (comment != null) {
+            Main.sql.editComment(id, data1, data2);
             return true;
         }
         return false;
@@ -58,23 +58,35 @@ public class Comment {
         String leftAlignHeaderFormat2 = "| %-4s | %-6s | %-17s | %-127s | %-14s |%n";
         String dashedLine1 = "--------------------------------------------";
         String dashedLine2 = "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------";
-        System.out.println("topic:");
+        System.out.println(topic);
         System.out.println(dashedLine1);
-        System.out.format(leftAlignHeaderFormat1," Id","UserId" ,"   addingTime","rate");
+        System.out.format(leftAlignHeaderFormat1," Id","UserId" ,"   addTime","rate");
         System.out.println (dashedLine1);
         int sum = 0;
         for (Comment rating : ratings) {
-            System.out.format(leftAlignFormat1, rating.id, rating.user.id, Functions.simpleDateFormat.format(rating.addingTime), rating.rate);
+            System.out.format(leftAlignFormat1, rating.id, rating.user.id, Functions.simpleDateFormat.format(rating.addTime), rating.rate);
             sum += rating.rate;
         }
         System.out.println(dashedLine1);
-        System.out.println("the average of ratings is: " + (double) ((int) ((double) sum / ratings.size() * 100)) / 100);
+        double average = averageRate(ratings);
+        if (average != 0)
+            System.out.println("the average of ratings is: " + average);
+        else
+            System.out.println("there's no rating for this " + ((isForFood) ? "food" : "restaurant"));
         System.out.println(dashedLine2);
-        System.out.format(leftAlignHeaderFormat2," Id","UserId" ,"   addingTime","                                                         comment", "replyToComment");
+        System.out.format(leftAlignHeaderFormat2," Id","UserId" ,"   addTime","                                                         comment", "replyToComment");
         System.out.println (dashedLine2);
         for (Comment comment : comments)
-            System.out.format(leftAlignFormat2, comment.id, comment.user.id, Functions.simpleDateFormat.format(comment.addingTime), comment.Comment, (comment.replyComment == null) ? "" : comment.replyComment.id);
+            System.out.format(leftAlignFormat2, comment.id, comment.user.id, Functions.simpleDateFormat.format(comment.addTime), comment.Comment, (comment.replyComment == null) ? "" : comment.replyComment.id);
         System.out.println(dashedLine2);
+    }
+    public static double averageRate(ArrayList<Comment> rates) {
+        int sum = 0;
+        for (Comment rate : rates)
+            sum += rate.rate;
+        if (rates.size() > 0)
+            return (double) ((int) ((double) sum / rates.size() * 100)) / 100;
+        return 0;
     }
     public static void printComment(int id, String whichId) {
         ArrayList<Comment>[] comments = sortedComment(Main.sql.getComment(id, whichId, false));
@@ -116,16 +128,8 @@ public class Comment {
         }
         return true;
     }
-
-    public static double averageRate(ArrayList<Comment> rates) {
-        int sum = 0;
-        for (Comment rate : rates)
-            sum += rate.rate;
-        if (rates.size() > 0)
-            return (double) ((int) ((double) sum / rates.size() * 100)) / 100;
-        return 0;
-    }
-
+    //TODO you can use FoodHub.Base.Comment.averageRate
+    //this hashMap value is all the ratings of restaurant
     public static HashMap<Integer, ArrayList<Integer>> ratingHistory(int userId) {
         HashMap<Integer, ArrayList<Integer>> ratingHistory = new HashMap<>();
         for (Comment rating : Main.sql.getComment(userId, "userId", false)) {

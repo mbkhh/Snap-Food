@@ -5,8 +5,8 @@ public class Sql {
     public Sql() {
         try {
             Class.forName("org.sqlite.JDBC");
-//            connection = DriverManager.getConnection("jdbc:sqlite:D:\\Desktop\\Programing\\Snap-Food\\Databases\\test.db");
-            connection = DriverManager.getConnection("jdbc:sqlite:Databases\\test.db");
+//            connection = DriverManager.getConnection("jdbc:sqlite:D:\\Desktop\\Programing\\FoodHub\\src\\main\\resources\\FoodHub\\Databases\\test.db");
+            connection = DriverManager.getConnection("jdbc:sqlite:src\\main\\resources\\FoodHub\\Databases\\test.db");
 //            connection.setAutoCommit(false);
         } catch (Exception e) {
             System.out.println("Database connection error : " + e.getMessage());
@@ -46,6 +46,52 @@ public class Sql {
             stm.close();
         } catch (SQLException e) {
             System.out.println("Could not Insert data to database : InsertToCart : "+e.getMessage());
+        }
+    }
+    public void InsertToNode(int node ,int x ,int y) {
+        try {
+            Statement stm = connection.createStatement();
+            stm.executeUpdate( "Insert INTO Node (node , x , y ) VALUES ('"+node+"' , '"+x+"' , '"+y+"' );" );
+            stm.close();
+        } catch (SQLException e) {
+            System.out.println("Could not Insert data to database : InsertToCart : "+e.getMessage());
+        }
+    }
+    public int[] getNodeXY(int node) {
+        int ans[] = {0, 0};
+        try {
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery( "SELECT * FROM Node Where `node`="+node+" ;" );
+            while ( rs.next() ) {
+                ans[0] = rs.getInt("x");
+                ans[1] = rs.getInt("y");
+            }
+            rs.close();
+            stm.close();
+            return ans;
+        } catch (SQLException e) {
+            System.out.println("Could not select data from database : getNodeXY : "+e.getMessage());
+            return ans;
+        }
+    }
+    public ArrayList<int[]> getAllNodes() {
+        ArrayList<int[]> a = new ArrayList<>();
+        try {
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery( "SELECT * FROM Node;" );
+            while ( rs.next() ) {
+                int ans[] = {0, 0 , 0};
+                ans[0] = rs.getInt("node");
+                ans[1] = rs.getInt("x");
+                ans[2] = rs.getInt("y");
+                a.add(ans);
+            }
+            rs.close();
+            stm.close();
+            return a;
+        } catch (SQLException e) {
+            System.out.println("Could not select data from database : getNodeXY : "+e.getMessage());
+            return a;
         }
     }
     public void deleteMap() {
@@ -126,6 +172,24 @@ public class Sql {
             System.out.println("Could not delete data to database : deleteFromCart : "+e.getMessage());
         }
     }
+    public void deleteFromCartByFoodId(int foodId ) {
+        try {
+            Statement stm = connection.createStatement();
+            stm.executeUpdate( "DELETE FROM Cart WHERE `foodId` = "+foodId+";" );
+            stm.close();
+        } catch (SQLException e) {
+            System.out.println("Could not delete data to database : deleteFromCartByFoodId : "+e.getMessage());
+        }
+    }
+    public void deleteFromOrderByRestaurantId(int restaurantId ) {
+        try {
+            Statement stm = connection.createStatement();
+            stm.executeUpdate( "DELETE FROM Order WHERE `restaurantId` = "+restaurantId+";" );
+            stm.close();
+        } catch (SQLException e) {
+            System.out.println("Could not delete data to database : deleteFromOrderByRestaurantId : "+e.getMessage());
+        }
+    }
     public ArrayList<Cart> getCart(int FoodId, int UserId , int OrderId) {
         ArrayList<Cart> ans = new ArrayList<Cart>();
         try {
@@ -173,7 +237,7 @@ public class Sql {
             return ans;
         }
     }
-    public void InsertToOrder(int userId, int restaurantId, int deliveryId, String path, int pathLength,int estimatedTime, Long addTime, int totalprice, int totalDiscount, OrderStatus status, String discription) {
+    public void InsertToOrder(int userId, int restaurantId, int deliveryId, String path, int pathLength, int estimatedTime, Long addTime, int totalprice, int totalDiscount, OrderStatus status, String discription) {
         try {
             Statement stm =  connection.createStatement();
             stm.executeUpdate( "Insert INTO `Order` (userId ,restaurantId ,deliveryId,path , pathLength ,estimatedTotalTime ,addTime ,totalPrice ,totalDiscount ,status ,discription) VALUES ('"+userId+"' ,'"+restaurantId+"' ,'"+deliveryId+"','"+path+"' , '"+pathLength+"' ,'"+estimatedTime+"' ,'"+addTime+"' ,'"+totalprice+"' ,'"+totalDiscount+"' ,'"+status+"' ,'"+discription+"');" );
@@ -219,7 +283,7 @@ public class Sql {
             return ans;
         }
     }
-    public ArrayList<DiscountCode> getDiscountCodeOfUser(int userId,String code) {
+    public ArrayList<DiscountCode> getDiscountCodeOfUser(int userId, String code) {
         ArrayList<DiscountCode> ans = new ArrayList<DiscountCode>();
         try {
             Statement stm = connection.createStatement();
@@ -241,7 +305,7 @@ public class Sql {
         ArrayList<Order> ans = new ArrayList<Order>();
         try {
             Statement stm = connection.createStatement();
-            ResultSet rs = stm.executeQuery( "SELECT * FROM `Order` WHERE `userId` ="+userId+" ;" );
+            ResultSet rs = stm.executeQuery( "SELECT * FROM `Order` WHERE `userId` ="+userId+" ORDER BY `id` DESC ;" );
             while ( rs.next() ) {
                 int id = rs.getInt("id");
                 int restaurantId = rs.getInt("restaurantId");
@@ -272,6 +336,35 @@ public class Sql {
             ResultSet rs = stm.executeQuery( "SELECT * FROM `Order` WHERE `userId` ="+userId+" AND `id`="+orderId+" ;" );
             while ( rs.next() ) {
                 int id = rs.getInt("id");
+                int restaurantId = rs.getInt("restaurantId");
+                int deliveryId = rs.getInt("deliveryId");
+                String path = rs.getString("path");
+                int pathLength = rs.getInt("pathLength");
+                int estimatedTime = rs.getInt("estimatedTotalTime");
+                long addTime = rs.getLong("addTime");
+                int totalprice = rs.getInt("totalprice");
+                int totalDiscount = rs.getInt("totalDiscount");
+                String status = rs.getString("status");
+                String discription= rs.getString("discription");
+
+                ans.add(new Order(id, userId, restaurantId, deliveryId, path, pathLength, estimatedTime, addTime, totalprice, totalDiscount, status, discription));
+            }
+            rs.close();
+            stm.close();
+            return ans;
+        } catch (SQLException e) {
+            System.out.println("Could not select data from database : getAllOrderOfUser : "+e.getMessage());
+            return ans;
+        }
+    }
+    public ArrayList<Order> getAllOrderById(int orderId) {
+        ArrayList<Order> ans = new ArrayList<Order>();
+        try {
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery( "SELECT * FROM `Order` WHERE `id`="+orderId+" ;" );
+            while ( rs.next() ) {
+                int id = rs.getInt("id");
+                int userId = rs.getInt("userId");
                 int restaurantId = rs.getInt("restaurantId");
                 int deliveryId = rs.getInt("deliveryId");
                 String path = rs.getString("path");
@@ -351,11 +444,39 @@ public class Sql {
             return ans;
         }
     }
-    public ArrayList<Order> getOrderByIdAndDelivery(int orderId,int deliveryId) {
+    public ArrayList<Order> getOrderByIdAndDelivery(int orderId, int deliveryId) {
         ArrayList<Order> ans = new ArrayList<Order>();
         try {
             Statement stm = connection.createStatement();
             ResultSet rs = stm.executeQuery( "SELECT * FROM `Order` WHERE `deliveryId`="+deliveryId+" AND id="+orderId+";" );
+            while ( rs.next() ) {
+                int id = rs.getInt("id");
+                int userId = rs.getInt("userId");
+                int restaurantId = rs.getInt("restaurantId");
+                String path = rs.getString("path");
+                int pathLength = rs.getInt("pathLength");
+                int estimatedTime = rs.getInt("estimatedTotalTime");
+                long addTime = rs.getLong("addTime");
+                int totalprice = rs.getInt("totalprice");
+                int totalDiscount = rs.getInt("totalDiscount");
+                String status = rs.getString("status");
+                String discription= rs.getString("discription");
+
+                ans.add(new Order(id, userId, restaurantId, deliveryId, path, pathLength, estimatedTime, addTime, totalprice, totalDiscount, status, discription));
+            }
+            rs.close();
+            stm.close();
+            return ans;
+        } catch (SQLException e) {
+            System.out.println("Could not select data from database : getAllOrderOfUser : "+e.getMessage());
+            return ans;
+        }
+    }
+    public ArrayList<Order> getOrderDelivery(int deliveryId) {
+        ArrayList<Order> ans = new ArrayList<Order>();
+        try {
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery( "SELECT * FROM `Order` WHERE `deliveryId`="+deliveryId+";" );
             while ( rs.next() ) {
                 int id = rs.getInt("id");
                 int userId = rs.getInt("userId");
@@ -439,7 +560,7 @@ public class Sql {
         ArrayList<Order> ans = new ArrayList<Order>();
         try {
             Statement stm = connection.createStatement();
-            ResultSet rs = stm.executeQuery( "SELECT * FROM `Order` WHERE `restaurantId` ="+restaurantId+" ;" );
+            ResultSet rs = stm.executeQuery( "SELECT * FROM `Order` WHERE `restaurantId` ="+restaurantId+" ORDER BY id DESC ;" );
             while ( rs.next() ) {
                 int id = rs.getInt("id");
                 int userId = rs.getInt("userId");
@@ -633,13 +754,13 @@ public class Sql {
     }
 
     int getNewBalance (int id)
-    {  
+    {
         int balance = -1;
         try {
             Statement stm =  connection.createStatement();
-            ResultSet rs = stm.executeQuery( "SELECT * FROM User Where `id` = "+id+";");            
+            ResultSet rs = stm.executeQuery( "SELECT * FROM User Where `id` = "+id+";");
             while ( rs.next() ) {
-             balance = rs.getInt("balance");  
+                balance = rs.getInt("balance");
             }
             rs.close();
             stm.close();
@@ -648,7 +769,7 @@ public class Sql {
             System.out.println("Could not select data from database : getUser : "+e.getMessage());
             return balance;
         }
-        
+
     }
     /**
      * *
@@ -678,10 +799,10 @@ public class Sql {
             System.out.println("Could not Insert data to database : insertToRestaurant : " + e.getMessage());
         }
     }
-    public void insertToComment(int restaurantId, int foodId, int userId, String comment, int rate, int replyId, long addingTime) {
+    public void insertToComment(int restaurantId, int foodId, int userId, String comment, int rate, int replyId, long addTime) {
         try {
             Statement statement = connection.createStatement();
-            statement.executeUpdate("Insert INTO Comment (restaurantId, foodId, userId, comment, rate, replyId, addingTime) VALUES (" + restaurantId + ", '" + foodId + "', " + userId + ", '" + comment + "', " + rate + ", " + replyId + ", '" + addingTime + "');");
+            statement.executeUpdate("Insert INTO Comment (restaurantId, foodId, userId, comment, rate, replyId, addTime) VALUES (" + restaurantId + ", '" + foodId + "', " + userId + ", '" + comment + "', " + rate + ", " + replyId + ", '" + addTime + "');");
             statement.close();
         } catch (SQLException e) {
             System.out.println("Could not Insert data to database : insertToRestaurant : " + e.getMessage());
@@ -705,10 +826,10 @@ public class Sql {
             System.out.println("Could not update data to database : editRestaurant : " + e.getMessage());
         }
     }
-    public void editComment(int id, String comment, int rate, long addingTime) {
+    public void editComment(int id, String comment, int rate) {
         try {
             Statement statement = connection.createStatement();
-            statement.executeUpdate( "UPDATE Food SET comment = '" + comment + "', rate = " + rate + ", addingTime = " + addingTime + " WHERE id = " + id + ";" );
+            statement.executeUpdate( "UPDATE Food SET comment = '" + comment + "', rate = " + rate + " WHERE id = " + id + ";" );
             statement.close();
         } catch (SQLException e) {
             System.out.println("Could not update data to database : editRestaurant : " + e.getMessage());
@@ -819,7 +940,7 @@ public class Sql {
                 String comment = resultSet.getString("comment");
                 int rate = resultSet.getInt("rate");
                 int replyId = resultSet.getInt("replyId");
-                long addingTime = resultSet.getLong("addingTime");
+                long addingTime = resultSet.getLong("addTime");
                 comments.add(new Comment(id, userId, foodId, restaurantId, replyId, rate, comment, addingTime));
             }
             resultSet.close();
@@ -830,4 +951,5 @@ public class Sql {
             return comments;
         }
     }
+
 }

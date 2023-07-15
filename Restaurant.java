@@ -15,17 +15,22 @@ public class Restaurant {
         this.foodTypes = foodTypes;
         this.postCost = postCost;
     }
-    public static boolean addRestaurant(int ownerId, String name, int postCost, String foodType) {
+    public static boolean addRestaurant(int ownerId, String name, int postCost, String foodType, int addressNode) {
         if (User.getUserById(ownerId) != null) {
             Main.sql.insertToRestaurant(ownerId, name, foodType, postCost);
+            ArrayList<Restaurant> restaurants = Main.sql.getRestaurant(ownerId, "ownerId", false, "");
+            Main.sql.InsertToAddress(0, restaurants.get(restaurants.size() - 1).id, addressNode);
             return true;
         }
         return false;
     }
-    public String foodTypesToString() {
+    public static String foodTypesToString(ArrayList<FoodType> foodTypes, boolean space) {
         String foodType = foodTypes.get(0).getFoodType();
         for (int i = 1; i < foodTypes.size(); i++) {
-            foodType += ", " + foodTypes.get(i).getFoodType();
+            if (space)
+                foodType += ", " + foodTypes.get(i).getFoodType();
+            else
+                foodType += "," + foodTypes.get(i).getFoodType();
         }
         return foodType;
     }
@@ -38,14 +43,20 @@ public class Restaurant {
         System.out.format(leftAlignHeaderFormat," Id","     Name","                   foodTypes","PostCost");
         System.out.println (dashedLine);
         for (int i = 0; i < restaurants.size(); i++)
-            System.out.format(leftAlignFormat,restaurants.get(i).id,restaurants.get(i).name,restaurants.get(i).foodTypesToString(),restaurants.get(i).postCost);
+            System.out.format(leftAlignFormat,restaurants.get(i).id,restaurants.get(i).name,foodTypesToString(restaurants.get(i).foodTypes, true),restaurants.get(i).postCost);
         System.out.println(dashedLine);
     }
     public Address getRestaurantAddress() {
         return Address.getAddress(0, id);
     }
-    public boolean editRestaurantAddress(int node) {
-        return Main.sql.editAddress(getRestaurantAddress().id, -1, id, node);
+    public static boolean editRestaurantAddress(int id, int node) {
+        if (Order.openOrders(id).size() == 0) {
+            if (Main.sql.editAddress(getRestaurant(id).getRestaurantAddress().id, -1, id, node)) {
+                currentRestaurant = getRestaurant(id);
+                return true;
+            }
+        }
+        return false;
     }
     public static Restaurant getRestaurantByOwnerId(int id) {
         return Main.sql.getRestaurant(id, "ownerId", false, "").get(0);
@@ -54,29 +65,32 @@ public class Restaurant {
         return Main.sql.getRestaurant(id, "id", false, "").get(0);
     }
     public static void printRestaurant(int ownerId) {
-        if (currentRestaurant!=null && currentRestaurant.owner.name.equals(User.currentUser.name)) {
-            ArrayList<Restaurant> restaurants = new ArrayList<>(Main.sql.getRestaurant(ownerId, "ownerId", false, ""));
-            if (restaurants.size() == 0)
-                System.out.println("You don't have any restaurant");
-            else if (restaurants.size() == 1) {
-                printRestaurant(restaurants, "Yours restaurant:");
-                currentRestaurant = restaurants.get(0);
-            } else
-                printRestaurant(restaurants, "Yours restaurants:");
-        }
-        else {
-            printRestaurant(Main.sql.getRestaurant(0, "", true, ""), "These are all of the restaurants:");
-        }
+        ArrayList<Restaurant> restaurants = new ArrayList<>(Main.sql.getRestaurant(ownerId, "ownerId", false, ""));
+        if (restaurants.size() == 0)
+            System.out.println("You don't have any restaurant");
+        else if (restaurants.size() == 1) {
+            printRestaurant(restaurants, "Your restaurant:");
+            currentRestaurant = restaurants.get(0);
+        } else
+            printRestaurant(restaurants, "Your restaurants:");
+    }
+    public static void printAllRestaurants() {
+        printRestaurant(Main.sql.getRestaurant(0, "", true, ""), "These are all of the restaurants:");
     }
     public static boolean deleteRestaurant(int id) {
-        if (getRestaurant(id) != null) {
-            ArrayList<Food> foods = Main.sql.getFood(id, "restaurantId", false, "");
-            Main.sql.deleteFromRestaurant(id);
-            Main.sql.deleteFromComment(id, "restaurantId");
-            for (Food food : foods)
-                Main.sql.deleteFromComment(food.id, "foodId");
-            Main.sql.deleteFromFood(id, "restaurantId");
-            return true;
+        if (Order.openOrders(id).size() == 0) {
+            if (getRestaurant(id) != null) {
+                ArrayList<Food> foods = Main.sql.getFood(id, "restaurantId", false, "");
+                Main.sql.deleteFromRestaurant(id);
+                Main.sql.deleteFromComment(id, "restaurantId");
+                for (Food food : foods) {
+                    Main.sql.deleteFromComment(food.id, "foodId");
+                    Main.sql.deleteFromCartByFoodId(food.id);
+                }
+                Main.sql.deleteFromOrderByRestaurantId(id);
+                Main.sql.deleteFromFood(id, "restaurantId");
+                return true;
+            }
         }
         return false;
     }
@@ -88,12 +102,19 @@ public class Restaurant {
         }
         return false;
     }
-    public void editFoodType(String foodType) {
-        ArrayList<Food> foods = Main.sql.getFood(id, "restaurantId", false, "");
-        Main.sql.editRestaurant(id, owner.id, name, foodType, postCost);
-        Main.sql.deleteFromComment(id, "restaurantId");
-        for (Food food : foods)
-            Main.sql.deleteFromComment(food.id, "foodId");
-        Main.sql.deleteFromFood(id, "restaurantId");
+    public static void editFoodType(int id, String foodType) {
+        if (Order.openOrders(id).size() == 0) {
+            Restaurant restaurant = getRestaurant(id);
+            ArrayList<Food> foods = Main.sql.getFood(id, "restaurantId", false, "");
+            Main.sql.editRestaurant(id, restaurant.owner.id, restaurant.name, foodType, restaurant.postCost);
+            Main.sql.deleteFromComment(id, "restaurantId");
+            for (Food food : foods) {
+                Main.sql.deleteFromComment(food.id, "foodId");
+                Main.sql.deleteFromCartByFoodId(food.id);
+            }
+            Main.sql.deleteFromFood(id, "restaurantId");
+            currentRestaurant = getRestaurant(id);
+        }
     }
+
 }
