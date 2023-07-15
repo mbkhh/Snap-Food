@@ -5,8 +5,8 @@ public class Sql {
     public Sql() {
         try {
             Class.forName("org.sqlite.JDBC");
-//            connection = DriverManager.getConnection("jdbc:sqlite:D:\\Desktop\\Programing\\FoodHub\\src\\main\\resources\\FoodHub\\Databases\\test.db");
-            connection = DriverManager.getConnection("jdbc:sqlite:src\\main\\resources\\FoodHub\\Databases\\test.db");
+            connection = DriverManager.getConnection("jdbc:sqlite:D:\\Desktop\\Programing\\Snap-Food\\Databases\\test.db");
+//            connection = DriverManager.getConnection("jdbc:sqlite:src\\main\\resources\\FoodHub\\Databases\\test.db");
 //            connection.setAutoCommit(false);
         } catch (Exception e) {
             System.out.println("Database connection error : " + e.getMessage());
@@ -639,7 +639,7 @@ public class Sql {
     public boolean editAddress(int id, int userId, int restaurantId, int node) {
         try {
             Statement statement = connection.createStatement();
-            statement.executeUpdate( "UPDATE User SET userId = " + userId + ", restaurantId = " + restaurantId + ", node = " + node + " WHERE id = " + id + ";" );
+            statement.executeUpdate( "UPDATE Address SET userId = " + userId + ", restaurantId = " + restaurantId + ", node = " + node + " WHERE id = " + id + ";" );
             statement.close();
             return true;
         } catch (SQLException e) {
@@ -811,7 +811,7 @@ public class Sql {
     public void editRestaurant(int id, int ownerId, String name,  String foodType, int postCost) {
         try {
             Statement statement = connection.createStatement();
-            statement.executeUpdate( "UPDATE Reastaurant SET ownerId = " + ownerId + ", name = '" + name + "', foodType = '" + foodType + "', postCost = " + postCost + " WHERE id = " + id + ";" );
+            statement.executeUpdate( "UPDATE Restaurant SET ownerId = " + ownerId + ", name = '" + name + "', foodType = '" + foodType + "', postCost = " + postCost + " WHERE id = " + id + ";" );
             statement.close();
         } catch (SQLException e) {
             System.out.println("Could not update data to database : editRestaurant : " + e.getMessage());

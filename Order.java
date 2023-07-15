@@ -69,7 +69,7 @@ public class Order {
     }
     static void editOrder(int time, String status, User user, int orderId)
     {
-        ArrayList<Order> te = Main.sql.getAllOrderById2(orderId ,Restaurant.getRestaurantByOwnerId(user.id).id);
+        ArrayList<Order> te = Main.sql.getAllOrderById2(orderId ,Restaurant.currentRestaurant.id);
         if(te.size() == 0)
             System.out.println("There is no order registered with this ID for you");
         else
@@ -212,7 +212,7 @@ public class Order {
     }
     static void getRestaurantOpenOrder(User user)
     {
-        ArrayList<Order> te = openOrders(Restaurant.getRestaurantByOwnerId(user.id).id);
+        ArrayList<Order> te = openOrders(Restaurant.currentRestaurant.id);
         if(te.size() == 0)
             System.out.println("No order yet");
         else
@@ -222,7 +222,7 @@ public class Order {
     }
     static void getRestaurantAllOrder(User user)
     {
-        ArrayList<Order> te = AllOrders(Restaurant.getRestaurantByOwnerId(user.id).id);
+        ArrayList<Order> te = AllOrders(Restaurant.currentRestaurant.id);
         if(te.size() == 0)
             System.out.println("No order yet");
         else
@@ -232,7 +232,7 @@ public class Order {
     }
     static void printOrderRestaurant(User user, int orderId)
     {
-        ArrayList<Order> te = Main.sql.getAllOrderById2(orderId ,Restaurant.getRestaurantByOwnerId(user.id).id);
+        ArrayList<Order> te = Main.sql.getAllOrderById2(orderId ,Restaurant.currentRestaurant.id);
         if(te.size() == 0)
             System.out.println("There is no order registered with this ID for you");
         else
