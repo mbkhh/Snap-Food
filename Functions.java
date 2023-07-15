@@ -29,4 +29,12 @@ public class Functions {
         }
         return types;
     }
+    public static double avarage(ArrayList<Integer> t)
+    {
+        int sum = 0;
+        for (Integer integer : t) {
+            sum += integer;
+        }
+        return (double)sum/(double)t.size();
+    }
 }

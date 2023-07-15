@@ -45,7 +45,7 @@ public class Map {
                     if(index == -1)
                         list.add(new Vertex(list.get(0),connected.get(i).weight, connected.get(i).node2));
                     else{
-                        if(list.get(0).pathLength + connected.get(i).weight > list.get(index).pathLength)
+                        if(list.get(0).pathLength + connected.get(i).weight < list.get(index).pathLength)
                             list.set(index, new Vertex(list.get(0),connected.get(i).weight, connected.get(i).node2));
                     }
 
@@ -56,7 +56,7 @@ public class Map {
                     if(index == -1)
                         list.add(new Vertex(list.get(0),connected.get(i).weight, connected.get(i).node1));
                     else{
-                        if(list.get(0).pathLength + connected.get(i).weight > list.get(index).pathLength)
+                        if(list.get(0).pathLength + connected.get(i).weight < list.get(index).pathLength)
                             list.set(index, new Vertex(list.get(0),connected.get(i).weight, connected.get(i).node1));
                     }
                 }

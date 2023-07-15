@@ -1,5 +1,8 @@
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Main {
@@ -115,6 +118,24 @@ public class Main {
             else if (command.matches("(?i)display\\s+open\\s+orders\\s*") && !User.checkCurrentUser2()) {
                 if (User.currentUser.type == 2)
                     Order.getRestaurantOpenOrder(User.currentUser);
+            }
+            else if (command.matches("(?i)display\\s+offers\\s*") && !User.checkCurrentUser2()) {
+                HashMap<Integer, ArrayList<Integer>> f =Comment.ratingHistory(User.currentUser.id);
+                ArrayList<Restaurant> restaurnat = Main.sql.getRestaurant(0, "0", true, "");
+                System.out.println();
+                for (int i = 0; i < restaurnat.size(); i++) {
+                    for (int j = i; j < restaurnat.size()-1; j++) {
+                        double res1rate = (f.containsKey(restaurnat.get(j).id))?Functions.avarage(f.get(restaurnat.get(j).id)):2.5;
+                        double res2rate = (f.containsKey(restaurnat.get(j+1).id))?Functions.avarage(f.get(restaurnat.get(j+1).id)):2.5;
+                        if(res1rate < res2rate)
+                            Collections.swap(restaurnat, j+1, j);
+                    }
+                }
+                System.out.println("Best restaurant for you :)");
+                for(Restaurant re : restaurnat){
+                    System.out.println(re.id + "   " + re.name + "   " + ((f.containsKey(re.id))?Functions.avarage(f.get(re.id)):2.5));
+                }
+                System.out.println();
             }
             else if (command.matches("(?i)show\\s+orders\\s+history\\s*") && !User.checkCurrentUser2()) {
                 if (User.currentUser.type == 2)

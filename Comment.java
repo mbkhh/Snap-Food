@@ -2,6 +2,7 @@ import com.sun.source.tree.CaseTree;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.concurrent.CancellationException;
 
 public class Comment {
@@ -114,5 +115,39 @@ public class Comment {
             }
         }
         return true;
+    }
+
+    public static double averageRate(ArrayList<Comment> rates) {
+        int sum = 0;
+        for (Comment rate : rates)
+            sum += rate.rate;
+        if (rates.size() > 0)
+            return (double) ((int) ((double) sum / rates.size() * 100)) / 100;
+        return 0;
+    }
+
+    public static HashMap<Integer, ArrayList<Integer>> ratingHistory(int userId) {
+        HashMap<Integer, ArrayList<Integer>> ratingHistory = new HashMap<>();
+        for (Comment rating : Main.sql.getComment(userId, "userId", false)) {
+            if (rating.rate != 0) {
+                if (rating.food == null) {
+                    ratingHistory.put(rating.restaurant.id, new ArrayList<>());
+                    ratingHistory.get(rating.restaurant.id).add(rating.rate);
+                }
+            }
+        }
+        for (Comment rating : Main.sql.getComment(userId, "userId", false)) {
+            if (rating.rate != 0) {
+                if (rating.food != null) {
+                    if (ratingHistory.containsKey(rating.food.restaurant.id))
+                        ratingHistory.get(rating.food.restaurant.id).add(rating.rate);
+                    else {
+                        ratingHistory.put(rating.food.restaurant.id, new ArrayList<>());
+                        ratingHistory.get(rating.food.restaurant.id).add(rating.rate);
+                    }
+                }
+            }
+        }
+        return ratingHistory;
     }
 }
