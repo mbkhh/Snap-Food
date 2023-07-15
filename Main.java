@@ -18,8 +18,8 @@ public class Main {
         //Map.findPath(127, 414);
         //test
         //User.currentUser = User.getUserById(1);
-        User.currentUser = User.getUserById(1);
-        Restaurant.setCurrentRestaurant(1);
+        User.currentUser = User.getUserById(3);
+//        Restaurant.setCurrentRestaurant(1);
         do {
             command = scanner.nextLine();
             command.trim();
@@ -259,7 +259,18 @@ public class Main {
             else if (command.matches("(?i)logout+\\s*") && !User.checkCurrentUser2()) {
                 User.logoutUser();
             }
-
+            else if (command.matches("show\\s+restaurant\\s+menu\\s+with\\s+id\\s+\\d+")) {
+                Food.printFood(Integer.parseInt(commands[5]));
+                Comment.printComment(Integer.parseInt(commands[5]), "restaurantId");
+            }
+            else if (command.matches("show\\s+restaurants")) {
+                if (Restaurant.currentRestaurant.owner.type == 2) {
+                    Restaurant.printRestaurant(Restaurant.currentRestaurant.id);
+                }
+                else {
+                    Restaurant.printAllRestaurants();
+                }
+            }
             else if (User.currentUser != null) {
                 if (Restaurant.currentRestaurant != null) {
                     if (Food.currentFood != null) {
